@@ -29,7 +29,7 @@ By the end of this session, you will be able to:
 
 ---
 
-## 📚 Part 1: Understanding Version Control
+## Part 1: Understanding Version Control
 
 ### What is Version Control?
 
@@ -143,7 +143,7 @@ user.email=sara.ahmed@example.com
 
 ---
 
-## 🚀 Part 3: Creating Your First Repository
+## Part 3: Creating Your First Repository
 
 ### What is a Repository?
 
@@ -393,7 +393,7 @@ a1b2c3d Add basic calculator with four operations
 
 ---
 
-## 🔄 Part 6: Making More Changes
+## Part 6: Making More Changes
 
 Let's see Git in action by making changes.
 
@@ -519,7 +519,7 @@ a1b2c3d Add basic calculator with four operations
 
 ---
 
-## ☁️ Part 8: Pushing Your Code to GitHub
+## Part 8: Pushing Your Code to GitHub
 
 ### Step 1: Create a New Repository on GitHub
 
@@ -730,7 +730,7 @@ git push
 
 ---
 
-## 🏗️ Part 10: Understanding Repository Structure
+## Part 10: Understanding Repository Structure
 
 ### What's Inside the .git Folder?
 
@@ -844,7 +844,7 @@ Git uses a **snapshot model**, not a delta model:
 
 ---
 
-## 🎯 Hands-On Practice Exercise
+## Hands-On Practice Exercise
 
 ### Your Challenge
 
@@ -955,7 +955,7 @@ Test your understanding:
 
 ---
 
-## 🎉 Congratulations!
+## Congratulations!
 
 You've completed Session 1! You can now:
 - ✅ Install and configure Git
@@ -998,7 +998,7 @@ You'll learn:
 - Handling merge conflicts
 - Pull requests and code reviews
 
-See you next week! 🚀
+See you next week!
 
 ---
 

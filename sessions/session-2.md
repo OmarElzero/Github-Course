@@ -1,4 +1,4 @@
-# Session 2 — Team Chaos: Collaboration & Access Control
+# Session 2 — Branching: Parallel Development Mastery
 
 **Duration:** 3 hours  
 **Venue:** Creativa Lab B  
@@ -8,1452 +8,1886 @@
 
 ## 📖 Story Introduction
 
-After acing her first assignment with Git and GitHub, **Sara** feels confident. But then Professor Hassan announces a new challenge: a **team project**. Sara is grouped with three other students: **Ahmed**, **Mona**, and **Youssef**.
+**Sara** is working on her calculator project when her professor asks: "Can you add a scientific calculator feature? But keep the basic calculator working too — I need to test both versions!"
 
-Excited, they decide to build a **Student Management System** together. Ahmed shares his GitHub repository link, and everyone starts coding. But disaster strikes:
+Sara panics. If she starts adding scientific functions, she'll break the basic calculator. If she makes a copy of the folder, she'll have duplicated code to maintain. What if she needs to fix a bug in both?
 
-- **Youssef** overwrites Sara's code by accident
-- **Mona** can't push her changes (permission denied!)
-- **Ahmed** makes changes that break everyone's work
-- When they try to combine their code, nothing works!
+Her mentor **Ahmed** introduces her to **Git branches**: "Think of branches as parallel universes. You can create a new reality where you experiment with the scientific calculator, while the original calculator continues to exist perfectly. When you're done, you can merge the universes together!"
 
-The team is in chaos. They need to learn how to collaborate properly using GitHub's collaboration features, permissions, and workflows. Today, you'll master these skills and save the project!
+Today, you'll master Git's most powerful feature: **branching**. This is how professional developers work on multiple features simultaneously without breaking production code.
 
 ---
 
 ## 🎯 Session Objectives
 
 By the end of this session, you will be able to:
-- Understand different collaboration models on GitHub
-- Add collaborators and manage permissions
-- Clone remote repositories
-- Pull and fetch changes from remote repositories
-- Handle and resolve merge conflicts
-- Create and review Pull Requests
-- Use GitHub Issues for project management
-- Write effective commit messages and documentation
-- Understand forking vs collaboration
+- ✅ Understand what branches are and why they're critical
+- ✅ Create and switch between branches confidently
+- ✅ Visualize branch structures
+- ✅ Merge branches with different strategies
+- ✅ Resolve complex merge conflicts
+- ✅ Use rebase for clean history
+- ✅ Stash and restore work in progress
+- ✅ Undo mistakes safely (restore, reset, revert)
+- ✅ Understand remotes (origin, upstream)
+- ✅ Master fetch vs pull
+- ✅ Delete and clean branches properly
 
 ---
 
-## 🤝 Part 1: GitHub Collaboration Models
+## Part 1: What is a Git Branch?
 
-### Model 1: Direct Collaboration (Shared Repository)
+### The Concept
 
-**Best for:** Small teams, trusted collaborators
+A **branch** is an independent line of development. It's a pointer to a specific commit that moves forward as you make new commits.
 
-**How it works:**
-- One person owns the repository
-- They add other team members as **collaborators**
-- Everyone can push directly to the repository
+**Analogy:**
+```
+Imagine writing a story:
+- Main plot (main branch)
+- What-if scenario 1 (feature branch 1)
+- What-if scenario 2 (feature branch 2)
 
-**[IMAGE: Diagram showing multiple users with direct push access to one repo]**  
-*Description: Central repository with arrows from multiple developers*
-
-### Model 2: Fork & Pull Request (Open Source Model)
-
-**Best for:** Open source projects, large teams
-
-**How it works:**
-- Contributors **fork** (copy) the repository to their account
-- They make changes in their fork
-- They submit a **Pull Request** to the original repo
-- Owner reviews and merges
-
-**[IMAGE: Diagram showing fork workflow with original repo and multiple forks]**  
-*Description: Original repo at top, multiple forked copies, PRs going back*
-
-We'll focus on **Model 1** today and cover **Model 2** in Session 4.
-
----
-
-## 🔐 Part 2: Understanding Roles & Permissions
-
-GitHub has different permission levels for repository access:
-
-### Permission Levels Explained
-
-| Role | Read | Clone | Issues/PRs | Push to Repo | Settings | Delete Repo |
-|------|------|-------|------------|--------------|----------|-------------|
-| **Read** | ✅ | ✅ | Comment | ❌ | ❌ | ❌ |
-| **Triage** | ✅ | ✅ | Manage | ❌ | ❌ | ❌ |
-| **Write** | ✅ | ✅ | Manage | ✅ | ❌ | ❌ |
-| **Maintain** | ✅ | ✅ | Manage | ✅ | Some | ❌ |
-| **Admin** | ✅ | ✅ | Manage | ✅ | ✅ | ✅ |
-
-**Most common for team projects:** **Write** permission (can push code)
-
-**[IMAGE: GitHub permissions hierarchy pyramid]**  
-*Description: Pyramid showing permission levels from Read at bottom to Admin at top*
-
-### Real-World Examples
-
-- **Read Access**: External reviewers, clients who want to see code
-- **Write Access**: Team members actively coding
-- **Admin Access**: Project lead, repository owner
-
----
-
-## 👥 Part 3: Adding Collaborators to Your Repository
-
-### Step 1: Create a Team Repository
-
-One team member (let's say **Ahmed**) creates the repository:
-
-1. Go to GitHub and create a new repository
-2. Name it: `student-management-system`
-3. Description: "Team project for managing student records"
-4. Make it **Public** or **Private** (Private is better for team work)
-5. Check "Add a README file"
-6. Choose Python for .gitignore
-7. Click "Create repository"
-
-**[IMAGE: GitHub create repository form with team project settings]**  
-*Description: Form filled out as described above*
-
-### Step 2: Add Team Members as Collaborators
-
-Ahmed needs to give access to Sara, Mona, and Youssef:
-
-1. Go to repository **Settings** tab
-2. Click **Collaborators** in left sidebar
-3. Click **Add people**
-4. Search by username or email
-5. Select the person
-6. Choose permission level: **Write**
-7. Click **Add [username] to this repository**
-
-**[IMAGE: GitHub Settings > Collaborators page]**  
-*Description: Screenshot showing Add people button*
-
-**[IMAGE: Add collaborator dialog with Write permission selected]**  
-*Description: Dialog showing user search and permission dropdown*
-
-### Step 3: Accept Collaboration Invitation
-
-Sara, Mona, and Youssef will receive:
-- Email notification
-- Notification on GitHub
-
-They must:
-1. Check their GitHub notifications (bell icon)
-2. Click on the invitation
-3. Click **Accept invitation**
-
-**[IMAGE: GitHub invitation notification]**  
-*Description: Email showing collaboration invitation*
-
-**[IMAGE: Accept invitation page on GitHub]**  
-*Description: Green Accept invitation button*
-
-Now everyone has **Write** access! 🎉
-
----
-
-## 📥 Part 4: Cloning a Remote Repository
-
-### What is Cloning?
-
-**Cloning** creates a complete local copy of a remote repository, including:
-- All files
-- Complete history
-- All branches
-- Remote connection configured
-
-**[IMAGE: Diagram showing GitHub repo being copied to local computer]**  
-*Description: Cloud repo with arrow pointing to local computer folder*
-
-### Hands-On: Clone the Team Repository
-
-Sara needs to get a copy of Ahmed's repository:
-
-#### Step 1: Get the Repository URL
-
-1. Go to the repository page on GitHub
-2. Click the green **Code** button
-3. Make sure **HTTPS** is selected
-4. Copy the URL (looks like: `https://github.com/ahmed/student-management-system.git`)
-
-**[IMAGE: GitHub Code button dropdown showing HTTPS URL]**  
-*Description: Dropdown with URL and copy button highlighted*
-
-#### Step 2: Clone the Repository
-
-Open terminal and navigate to where you want the project:
-
-```bash
-cd ~/Documents/Projects
+You can work on all three simultaneously, and later decide which scenarios to merge into the main plot!
 ```
 
-Clone the repository:
+**[IMAGE: Tree with main trunk and multiple branches]**  
+*Description: Visual metaphor of tree branches*
+
+### How Branches Work Internally
+
+```
+Commit History:
+A ← B ← C ← D (main branch)
+         ↑
+         └─ E ← F (feature branch)
+```
+
+- Each commit points to its parent
+- Branches are just pointers to commits
+- HEAD points to current branch
+
+**[IMAGE: Diagram showing commit graph with branch pointers]**  
+*Description: Commits A-F with branch and HEAD pointers*
+
+### Why Use Branches?
+
+**Without branches:**
+```
+main: feature1 → bug → feature2 → broken → fix → feature3
+```
+❌ Everything mixed together  
+❌ Can't test features independently  
+❌ Hard to track what changed  
+❌ Can't revert specific features  
+
+**With branches:**
+```
+main:          A ─────────────→ merge ─────→ release
+                ↓                ↑
+feature-1:      └─→ B → C ──────┘
+bug-fix:              └→ D ──────────────→ merge
+feature-2:                └─→ E → F ──────┘
+```
+✅ Isolated features  
+✅ Independent testing  
+✅ Clear history  
+✅ Easy rollback  
+
+**[IMAGE: Comparison diagram of linear vs branched development]**  
+*Description: Messy timeline vs organized branches*
+
+---
+
+## Part 2: Creating and Switching Branches
+
+### Check Current Branch
 
 ```bash
-git clone https://github.com/ahmed/student-management-system.git
+git branch
+```
+
+**Output:**
+```
+* main
+```
+
+The `*` shows your current branch.
+
+**[IMAGE: Terminal showing git branch output]**  
+*Description: Branch list with asterisk highlighting current branch*
+
+### Method 1: Traditional Approach
+
+```bash
+# Create new branch
+git branch feature-login
+
+# Switch to it
+git checkout feature-login
+```
+
+### Method 2: Combined Command
+
+```bash
+# Create and switch in one command
+git checkout -b feature-login
+```
+
+### Method 3: Modern Git (2.23+)
+
+```bash
+# Create and switch
+git switch -c feature-login
+
+# Just switch
+git switch main
+```
+
+**[IMAGE: Three methods shown side by side in terminal]**  
+*Description: All three branch creation methods*
+
+### PRACTICE 1: Create Your First Branch
+
+**Task:** Create a branch for adding a square root function to your calculator.
+
+```bash
+# 1. Check you're on main
+git branch
+
+# 2. Create feature branch
+git switch -c feature/square-root
+
+# 3. Verify you switched
+git branch
 ```
 
 **Expected Output:**
 ```
-Cloning into 'student-management-system'...
-remote: Enumerating objects: 5, done.
-remote: Counting objects: 100% (5/5), done.
-remote: Compressing objects: 100% (4/4), done.
-remote: Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
-Receiving objects: 100% (5/5), done.
+* feature/square-root
+  main
 ```
-
-**[IMAGE: Terminal showing successful clone operation]**  
-*Description: Clone progress and completion message*
-
-#### Step 3: Navigate into the Repository
-
-```bash
-cd student-management-system
-```
-
-Check what's inside:
-
-```bash
-ls -la
-```
-
-You should see:
-- `README.md`
-- `.git/` folder
-- `.gitignore`
-
-#### Step 4: Verify Remote Connection
-
-```bash
-git remote -v
-```
-
-**Expected Output:**
-```
-origin  https://github.com/ahmed/student-management-system.git (fetch)
-origin  https://github.com/ahmed/student-management-system.git (push)
-```
-
-The remote connection is automatically set up! ✅
-
-**[IMAGE: Terminal showing remote configuration]**  
-*Description: git remote -v output*
 
 ---
 
-## 💻 Part 5: Working Together - First Collaboration
+## Part 3: Working on a Branch
 
-### The Scenario
+### Scenario: Add Square Root Function
 
-The team divides the work:
-- **Ahmed**: Creates the main menu (main.py)
-- **Sara**: Creates student class (student.py)
-- **Mona**: Creates database functions (database.py)
-- **Youssef**: Updates README with instructions
-
-Let's follow Sara's workflow:
-
-### Step 1: Sara Creates student.py
+**On branch `feature/square-root`, edit calculator.py:**
 
 ```python
-# student.py
-# Author: Sara Ahmed
-# Description: Student class definition
+import math
 
-class Student:
-    """Represents a student in the management system"""
+def square_root(a):
+    """Calculate square root"""
+    if a < 0:
+        return "Error: Cannot calculate square root of negative number"
+    return math.sqrt(a)
+
+def main():
+    print("=== Calculator ===")
+    print("1. Add")
+    print("2. Subtract")
+    print("3. Multiply")
+    print("4. Divide")
+    print("5. Square Root")  # NEW
     
-    def __init__(self, student_id, name, email, major):
-        self.student_id = student_id
-        self.name = name
-        self.email = email
-        self.major = major
-        self.courses = []
+    choice = input("Enter choice (1-5): ")
     
-    def enroll_course(self, course_name):
-        """Enroll student in a course"""
-        if course_name not in self.courses:
-            self.courses.append(course_name)
-            return True
-        return False
-    
-    def drop_course(self, course_name):
-        """Drop a course"""
-        if course_name in self.courses:
-            self.courses.remove(course_name)
-            return True
-        return False
-    
-    def get_info(self):
-        """Return student information as a dictionary"""
-        return {
-            'id': self.student_id,
-            'name': self.name,
-            'email': self.email,
-            'major': self.major,
-            'courses': self.courses
-        }
-    
-    def __str__(self):
-        return f"Student({self.student_id}, {self.name}, {self.major})"
-    
-    def __repr__(self):
-        return self.__str__()
+    if choice == '5':  # NEW
+        num = float(input("Enter number: "))
+        print(f"Result: {square_root(num)}")
+    # ... rest of code
 ```
 
-**[IMAGE: Code editor showing student.py]**  
-*Description: Python class code in editor*
+**[IMAGE: Code editor showing changes]**  
+*Description: New square_root function highlighted*
 
-### Step 2: Sara Commits Her Changes
+### Commit on Branch
 
 ```bash
-# Check status
-git status
-
-# Stage the file
-git add student.py
-
-# Commit with descriptive message
-git commit -m "Add Student class with enroll and drop methods"
+git add calculator.py
+git commit -m "Add square root function"
 ```
 
-**[IMAGE: Terminal showing add and commit commands]**  
-*Description: Successful commit message*
-
-### Step 3: Sara Pushes to GitHub
+### Switch Back to Main
 
 ```bash
-git push origin main
+git switch main
 ```
 
-**Expected Output:**
-```
-Enumerating objects: 4, done.
-Counting objects: 100% (4/4), done.
-Delta compression using up to 8 threads
-Compressing objects: 100% (3/3), done.
-Writing objects: 100% (3/3), 1.05 KiB | 1.05 MiB/s, done.
-Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
-To https://github.com/ahmed/student-management-system.git
-   a1b2c3d..e4f5g6h  main -> main
+**Look at calculator.py — the square root function is GONE!** 😱
+
+That's the power of branches — changes are isolated!
+
+**[IMAGE: Split screen showing file with/without function in different branches]**  
+*Description: Same file, different content in main vs feature branch*
+
+### Switch Back to Feature Branch
+
+```bash
+git switch feature/square-root
 ```
 
-✅ **Sara's code is now on GitHub!**
-
-**[IMAGE: GitHub repository showing new student.py file]**  
-*Description: File list with student.py added*
+**The square root function is BACK!** ✨
 
 ---
 
-## 🔄 Part 6: Pull, Fetch, and Merge
+## PRACTICE 2: Multiple Branches
+
+**Challenge:** Create multiple features simultaneously.
+
+```bash
+# Switch to main
+git switch main
+
+# Create power function branch
+git switch -c feature/power-function
+
+# Add this to calculator.py
+def power(base, exponent):
+    """Raise base to exponent power"""
+    return base ** exponent
+
+# Commit
+git add calculator.py
+git commit -m "Add power function"
+
+# Switch to main
+git switch main
+
+# Create log function branch
+git switch -c feature/log-function
+
+# Add this to calculator.py
+import math
+
+def logarithm(a, base=10):
+    """Calculate logarithm"""
+    if a <= 0:
+        return "Error: Logarithm undefined for non-positive numbers"
+    return math.log(a, base)
+
+# Commit
+git add calculator.py
+git commit -m "Add logarithm function"
+```
+
+**Now you have 3 branches with different features!**
+
+```bash
+git branch
+```
+
+**Output:**
+```
+* feature/log-function
+  feature/power-function
+  feature/square-root
+  main
+```
+
+**[IMAGE: Branch list showing all created branches]**  
+*Description: Terminal with multiple branches listed*
+
+---
+
+## Part 4: Visualizing Branches
+
+### Text-Based Visualization
+
+```bash
+git log --oneline --graph --all --decorate
+```
+
+**Output:**
+```
+* a7f8b9c (feature/log-function) Add logarithm function
+| * d4e5f6g (feature/power-function) Add power function
+|/
+| * b2c3d4e (feature/square-root) Add square root function
+|/
+* 1a2b3c4 (HEAD -> main) Initial calculator
+```
+
+**[IMAGE: Git log graph in terminal]**  
+*Description: ASCII art showing branching structure*
+
+### Visual Git Tools
+
+**Install Git Graph (VS Code Extension):**
+1. Open VS Code
+2. Extensions → Search "Git Graph"
+3. Install
+4. Click "Git Graph" in bottom status bar
+
+**[IMAGE: VS Code Git Graph extension interface]**  
+*Description: Visual representation of branches and commits*
+
+**GitKraken (Desktop App):**
+- Beautiful visual interface
+- Drag-and-drop branching
+- Interactive rebase
+
+**[IMAGE: GitKraken interface showing branch visualization]**  
+*Description: Colorful branch diagram with node connections*
+
+---
+
+## Part 5: Merging Branches
+
+### Understanding Merge Types
+
+#### Type 1: Fast-Forward Merge
+
+**Scenario:** No commits on main since branch creation.
+
+```
+Before merge:
+main:     A ─ B
+              └─ C ─ D (feature)
+
+After merge:
+main:     A ─ B ─ C ─ D
+```
+
+**Command:**
+```bash
+git switch main
+git merge feature/square-root
+```
+
+**Output:**
+```
+Updating 1a2b3c4..b2c3d4e
+Fast-forward
+ calculator.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+```
+
+✅ **Clean, linear history**
+
+**[IMAGE: Fast-forward merge diagram]**  
+*Description: Simple forward movement of main pointer*
+
+#### Type 2: Three-Way Merge
+
+**Scenario:** Both main and feature have new commits.
+
+```
+Before merge:
+         ┌─ C ─ D (feature)
+main: A ─ B
+         └─ E ─ F (main)
+
+After merge:
+         ┌─ C ─ D
+main: A ─ B       ─ G (merge commit)
+         └─ E ─ F ┘
+```
+
+**Command:**
+```bash
+git switch main
+git merge feature/power-function
+```
+
+**Git opens editor for merge commit message:**
+```
+Merge branch 'feature/power-function'
+```
+
+Save and close.
+
+**[IMAGE: Three-way merge diagram with merge commit]**  
+*Description: Two lines converging into merge commit*
+
+---
+
+## PRACTICE 3: Your First Merge
+
+**Task:** Merge the square root feature into main.
+
+```bash
+# 1. Switch to main
+git switch main
+
+# 2. Merge feature
+git merge feature/square-root
+
+# 3. Verify
+git log --oneline
+
+# 4. Test the code
+python calculator.py
+```
+
+**Challenge Questions:**
+1. Was it a fast-forward or three-way merge?
+2. How many commits are in main now?
+3. What happened to the feature branch?
+
+**[IMAGE: Before and after merge comparison]**  
+*Description: Branch structure before and after merge*
+
+---
+
+## Part 6: Merge Conflicts — The Challenge
+
+### What Causes Conflicts?
+
+**Conflict occurs when:**
+- Two branches modify the **same lines** in the **same file**
+- Git can't automatically decide which change to keep
+
+### Scenario: The Classic Conflict
+
+**Sara and Ahmed both edit the same function:**
+
+**Sara's branch:**
+```python
+def add(a, b):
+    """Add two numbers - improved version"""
+    return float(a) + float(b)
+```
+
+**Ahmed's branch:**
+```python
+def add(a, b):
+    """Add two numbers together"""
+    return round(a + b, 2)
+```
+
+Both commit and try to merge... **CONFLICT!** 💥
+
+**[IMAGE: Two developers editing same code]**  
+*Description: Split screen showing different changes to same function*
+
+### Creating a Conflict (Practice Setup)
+
+Let's intentionally create a conflict to practice:
+
+```bash
+# On main branch
+git switch main
+
+# Edit calculator.py - change the add function
+def add(a, b):
+    """Add two numbers - main branch version"""
+    return a + b
+
+git add calculator.py
+git commit -m "Update add function docstring on main"
+
+# Create conflict branch
+git switch -c conflict-branch
+
+# Edit calculator.py - change the SAME add function differently
+def add(a, b):
+    """Add two numbers - conflict branch version"""
+    return a + b
+
+git add calculator.py
+git commit -m "Update add function docstring on conflict branch"
+
+# Try to merge back to main
+git switch main
+git merge conflict-branch
+```
+
+**BOOM! Conflict:**
+```
+Auto-merging calculator.py
+CONFLICT (content): Merge conflict in calculator.py
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+**[IMAGE: Terminal showing conflict error]**  
+*Description: Red text showing merge conflict message*
+
+### Anatomy of a Conflict
+
+**Open calculator.py:**
+
+```python
+def add(a, b):
+<<<<<<< HEAD
+    """Add two numbers - main branch version"""
+=======
+    """Add two numbers - conflict branch version"""
+>>>>>>> conflict-branch
+    return a + b
+```
+
+**Understanding conflict markers:**
+- `<<<<<<< HEAD`: Start of YOUR changes (current branch)
+- `=======`: Separator
+- `>>>>>>> conflict-branch`: End of THEIR changes (branch being merged)
+
+**[IMAGE: Conflict markers annotated]**  
+*Description: Each marker labeled with its meaning*
+
+### Resolving the Conflict
+
+**Option 1: Keep your version**
+```python
+def add(a, b):
+    """Add two numbers - main branch version"""
+    return a + b
+```
+
+**Option 2: Keep their version**
+```python
+def add(a, b):
+    """Add two numbers - conflict branch version"""
+    return a + b
+```
+
+**Option 3: Combine both (usually best)**
+```python
+def add(a, b):
+    """Add two numbers - combined improved version"""
+    return a + b
+```
+
+**Option 4: Write something completely new**
+```python
+def add(a, b):
+    """Add two numbers and return the sum"""
+    return a + b
+```
+
+**Remove ALL conflict markers!**
+
+**[IMAGE: Resolved conflict - clean code]**  
+*Description: Final code with no markers*
+
+### Complete the Merge
+
+```bash
+# 1. Stage the resolved file
+git add calculator.py
+
+# 2. Check status
+git status
+```
+
+**Output:**
+```
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+```
+
+```bash
+# 3. Complete the merge
+git commit
+```
+
+Git provides a default message:
+```
+Merge branch 'conflict-branch'
+
+Conflicts:
+	calculator.py
+```
+
+Save and close. ✅ **Conflict resolved!**
+
+**[IMAGE: Successful merge commit]**  
+*Description: Green success message*
+
+---
+
+## PRACTICE 4: Conflict Resolution Challenge
+
+**Setup a multi-line conflict:**
+
+```bash
+# Create two branches with conflicting changes
+
+# Branch 1: Add error handling
+git switch main
+git switch -c feature/error-handling
+
+# Edit calculator.py
+def divide(a, b):
+    """Divide two numbers with error handling"""
+    if b == 0:
+        return "Error: Division by zero!"
+    return a / b
+
+git add calculator.py
+git commit -m "Add error handling to divide"
+
+# Branch 2: Add precision control
+git switch main
+git switch -c feature/precision
+
+# Edit calculator.py (same function!)
+def divide(a, b):
+    """Divide two numbers with precision control"""
+    if b == 0:
+        return "Cannot divide by zero"
+    return round(a / b, 4)
+
+git add calculator.py
+git commit -m "Add precision control to divide"
+
+# Now merge both into main - CONFLICT!
+git switch main
+git merge feature/error-handling  # This works
+git merge feature/precision        # CONFLICT!
+```
+
+**Your Task:**
+1. Identify the conflict
+2. Combine BOTH features (error handling AND precision)
+3. Keep both improvements
+4. Test the code works
+5. Complete the merge
+
+**Solution should look like:**
+```python
+def divide(a, b):
+    """Divide two numbers with error handling and precision control"""
+    if b == 0:
+        return "Error: Division by zero!"
+    return round(a / b, 4)
+```
+
+---
+
+## PRACTICE 5: Three-Way Conflict
+
+**Complex scenario with multiple files:**
+
+```bash
+# Create scenario
+git switch main
+
+# File 1: calculator.py
+# File 2: utils.py (create it)
+
+# Branch A: Modify both files
+git switch -c feature/enhance-calculator
+# Edit calculator.py and utils.py
+# Commit
+
+# Branch B: Also modify both files differently
+git switch main
+git switch -c feature/add-validation
+# Edit calculator.py and utils.py differently
+# Commit
+
+# Merge both - handle conflicts in both files!
+```
+
+**Challenge:** Resolve conflicts in multiple files while keeping improvements from both branches.
+
+---
+
+## Part 7: Rebasing — The Clean History Technique
+
+### What is Rebasing?
+
+**Rebasing** replays your commits on top of another branch, creating a linear history.
+
+**Merge creates:**
+```
+       ┌─ C ─ D
+A ─ B ─┤       ─ F (merge commit)
+       └─ E ───┘
+```
+
+**Rebase creates:**
+```
+A ─ B ─ E ─ C' ─ D'
+```
+
+**[IMAGE: Merge vs Rebase comparison]**  
+*Description: Two diagrams showing different results*
+
+### When to Rebase
+
+✅ **Use rebase when:**
+- Cleaning up local commits before pushing
+- Updating feature branch with latest main
+- Want linear, clean history
+
+❌ **NEVER rebase:**
+- Public/shared branches
+- Commits others depend on
+- After pushing to shared repository
+
+**Golden Rule:** Never rebase commits that exist outside your local repository!
+
+**[IMAGE: Warning sign for public branch rebasing]**  
+*Description: Red warning about rebasing shared branches*
+
+### Basic Rebase Example
+
+```bash
+# You're on feature branch
+git switch feature/analytics
+
+# Rebase onto main
+git rebase main
+```
+
+**What happens:**
+1. Git finds common ancestor
+2. Saves your feature commits
+3. Fast-forwards to main's latest
+4. Replays your commits one by one
+
+**[IMAGE: Rebase process step-by-step]**  
+*Description: Four stages of rebasing*
+
+### Interactive Rebase — The Power Tool
+
+**Clean up your commit history before merging:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+```
+a1b2c3d Fix typo
+b2c3d4e Add feature
+c3d4e5f Fix bug
+d4e5f6g Add tests
+e5f6g7h Add feature implementation
+```
+
+Messy! Let's clean it up:
+
+```bash
+git rebase -i HEAD~5
+```
+
+**Editor opens:**
+```
+pick e5f6g7h Add feature implementation
+pick b2c3d4e Add feature
+pick d4e5f6g Add tests
+pick c3d4e5f Fix bug
+pick a1b2c3d Fix typo
+
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit message
+# e, edit = use commit, but stop for amending
+# s, squash = meld into previous commit
+# f, fixup = like squash, but discard commit message
+# d, drop = remove commit
+```
+
+**[IMAGE: Interactive rebase editor]**  
+*Description: Vim/nano showing rebase commands*
+
+**Let's clean it:**
+```
+pick e5f6g7h Add feature implementation
+squash b2c3d4e Add feature
+pick d4e5f6g Add tests
+fixup c3d4e5f Fix bug
+fixup a1b2c3d Fix typo
+```
+
+**Result:**
+```
+e5f6g7h Add complete feature with tests
+d4e5f6g Add tests
+```
+
+**[IMAGE: Before and after commit history]**  
+*Description: Messy vs clean commit log*
+
+---
+
+## PRACTICE 6: Interactive Rebase
+
+**Task:** Clean up a messy commit history.
+
+```bash
+# Create messy commits
+git switch -c feature/messy
+
+echo "line 1" >> test.txt
+git add test.txt
+git commit -m "Add line 1"
+
+echo "line 2" >> test.txt
+git add test.txt
+git commit -m "Add line 2"
+
+echo "line 3" >> test.txt
+git add test.txt
+git commit -m "typo fix"
+
+echo "line 4" >> test.txt
+git add test.txt
+git commit -m "oops forgot this"
+
+echo "line 5" >> test.txt
+git add test.txt
+git commit -m "final line"
+
+# Now clean them up with interactive rebase
+git rebase -i HEAD~5
+```
+
+**Your Task:**
+1. Combine all commits into one meaningful commit
+2. Message should be: "Add test file with 5 lines"
+3. Verify with `git log --oneline`
+
+---
+
+## PRACTICE 7: Rebase Conflict Resolution
+
+**Setup:**
+```bash
+# Main branch has updates
+git switch main
+echo "main update" >> README.md
+git add README.md
+git commit -m "Update README on main"
+
+# Your feature branch has conflicting changes
+git switch -c feature/readme
+echo "feature update" >> README.md
+git add README.md
+git commit -m "Update README on feature"
+
+# Rebase onto main - CONFLICT!
+git rebase main
+```
+
+**When conflict occurs during rebase:**
+```bash
+# 1. Fix the conflict in files
+# 2. Stage the fixed files
+git add README.md
+
+# 3. Continue rebase (NOT commit!)
+git rebase --continue
+
+# If things go wrong:
+git rebase --abort
+```
+
+**Challenge:** Successfully rebase with conflict resolution.
+
+---
+
+## 💾 Part 8: Git Stash — Save Work in Progress
 
 ### The Problem
 
-While Sara was working, **Ahmed** already pushed `main.py`. Sara's local repository is now **behind** the remote.
+```bash
+# You're working on a feature
+git switch feature/payment
+# ...making changes, not ready to commit...
 
-**[IMAGE: Diagram showing local repo behind remote repo]**  
-*Description: Timeline showing diverged commits*
+# Suddenly: URGENT BUG on main!
+git switch main
+```
 
-### Understanding Pull vs Fetch
+**ERROR:**
+```
+error: Your local changes to the following files would be overwritten by checkout:
+	payment.py
+Please commit your changes or stash them before you switch branches.
+```
 
-**`git fetch`**: Downloads changes but doesn't merge them
-- Safe, lets you review changes first
-- Updates `origin/main` but not your local `main`
+You can't switch with uncommitted changes! But you're not ready to commit yet...
 
-**`git pull`**: Downloads changes AND merges them automatically
-- Convenient but can cause unexpected merges
-- Equivalent to: `git fetch` + `git merge`
+**[IMAGE: Error message about uncommitted changes]**  
+*Description: Terminal showing checkout error*
 
-**[IMAGE: Diagram comparing fetch vs pull operations]**  
-*Description: Two flowcharts showing fetch+merge vs pull*
+### Solution: Git Stash
 
-### Step 1: Fetch Changes
+**Save your work temporarily:**
 
-Ahmed pushed new code. Mona wants to get it:
+```bash
+git stash
+```
+
+**Or with description:**
+```bash
+git stash save "WIP: Payment integration half done"
+```
+
+**Output:**
+```
+Saved working directory and index state WIP on feature/payment: a1b2c3d Last commit
+```
+
+Now your working directory is clean! ✅
+
+**[IMAGE: Stash save confirmation]**  
+*Description: Success message for stash*
+
+### Switch and Fix Bug
+
+```bash
+# Switch to main
+git switch main
+
+# Fix the urgent bug
+echo "fix" >> bug.py
+git add bug.py
+git commit -m "Fix critical bug"
+
+# Go back to feature
+git switch feature/payment
+```
+
+### Restore Stashed Work
+
+**Method 1: Pop (apply and remove)**
+```bash
+git stash pop
+```
+
+**Method 2: Apply (keep stash)**
+```bash
+git stash apply
+```
+
+Your work is back!
+
+**[IMAGE: Stash pop restoring changes]**  
+*Description: Changes reappearing in working directory*
+
+### Managing Multiple Stashes
+
+```bash
+# List all stashes
+git stash list
+```
+
+**Output:**
+```
+stash@{0}: WIP on feature/payment: a1b2c3d Payment integration
+stash@{1}: WIP on feature/auth: b2c3d4e Auth system
+stash@{2}: WIP on feature/ui: c3d4e5f UI updates
+```
+
+**Apply specific stash:**
+```bash
+git stash apply stash@{1}
+```
+
+**Delete specific stash:**
+```bash
+git stash drop stash@{0}
+```
+
+**Clear all stashes:**
+```bash
+git stash clear
+```
+
+**[IMAGE: Stash list with multiple entries]**  
+*Description: Terminal showing numbered stashes*
+
+### Advanced Stash Options
+
+**Stash untracked files too:**
+```bash
+git stash -u
+```
+
+**Stash including ignored files:**
+```bash
+git stash -a
+```
+
+**Create branch from stash:**
+```bash
+git stash branch feature/from-stash stash@{0}
+```
+
+---
+
+## PRACTICE 8: Stash Workflow
+
+**Scenario: Interrupted work**
+
+```bash
+# 1. Start working on feature
+git switch -c feature/notifications
+echo "notification_system = True" >> config.py
+# Don't commit yet!
+
+# 2. Urgent: need to fix bug on main
+# Stash your work
+git stash save "Notification system in progress"
+
+# 3. Switch and fix bug
+git switch main
+echo "bug_fixed = True" >> hotfix.py
+git add hotfix.py
+git commit -m "Hotfix: Critical bug"
+
+# 4. Return to feature
+git switch feature/notifications
+git stash pop
+
+# 5. Continue working
+echo "notification_enabled = True" >> config.py
+git add config.py
+git commit -m "Add notification system"
+```
+
+**Challenge:** Do this 3 times with different files to build muscle memory.
+
+---
+
+## PRACTICE 9: Multiple Stashes
+
+**Task:** Create and manage 3 different stashes.
+
+```bash
+# Stash 1: Feature A
+git switch -c feature-a
+echo "feature a" >> a.txt
+git stash save "Feature A work"
+
+# Stash 2: Feature B
+git switch -c feature-b
+echo "feature b" >> b.txt
+git stash save "Feature B work"
+
+# Stash 3: Feature C
+git switch -c feature-c
+echo "feature c" >> c.txt
+git stash save "Feature C work"
+
+# Now:
+# 1. List all stashes
+# 2. Apply stash for Feature B
+# 3. Drop stash for Feature A
+# 4. Pop stash for Feature C
+```
+
+---
+
+## Part 9: Undoing Mistakes
+
+### Three Ways to Undo
+
+| Command | Scope | Rewrites History? | Use Case |
+|---------|-------|-------------------|----------|
+| `git restore` | Working directory | ❌ No | Discard uncommitted changes |
+| `git reset` | Commits | ⚠️ Yes (local only) | Undo commits not pushed |
+| `git revert` | Commits | ❌ No | Undo pushed commits safely |
+
+**[IMAGE: Flowchart for choosing undo method]**  
+*Description: Decision tree based on commit status*
+
+### 1. Git Restore — Discard Working Changes
+
+**Scenario: You made changes but want to discard them**
+
+```bash
+# Modified file
+echo "bad change" >> calculator.py
+
+# Discard changes
+git restore calculator.py
+```
+
+**Restore all files:**
+```bash
+git restore .
+```
+
+**Restore staged files:**
+```bash
+git add calculator.py
+git restore --staged calculator.py  # Unstage
+```
+
+**[IMAGE: Before and after restore]**  
+*Description: Modified file returning to original state*
+
+### 2. Git Reset — Undo Local Commits
+
+**Three modes:**
+
+#### Soft Reset (keep changes, undo commit)
+```bash
+git reset --soft HEAD~1
+```
+
+**Result:**
+- Commit removed
+- Changes stay staged
+- Working directory unchanged
+
+**[IMAGE: Soft reset diagram]**  
+*Description: Commit removed, files stay in staging*
+
+#### Mixed Reset (default - unstage changes)
+```bash
+git reset HEAD~1
+# Same as: git reset --mixed HEAD~1
+```
+
+**Result:**
+- Commit removed
+- Changes unstaged
+- Working directory unchanged
+
+**[IMAGE: Mixed reset diagram]**  
+*Description: Commit removed, files in working directory*
+
+#### Hard Reset (destroy everything)
+```bash
+git reset --hard HEAD~1
+```
+
+**Result:**
+- Commit removed
+- Changes discarded
+- Working directory clean
+
+⚠️ **DANGER: Can't undo this!**
+
+**[IMAGE: Hard reset warning]**  
+*Description: Red warning sign*
+
+### 3. Git Revert — Safe Undo for Pushed Commits
+
+**Scenario: You pushed a bad commit**
+
+```bash
+# Bad commit is pushed
+git log --oneline
+# a1b2c3d (HEAD) Bad commit
+# b2c3d4e Good commit
+
+# Create reverse commit
+git revert a1b2c3d
+```
+
+**Result:**
+```
+c3d4e5f (HEAD) Revert "Bad commit"
+a1b2c3d Bad commit
+b2c3d4e Good commit
+```
+
+History preserved! Safe for shared branches! ✅
+
+**[IMAGE: Revert creating new commit]**  
+*Description: Timeline showing revert commit*
+
+---
+
+## PRACTICE 10: Restore, Reset, Revert
+
+**Part A: Restore**
+```bash
+# Make changes
+echo "mistake" >> calculator.py
+
+# Discard
+git restore calculator.py
+
+# Verify it's gone
+cat calculator.py
+```
+
+**Part B: Reset**
+```bash
+# Make a commit you want to undo
+echo "test" >> test.txt
+git add test.txt
+git commit -m "Test commit"
+
+# Undo with soft reset
+git reset --soft HEAD~1
+
+# Verify: file still staged
+git status
+
+# Undo with hard reset
+git add test.txt
+git commit -m "Test commit again"
+git reset --hard HEAD~1
+
+# Verify: file gone
+ls test.txt  # File not found
+```
+
+**Part C: Revert**
+```bash
+# Make and push a commit
+echo "public mistake" >> public.txt
+git add public.txt
+git commit -m "Public mistake"
+git push origin main
+
+# Revert it (safe for public branches)
+git revert HEAD
+git push origin main
+```
+
+---
+
+## PRACTICE 11: Undo Disasters
+
+**Scenario 1: Committed to wrong branch**
+```bash
+# You're on main but should be on feature
+git switch main
+echo "feature code" >> feature.py
+git add feature.py
+git commit -m "Add feature"
+
+# Oops! Move it to correct branch
+git branch feature/correct-branch  # Create branch with commit
+git reset --hard HEAD~1            # Remove from main
+git switch feature/correct-branch  # Switch to new branch
+```
+
+**Scenario 2: Recover deleted commits**
+```bash
+# You did hard reset and lost commits
+git reset --hard HEAD~3
+
+# Panic! Find the lost commits
+git reflog
+
+# Find the commit hash before reset
+# a1b2c3d HEAD@{1}: commit: Important work
+
+# Recover it
+git reset --hard a1b2c3d
+```
+
+**Scenario 3: Undo multiple commits**
+```bash
+# Undo last 3 commits but keep changes
+git reset --soft HEAD~3
+
+# Recommit as one
+git add .
+git commit -m "Combined feature"
+```
+
+---
+
+## 🌐 Part 10: Understanding Remotes
+
+### What are Remotes?
+
+**Remotes** are versions of your repository hosted elsewhere (GitHub, GitLab, etc.).
+
+```bash
+# List remotes
+git remote -v
+```
+
+**Output:**
+```
+origin  https://github.com/sara/calculator.git (fetch)
+origin  https://github.com/sara/calculator.git (push)
+```
+
+**[IMAGE: Local repo connected to remote]**  
+*Description: Computer linked to GitHub cloud*
+
+### Common Remote Names
+
+- **origin**: Your fork (where you push)
+- **upstream**: Original repo (for contributions)
+- **production**: Production server
+- **staging**: Staging server
+
+### Adding Remotes
+
+```bash
+# Add upstream for open source
+git remote add upstream https://github.com/original/repo.git
+
+# Add production server
+git remote add production git@production.com:app.git
+
+# Verify
+git remote -v
+```
+
+**Output:**
+```
+origin     https://github.com/sara/calculator.git (fetch)
+origin     https://github.com/sara/calculator.git (push)
+upstream   https://github.com/original/calculator.git (fetch)
+upstream   https://github.com/original/calculator.git (push)
+```
+
+**[IMAGE: Multiple remotes diagram]**  
+*Description: Local repo connected to origin and upstream*
+
+---
+
+## Part 11: Fetch vs Pull — The Critical Difference
+
+### Git Fetch
+
+**Downloads changes but DOESN'T merge:**
 
 ```bash
 git fetch origin
 ```
 
-**Expected Output:**
-```
-remote: Enumerating objects: 5, done.
-remote: Counting objects: 100% (5/5), done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (3/3), done.
-From https://github.com/ahmed/student-management-system
-   e4f5g6h..i7j8k9l  main       -> origin/main
-```
+**What it does:**
+1. Downloads commits from remote
+2. Updates `origin/main` pointer
+3. Does NOT change your local `main`
+4. Safe — just downloads data
 
-**Check what changed:**
+**[IMAGE: Fetch operation diagram]**  
+*Description: Remote commits downloaded, local branch unchanged*
 
-```bash
-git log main..origin/main
-```
+### Git Pull
 
-This shows commits on `origin/main` that aren't in your local `main`.
-
-**[IMAGE: Terminal showing fetch and log output]**  
-*Description: New commits from remote*
-
-### Step 2: Merge the Changes
+**Downloads AND merges:**
 
 ```bash
+git pull origin main
+```
+
+**Equivalent to:**
+```bash
+git fetch origin
 git merge origin/main
 ```
 
-**Expected Output:**
-```
-Updating e4f5g6h..i7j8k9l
-Fast-forward
- main.py | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 main.py
-```
+**[IMAGE: Pull operation diagram]**  
+*Description: Download + merge in one step*
 
-Now Mona has Ahmed's code! ✅
+### When to Use Each
 
-### Step 3: Using Pull (Shortcut)
+**Use `fetch` when:**
+- ✅ You want to see changes before merging
+- ✅ You're reviewing others' work
+- ✅ You want to be careful
 
-Instead of fetch + merge, you can use:
+**Use `pull` when:**
+- ✅ You trust the changes
+- ✅ You want quick updates
+- ✅ You're syncing your fork
+
+### Safe Pull Workflow
 
 ```bash
+# 1. See what's new
+git fetch origin
+
+# 2. Check differences
+git log main..origin/main
+
+# 3. See actual changes
+git diff main origin/main
+
+# 4. Merge if safe
+git merge origin/main
+
+# OR combine: git pull origin main
+```
+
+**[IMAGE: Safe workflow diagram]**  
+*Description: Fetch → Review → Merge process*
+
+---
+
+## PRACTICE 12: Fetch vs Pull
+
+**Setup (need GitHub repo):**
+```bash
+# Create test repo on GitHub
+# Clone it locally
+
+# Make changes on GitHub (edit file in browser)
+# Don't pull yet!
+
+# 1. Fetch only
+git fetch origin
+
+# 2. Compare
+git log main..origin/main
+git diff main origin/main
+
+# 3. Merge manually
+git merge origin/main
+
+# Now try with pull:
+# Make another change on GitHub
+
+# 4. Pull directly
 git pull origin main
 ```
 
-This does both operations at once.
+**Challenge:** Can you tell the difference?
 
-**[IMAGE: Terminal showing git pull output]**  
-*Description: Pull downloading and merging changes*
+---
 
-### Best Practice
+## PRACTICE 13: Remote Management
 
-Before pushing your work, always pull first:
+**Task: Set up multiple remotes**
 
 ```bash
-# 1. Pull latest changes
-git pull origin main
+# 1. Fork a repository on GitHub
+# 2. Clone YOUR fork
+git clone https://github.com/YOUR_USERNAME/repo.git
 
-# 2. Resolve any conflicts (if they occur)
+# 3. Add upstream
+git remote add upstream https://github.com/ORIGINAL_OWNER/repo.git
 
-# 3. Push your work
+# 4. Fetch from both
+git fetch origin
+git fetch upstream
+
+# 5. Compare
+git log origin/main
+git log upstream/main
+
+# 6. Update your fork with upstream
+git merge upstream/main
 git push origin main
 ```
 
 ---
 
-## ⚔️ Part 7: Handling Merge Conflicts
+## Part 12: Deleting & Cleaning Up Branches
 
-### What is a Merge Conflict?
+### Delete Merged Branch
 
-A conflict occurs when:
-- Two people edit the **same lines** in the **same file**
-- Git can't automatically decide which change to keep
-
-**[IMAGE: Diagram showing two developers editing same file lines]**  
-*Description: Split screen showing conflicting edits*
-
-### The Scenario: Sara and Youssef Conflict
-
-Both Sara and Youssef edit `README.md` at the same time:
-
-**Sara's change:**
-```markdown
-## Team Members
-- Ahmed Hassan (Team Lead)
-- Sara Ahmed (Backend Developer)
+**Safe delete (only if merged):**
+```bash
+git branch -d feature/completed
 ```
 
-**Youssef's change:**
-```markdown
-## Team Members
-- Ahmed Hassan
-- Youssef Ali (Database Specialist)
+**If not merged:**
+```
+error: The branch 'feature/completed' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D feature/completed'.
 ```
 
-Sara pushes first. When Youssef tries to push:
+**[IMAGE: Safe delete error message]**  
+*Description: Warning when trying to delete unmerged branch*
+
+### Force Delete Branch
+
+**Delete even if not merged:**
+```bash
+git branch -D feature/abandoned
+```
+
+⚠️ **Warning:** This deletes ALL commits unique to that branch!
+
+### Delete Remote Branch
 
 ```bash
-git push origin main
+# Delete from GitHub
+git push origin --delete feature/completed
 ```
 
-**Error:**
-```
-To https://github.com/ahmed/student-management-system.git
- ! [rejected]        main -> main (fetch first)
-error: failed to push some refs to 'https://github.com/ahmed/student-management-system.git'
-hint: Updates were rejected because the remote contains work that you do
-hint: not have locally. This is usually caused by another repository pushing
-hint: to the same ref. You may want to first integrate the remote changes
-hint: (e.g., 'git pull ...') before pushing again.
-```
-
-**[IMAGE: Terminal showing push rejection error]**  
-*Description: Error message with hints*
-
-### Step 1: Pull the Latest Changes
-
+**OR shorter:**
 ```bash
-git pull origin main
+git push origin :feature/completed
+```
+
+**[IMAGE: Branch deletion confirmation]**  
+*Description: Terminal showing successful deletion*
+
+### Clean Up Tracking Branches
+
+**List all branches including remote:**
+```bash
+git branch -a
 ```
 
 **Output:**
 ```
-Auto-merging README.md
-CONFLICT (content): Merge conflict in README.md
-Automatic merge failed; fix conflicts and then commit the result.
+* main
+  feature/active
+  remotes/origin/main
+  remotes/origin/feature/deleted-on-github
 ```
 
-🚨 **Conflict detected!**
-
-**[IMAGE: Terminal showing merge conflict message]**  
-*Description: Red warning about conflict*
-
-### Step 2: View the Conflict
-
-Open `README.md`:
-
-```markdown
-## Team Members
-<<<<<<< HEAD
-- Ahmed Hassan
-- Youssef Ali (Database Specialist)
-=======
-- Ahmed Hassan (Team Lead)
-- Sara Ahmed (Backend Developer)
->>>>>>> e4f5g6h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7
-```
-
-**Understanding conflict markers:**
-- `<<<<<<< HEAD`: Your local changes start here
-- `=======`: Separator between changes
-- `>>>>>>> [commit hash]`: Remote changes end here
-
-**[IMAGE: Code editor showing conflict markers with annotations]**  
-*Description: README with conflict markers highlighted and labeled*
-
-### Step 3: Resolve the Conflict Manually
-
-Edit the file to include BOTH changes:
-
-```markdown
-## Team Members
-- Ahmed Hassan (Team Lead)
-- Sara Ahmed (Backend Developer)
-- Youssef Ali (Database Specialist)
-```
-
-Remove the conflict markers completely!
-
-**[IMAGE: Code editor showing resolved conflict]**  
-*Description: Clean file with both changes integrated*
-
-### Step 4: Mark as Resolved
-
+**Prune deleted remote branches:**
 ```bash
-# Stage the resolved file
-git add README.md
-
-# Check status
-git status
+git fetch --prune
 ```
 
-**Output:**
-```
-On branch main
-All conflicts fixed but you are still merging.
-  (use "git commit" to conclude merge)
+**[IMAGE: Before and after pruning]**  
+*Description: Branch list cleaned up*
 
-Changes to be committed:
-        modified:   README.md
-```
+---
 
-### Step 5: Complete the Merge
+## PRACTICE 14: Branch Cleanup
 
+**Task:**
 ```bash
-git commit -m "Merge remote changes and resolve team members conflict"
+# 1. Create 3 feature branches
+git branch feature/temp-1
+git branch feature/temp-2  
+git branch feature/temp-3
+
+# 2. Merge one into main
+git switch feature/temp-1
+echo "content" >> file1.txt
+git add file1.txt
+git commit -m "Add feature 1"
+git switch main
+git merge feature/temp-1
+
+# 3. Try to delete merged branch (safe)
+git branch -d feature/temp-1  # Works!
+
+# 4. Try to delete unmerged branch
+git branch -d feature/temp-2  # Error!
+
+# 5. Force delete
+git branch -D feature/temp-2  # Works!
+
+# 6. Push branch to GitHub and delete remotely
+git push origin feature/temp-3
+git push origin --delete feature/temp-3
 ```
 
-**No need for a commit message actually** — Git will provide a default merge message. Just run:
+---
 
+## 🏆 MEGA CHALLENGE: Complete Branching Workflow
+
+**Scenario: Build a Blog Application**
+
+**Your Tasks:**
+
+### Part 1: Setup (5 min)
 ```bash
+# 1. Create repository
+mkdir blog-app
+cd blog-app
+git init
+
+# 2. Create initial files
+echo "# Blog Application" > README.md
+echo "print('Blog App')" > app.py
+git add .
+git commit -m "Initial commit"
+
+# 3. Push to GitHub (create repo first)
+git remote add origin YOUR_GITHUB_URL
+git push -u origin main
+```
+
+### Part 2: Feature Development (15 min)
+```bash
+# Feature 1: User authentication
+git switch -c feature/auth
+# Add authentication code
+echo "def login(): pass" >> auth.py
+git add auth.py
+git commit -m "Add login function"
+
+echo "def register(): pass" >> auth.py
+git add auth.py
+git commit -m "Add register function"
+
+# Feature 2: Blog posts (parallel development!)
+git switch main
+git switch -c feature/posts
+# Add post management
+echo "def create_post(): pass" >> posts.py
+git add posts.py
+git commit -m "Add create post"
+
+echo "def delete_post(): pass" >> posts.py
+git add posts.py
+git commit -m "Add delete post"
+
+# Feature 3: Comments
+git switch main
+git switch -c feature/comments
+echo "def add_comment(): pass" >> comments.py
+git add comments.py
+git commit -m "Add comments"
+```
+
+### Part 3: Create Conflicts (10 min)
+```bash
+# Modify app.py on main
+git switch main
+echo "# Main application" >> app.py
+git add app.py
+git commit -m "Update main app"
+
+# Modify app.py on feature
+git switch feature/auth
+echo "# Authentication app" >> app.py
+git add app.py
+git commit -m "Update auth app"
+```
+
+### Part 4: Merging & Conflicts (15 min)
+```bash
+# Merge features one by one
+git switch main
+git merge feature/posts      # Should work
+git merge feature/comments   # Should work  
+git merge feature/auth       # CONFLICT!
+
+# Resolve conflict
+# Keep both comments combined
+git add app.py
 git commit
+
+# Clean up merged branches
+git branch -d feature/posts
+git branch -d feature/comments
+git branch -d feature/auth
 ```
 
-This opens an editor with:
-```
-Merge branch 'main' of https://github.com/ahmed/student-management-system
-
-# Conflicts:
-#       README.md
-```
-
-Save and close (`:wq` in vim, or `Ctrl+X` in nano).
-
-**[IMAGE: Terminal showing successful merge commit]**  
-*Description: Merge commit completion message*
-
-### Step 6: Push the Resolved Changes
-
+### Part 5: Rebase Practice (10 min)
 ```bash
+# Create new feature
+git switch -c feature/admin
+
+# Make messy commits
+echo "admin 1" >> admin.py
+git add admin.py
+git commit -m "admin stuff"
+
+echo "admin 2" >> admin.py
+git add admin.py
+git commit -m "more admin"
+
+echo "admin 3" >> admin.py
+git add admin.py
+git commit -m "oops"
+
+# Clean up with interactive rebase
+git rebase -i HEAD~3
+# Squash all into one commit
+
+# Update with main changes
+git rebase main
+```
+
+### Part 6: Stash Practice (5 min)
+```bash
+# Start new feature
+git switch -c feature/search
+echo "def search(): pass" >> search.py
+# Don't commit!
+
+# Emergency bug fix needed
+git stash save "Search feature WIP"
+git switch main
+echo "# Bug fix" >> app.py
+git add app.py
+git commit -m "Critical bug fix"
+
+# Return to feature
+git switch feature/search
+git stash pop
+# Complete and commit
+git add search.py
+git commit -m "Add search feature"
+```
+
+### Part 7: Undo Practice (5 min)
+```bash
+# Make a mistake
+git switch main
+echo "MISTAKE" >> app.py
+git add app.py
+git commit -m "Bad commit"
 git push origin main
-```
 
-✅ **Conflict resolved and pushed!**
-
-**[IMAGE: GitHub network graph showing merge commit]**  
-*Description: Visualization of branching and merging*
-
----
-
-## 🔀 Part 8: Pull Requests (PRs) - The Professional Way
-
-### What is a Pull Request?
-
-A **Pull Request** is a GitHub feature that:
-- Lets you propose changes before merging
-- Allows team review and discussion
-- Shows exactly what changed
-- Enables approval workflow
-
-**Even in direct collaboration**, PRs are best practice!
-
-**[IMAGE: Pull Request workflow diagram]**  
-*Description: Feature branch → PR → Review → Merge to main*
-
-### Why Use Pull Requests?
-
-✅ **Code Review**: Team can check your code before merging  
-✅ **Discussion**: Comment on specific lines  
-✅ **Quality Control**: Catch bugs early  
-✅ **Documentation**: History of why changes were made  
-✅ **CI/CD Integration**: Automated tests run before merge  
-
-### Workflow with Pull Requests
-
-Instead of pushing directly to `main`, use branches:
-
-```
-main branch (protected)
-    ↑
-    | Pull Request (review & merge)
-    |
-feature branch (your work)
-```
-
-### Step 1: Create a Feature Branch
-
-Mona wants to add database functionality. Instead of working on `main`:
-
-```bash
-# Create and switch to new branch
-git checkout -b add-database-functions
-```
-
-**Expected Output:**
-```
-Switched to a new branch 'add-database-functions'
-```
-
-**[IMAGE: Terminal showing branch creation]**  
-*Description: Branch creation and switch confirmation*
-
-### Step 2: Make Changes and Commit
-
-Mona creates `database.py`:
-
-```python
-# database.py
-# Author: Mona Ibrahim
-# Description: Database operations for student management
-
-import json
-import os
-
-DATABASE_FILE = 'students.json'
-
-def load_students():
-    """Load students from JSON file"""
-    if not os.path.exists(DATABASE_FILE):
-        return []
-    
-    with open(DATABASE_FILE, 'r') as f:
-        return json.load(f)
-
-def save_students(students):
-    """Save students to JSON file"""
-    with open(DATABASE_FILE, 'w') as f:
-        json.dump(students, f, indent=4)
-    return True
-
-def add_student(student_data):
-    """Add a new student to database"""
-    students = load_students()
-    students.append(student_data)
-    save_students(students)
-    return True
-
-def get_student_by_id(student_id):
-    """Retrieve student by ID"""
-    students = load_students()
-    for student in students:
-        if student['id'] == student_id:
-            return student
-    return None
-
-def update_student(student_id, updated_data):
-    """Update student information"""
-    students = load_students()
-    for i, student in enumerate(students):
-        if student['id'] == student_id:
-            students[i] = updated_data
-            save_students(students)
-            return True
-    return False
-
-def delete_student(student_id):
-    """Delete student from database"""
-    students = load_students()
-    students = [s for s in students if s['id'] != student_id]
-    save_students(students)
-    return True
-```
-
-Commit the changes:
-
-```bash
-git add database.py
-git commit -m "Add database functions for student CRUD operations"
-```
-
-**[IMAGE: Code editor showing database.py]**  
-*Description: Database functions code*
-
-### Step 3: Push the Branch to GitHub
-
-```bash
-git push origin add-database-functions
-```
-
-**Expected Output:**
-```
-Enumerating objects: 4, done.
-Counting objects: 100% (4/4), done.
-Delta compression using up to 8 threads
-Compressing objects: 100% (3/3), done.
-Writing objects: 100% (3/3), 1.23 KiB | 1.23 MiB/s, done.
-Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
-remote: 
-remote: Create a pull request for 'add-database-functions' on GitHub by visiting:
-remote:      https://github.com/ahmed/student-management-system/pull/new/add-database-functions
-remote: 
-To https://github.com/ahmed/student-management-system.git
- * [new branch]      add-database-functions -> add-database-functions
-```
-
-**[IMAGE: Terminal showing branch push with PR link]**  
-*Description: Push output with helpful PR creation link*
-
-### Step 4: Create Pull Request on GitHub
-
-1. Go to the repository on GitHub
-2. You'll see a banner: **"add-database-functions had recent pushes"**
-3. Click **"Compare & pull request"**
-
-**[IMAGE: GitHub banner prompting to create PR]**  
-*Description: Yellow banner with Compare & pull request button*
-
-4. Fill in the PR form:
-   - **Title**: "Add database CRUD operations"
-   - **Description**:
-     ```markdown
-     ## Changes
-     - Added database.py with CRUD functions
-     - Uses JSON for data persistence
-     - Functions for add, get, update, delete students
-     
-     ## Testing
-     - Tested all functions manually
-     - No dependencies required (uses standard library)
-     
-     ## Related Issue
-     Closes #3
-     ```
-
-5. Assign reviewers (select team members)
-6. Click **"Create pull request"**
-
-**[IMAGE: GitHub PR creation form]**  
-*Description: Form with title, description, and reviewers*
-
-**[IMAGE: Created PR page]**  
-*Description: PR showing files changed, commits, and conversation*
-
-### Step 5: Code Review
-
-Ahmed reviews Mona's PR:
-
-**View the changes:**
-- Click **"Files changed"** tab
-- See side-by-side diff
-
-**[IMAGE: GitHub Files changed tab showing diff]**  
-*Description: Green additions highlighted in code*
-
-**Add comments:**
-- Hover over a line number
-- Click the **+** icon
-- Write a comment
-- Click **"Start a review"**
-
-**[IMAGE: Inline comment on code]**  
-*Description: Comment bubble on specific line*
-
-Ahmed adds a comment:
-```
-Good work! Consider adding error handling for file operations.
-Could you add try-except blocks?
-```
-
-**Submit review:**
-- Click **"Review changes"**
-- Select: **Comment**, **Approve**, or **Request changes**
-- Add summary
-- Click **"Submit review"**
-
-**[IMAGE: Review submission dialog]**  
-*Description: Three review options with summary textbox*
-
-### Step 6: Address Review Comments
-
-Mona updates the code:
-
-```python
-def save_students(students):
-    """Save students to JSON file"""
-    try:
-        with open(DATABASE_FILE, 'w') as f:
-            json.dump(students, f, indent=4)
-        return True
-    except IOError as e:
-        print(f"Error saving students: {e}")
-        return False
-```
-
-Commit and push:
-
-```bash
-git add database.py
-git commit -m "Add error handling to save_students function"
-git push origin add-database-functions
-```
-
-The PR automatically updates! ✨
-
-**[IMAGE: PR showing new commit added]**  
-*Description: Timeline showing additional commit*
-
-### Step 7: Merge the Pull Request
-
-After approval, Ahmed merges:
-
-1. Click **"Merge pull request"**
-2. Choose merge method (usually "Create a merge commit")
-3. Click **"Confirm merge"**
-4. Optionally: **"Delete branch"** (cleanup)
-
-**[IMAGE: Merge pull request button]**  
-*Description: Green merge button with merge method dropdown*
-
-**[IMAGE: Merged PR confirmation with purple badge]**  
-*Description: Merged status with option to delete branch*
-
-✅ **The code is now in main branch!**
-
-### Step 8: Update Local Repository
-
-Everyone else needs to pull the changes:
-
-```bash
-# Switch to main branch
-git checkout main
-
-# Pull the merged changes
-git pull origin main
-
-# Delete local feature branch (optional cleanup)
-git branch -d add-database-functions
-```
-
-**[IMAGE: Terminal showing branch switch and pull]**  
-*Description: Successful pull with fast-forward merge*
-
----
-
-## 📋 Part 9: GitHub Issues - Project Management
-
-### What are Issues?
-
-GitHub Issues are like a to-do list for your project:
-- Track bugs
-- Plan features
-- Discuss ideas
-- Assign tasks to team members
-
-**[IMAGE: GitHub Issues tab showing list of issues]**  
-*Description: Issues page with open and closed issues*
-
-### Creating an Issue
-
-1. Go to **Issues** tab
-2. Click **"New issue"**
-3. Fill in:
-   - **Title**: "Add input validation for student email"
-   - **Description**:
-     ```markdown
-     ## Description
-     Currently, the system accepts any string as email.
-     We need to validate email format.
-     
-     ## Acceptance Criteria
-     - Email must contain @
-     - Email must have domain
-     - Reject invalid formats
-     
-     ## Additional Context
-     Use regex or email validation library
-     ```
-
-4. Assign to: Youssef
-5. Labels: `enhancement`, `priority: medium`
-6. Click **"Submit new issue"**
-
-**[IMAGE: New issue creation form]**  
-*Description: Form with all fields filled*
-
-**[IMAGE: Created issue with #2 number]**  
-*Description: Issue page showing full details*
-
-### Issue Labels
-
-Common labels:
-- `bug` 🐛: Something isn't working
-- `enhancement` ✨: New feature
-- `documentation` 📝: Documentation improvements
-- `help wanted` 🙋: Need assistance
-- `good first issue` 🌱: Easy for beginners
-
-**[IMAGE: GitHub labels list]**  
-*Description: Colorful labels with descriptions*
-
-### Closing Issues with Commits
-
-Link issues to commits using keywords:
-
-```bash
-git commit -m "Add email validation, closes #2"
-```
-
-When this commit is merged, issue #2 automatically closes!
-
-**Magic keywords:**
-- `closes #2`
-- `fixes #2`
-- `resolves #2`
-
-**[IMAGE: Commit message linked to issue]**  
-*Description: Issue showing linked commit*
-
-### Using Issue Templates
-
-Create `.github/ISSUE_TEMPLATE/bug_report.md`:
-
-```markdown
----
-name: Bug Report
-about: Create a report to help us improve
-title: '[BUG] '
-labels: bug
-assignees: ''
----
-
-## Bug Description
-A clear description of what the bug is.
-
-## Steps to Reproduce
-1. Go to '...'
-2. Click on '...'
-3. See error
-
-## Expected Behavior
-What you expected to happen.
-
-## Screenshots
-If applicable, add screenshots.
-
-## Environment
-- OS: [e.g. Windows 10]
-- Python Version: [e.g. 3.9.0]
-```
-
-**[IMAGE: New issue button showing template options]**  
-*Description: Dropdown with Bug Report and Feature Request templates*
-
----
-
-## ✍️ Part 10: Commit Message Best Practices
-
-### The Seven Rules
-
-1. **Separate subject from body with a blank line**
-2. **Limit the subject line to 50 characters**
-3. **Capitalize the subject line**
-4. **Do not end the subject line with a period**
-5. **Use the imperative mood** ("Add feature" not "Added feature")
-6. **Wrap the body at 72 characters**
-7. **Use the body to explain what and why, not how**
-
-### Example: Bad Commit Message
-
-```
-fixed stuff
-```
-
-❌ Vague, no context, lowercase
-
-### Example: Good Commit Message
-
-```
-Add email validation to Student class
-
-The system was accepting invalid email addresses, causing issues
-with notifications. This commit adds regex validation to ensure
-emails follow proper format before accepting them.
-
-Closes #2
-```
-
-✅ Clear, detailed, references issue
-
-**[IMAGE: Comparison of bad vs good commit messages]**  
-*Description: Side-by-side showing the difference*
-
-### Commit Message Template
-
-Create `.gitmessage` in your home directory:
-
-```
-# <type>: <subject> (Max 50 characters)
-
-# <body> (Wrap at 72 characters)
-
-# <footer>
-# BREAKING CHANGE: description
-# Closes #issue-number
-
-# Type can be:
-#   feat     (new feature)
-#   fix      (bug fix)
-#   docs     (documentation)
-#   style    (formatting, missing semi colons, etc)
-#   refactor (refactoring code)
-#   test     (adding tests)
-#   chore    (maintain)
-```
-
-Configure Git to use it:
-
-```bash
-git config --global commit.template ~/.gitmessage
-```
-
----
-
-## 📝 Part 11: Markdown for README Files
-
-### Why Markdown Matters
-
-Your `README.md` is the first thing people see. Make it professional!
-
-**[IMAGE: Example of well-formatted README on GitHub]**  
-*Description: Professional README with sections and badges*
-
-### Essential Markdown Syntax
-
-```markdown
-# Heading 1
-## Heading 2
-### Heading 3
-
-**Bold text**
-*Italic text*
-~~Strikethrough~~
-
-- Bullet point
-- Another bullet
-  - Nested bullet
-
-1. Numbered list
-2. Second item
-
-[Link text](https://example.com)
-
-![Image alt text](image-url.png)
-
-`inline code`
-
-​```python
-# Code block
-def hello():
-    print("Hello, World!")
-​```
-
-> Blockquote for important notes
-
-| Column 1 | Column 2 |
-|----------|----------|
-| Data 1   | Data 2   |
-
----
-
-Horizontal rule above
-```
-
-**[IMAGE: Split screen showing Markdown syntax and rendered output]**  
-*Description: Left side code, right side how it looks*
-
-### Professional README Template
-
-```markdown
-# Student Management System
-
-![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-
-A simple yet effective student management system built with Python.
-
-## Features
-
-- ✅ Add, update, and delete student records
-- ✅ Enroll students in courses
-- ✅ JSON-based data persistence
-- ✅ Email validation
-- ✅ Search functionality
-
-## Installation
-
-​```bash
-# Clone the repository
-git clone https://github.com/ahmed/student-management-system.git
-
-# Navigate to directory
-cd student-management-system
-
-# Run the application
-python main.py
-​```
-
-## Usage
-
-​```python
-from student import Student
-
-# Create a student
-student = Student(1, "Sara Ahmed", "sara@example.com", "CS")
-
-# Enroll in course
-student.enroll_course("Data Structures")
-
-# Get student info
-print(student.get_info())
-​```
-
-## Project Structure
-
-​```
-student-management-system/
-│
-├── main.py              # Main application
-├── student.py           # Student class
-├── database.py          # Database operations
-├── README.md            # Documentation
-└── students.json        # Data file
-​```
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## Team Members
-
-- Ahmed Hassan - Team Lead
-- Sara Ahmed - Backend Developer
-- Mona Ibrahim - Database Specialist
-- Youssef Ali - Frontend Developer
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Thanks to DSC Cairo University for the workshop
-- Inspired by real-world student management needs
-```
-
-**[IMAGE: Rendered professional README]**  
-*Description: Beautiful formatted README with all sections*
-
----
-
-## 🎯 Hands-On Team Exercise
-
-### Challenge: Build a Feature Together
-
-**Task**: As a team, add a "Course" class to the project using proper collaboration workflow.
-
-#### Requirements:
-
-1. **Plan**: Create an issue for the feature
-2. **Branch**: Each team member creates a branch
-3. **Develop**: Write the Course class
-4. **Review**: Create Pull Request
-5. **Merge**: After approval, merge to main
-
-#### Course Class Specifications:
-
-```python
-class Course:
-    - course_id
-    - course_name
-    - instructor
-    - credits
-    - enrolled_students (list)
-    
-    Methods:
-    - add_student(student_id)
-    - remove_student(student_id)
-    - get_enrollment_count()
-    - get_course_info()
-```
-
-#### Steps:
-
-**Step 1**: Create issue "Add Course class"  
-**Step 2**: Assign to a team member  
-**Step 3**: Create branch `feature/add-course-class`  
-**Step 4**: Implement the class  
-**Step 5**: Push and create PR  
-**Step 6**: Team reviews and approves  
-**Step 7**: Merge to main  
-**Step 8**: Everyone pulls latest changes  
-
----
-
-## 🔧 Part 12: Collaboration Troubleshooting
-
-### Problem 1: Permission Denied When Pushing
-
-**Error:**
-```
-remote: Permission to ahmed/student-management-system.git denied to sara-ahmed.
-fatal: unable to access 'https://github.com/ahmed/student-management-system.git/':
-The requested URL returned error: 403
-```
-
-**Solutions:**
-1. Check if you're added as collaborator (and accepted invitation)
-2. Verify you're logged in with correct account
-3. Use personal access token, not password
-4. Check if repository is your fork (push to your fork, then PR)
-
-### Problem 2: Diverged Branches
-
-**Error:**
-```
-Your branch and 'origin/main' have diverged,
-and have 3 and 2 different commits each, respectively.
-```
-
-**Solution:**
-```bash
-# Option 1: Pull and merge
-git pull origin main
-
-# Option 2: Pull and rebase (cleaner history)
-git pull --rebase origin main
-```
-
-### Problem 3: Accidental Commit to Main
-
-**You wanted to use a branch but committed to main:**
-
-```bash
-# Create branch from current state
-git branch feature/my-feature
-
-# Reset main to remote state
-git reset --hard origin/main
-
-# Switch to feature branch
-git checkout feature/my-feature
-```
-
-### Problem 4: Need to Undo a Push
-
-**Already pushed bad code:**
-
-```bash
-# Revert the commit (creates new commit that undoes it)
+# Revert it (safe for pushed commits)
 git revert HEAD
-
-# Push the revert
 git push origin main
 ```
 
-**Never use `git push --force` on shared branches!** ⚠️
+### Part 8: Final Integration (5 min)
+```bash
+# Merge all remaining features
+git switch main
+git merge feature/admin
+git merge feature/search
 
-**[IMAGE: Flowchart for common Git problems and solutions]**  
-*Description: Decision tree for troubleshooting*
+# Push everything
+git push origin main
+
+# Visualize your work
+git log --oneline --graph --all
+```
+
+**Success Criteria:**
+- ✅ At least 5 feature branches created
+- ✅ At least 15 commits total
+- ✅ At least 1 merge conflict resolved
+- ✅ At least 1 rebase performed
+- ✅ At least 1 stash used
+- ✅ At least 1 commit reverted
+- ✅ All branches cleaned up
+- ✅ Clean commit history
+
+**[IMAGE: Final git log graph]**  
+*Description: Beautiful branching structure with all merges*
 
 ---
 
-## 📊 Part 13: Visualizing Collaboration
+## BONUS CHALLENGES
 
-### Git Network Graph
+### Challenge 1: The Time Traveler
+```bash
+# Create 5 commits
+# Use reset to go back to commit 2
+# Create new branch from there
+# Make different changes
+# Merge back creating alternative timeline
+```
 
-GitHub shows visual history:
-1. Go to **Insights** tab
-2. Click **Network** in left sidebar
+### Challenge 2: The Archaeologist
+```bash
+# Someone deleted important commits
+# Use git reflog to find them
+# Recover the lost work
+# Cherry-pick important commits to new branch
+```
 
-**[IMAGE: GitHub network graph showing branches and merges]**  
-*Description: Visual representation of repository history*
+### Challenge 3: The Perfectionist
+```bash
+# Make 10 messy commits
+# Use interactive rebase to create 3 perfect commits
+# Reword all commit messages
+# Create perfect linear history
+```
 
-### Contributors Page
+### Challenge 4: The Juggler
+```bash
+# Work on 3 features simultaneously
+# Use stash to switch between them
+# Don't lose any work
+# Complete all 3 features
+```
 
-See who contributed what:
-1. Go to **Insights** tab
-2. Click **Contributors**
-
-Shows:
-- Number of commits per person
-- Lines added/deleted
-- Contribution timeline
-
-**[IMAGE: GitHub contributors graph]**  
-*Description: Bar chart showing team contributions*
+### Challenge 5: The Merger
+```bash
+# Create 3 branches with overlapping changes
+# Merge all 3 into main one by one
+# Resolve all conflicts
+# No history should be lost
+```
 
 ---
 
 ## 📚 Session Summary
 
-### What You Learned
+### What You Mastered
 
-✅ **Collaboration Models**: Direct vs Fork & Pull Request  
-✅ **Permissions**: Understanding GitHub roles  
-✅ **Adding Collaborators**: Managing team access  
-✅ **Cloning**: Getting a copy of remote repository  
-✅ **Pull & Fetch**: Staying in sync with team  
-✅ **Merge Conflicts**: Resolving conflicting changes  
-✅ **Pull Requests**: Professional code review workflow  
-✅ **GitHub Issues**: Project management and tracking  
-✅ **Commit Messages**: Writing clear, helpful messages  
-✅ **Markdown**: Creating professional documentation  
+✅ **Branching Fundamentals**
+- What branches are and why use them
+- Creating and switching branches
+- Branch naming conventions
 
-### Key Commands
+✅ **Merging Strategies**
+- Fast-forward merges
+- Three-way merges
+- Merge conflict resolution
+
+✅ **Advanced Techniques**
+- Rebasing for clean history
+- Interactive rebase for cleanup
+- Stashing work in progress
+
+✅ **Safety & Undo**
+- git restore for working directory
+- git reset for local commits
+- git revert for pushed commits
+
+✅ **Remote Operations**
+- Understanding remotes
+- fetch vs pull
+- Branch management on remotes
+
+### Command Reference
 
 ```bash
-# Collaboration
-git clone <url>              # Copy remote repository
-git pull origin main         # Get latest changes
-git fetch origin             # Download without merging
-git push origin <branch>     # Send your changes
+# BRANCHING
+git branch                    # List branches
+git branch feature-name       # Create branch
+git switch feature-name       # Switch branch
+git switch -c feature-name    # Create and switch
+git branch -d feature-name    # Delete merged branch
+git branch -D feature-name    # Force delete branch
 
-# Branch workflow for PRs
-git checkout -b <branch>     # Create feature branch
-git push origin <branch>     # Push branch to GitHub
+# MERGING
+git merge feature-name        # Merge branch
+git merge --abort             # Abort merge
 
-# Conflict resolution
-git pull origin main         # Get changes (may cause conflict)
-# Edit files to resolve
-git add <file>               # Stage resolved files
-git commit                   # Complete the merge
+# REBASING
+git rebase main              # Rebase onto main
+git rebase -i HEAD~3         # Interactive rebase
+git rebase --continue        # Continue after conflict
+git rebase --abort           # Abort rebase
 
-# Remote management
-git remote -v                # View remotes
-git remote add <name> <url>  # Add remote
+# STASHING
+git stash                    # Stash changes
+git stash save "message"     # Stash with description
+git stash list               # List stashes
+git stash pop                # Apply and remove stash
+git stash apply              # Apply keep stash
+git stash drop stash@{0}     # Delete stash
+git stash clear              # Delete all stashes
+
+# UNDOING
+git restore file.py          # Discard working changes
+git restore --staged file.py # Unstage file
+git reset --soft HEAD~1      # Undo commit, keep staged
+git reset HEAD~1             # Undo commit, keep changes
+git reset --hard HEAD~1      # Undo commit, discard all
+git revert HEAD              # Create reverse commit
+
+# REMOTES
+git remote -v                # List remotes
+git remote add name url      # Add remote
+git fetch origin             # Download from remote
+git pull origin main         # Fetch and merge
+git push origin branch       # Push branch
+
+# CLEANUP
+git fetch --prune            # Remove deleted remote branches
+git branch -d feature        # Delete local branch
+git push origin --delete feature  # Delete remote branch
 ```
 
 ---
 
-## 🎉 Success Story: From Chaos to Order
+## You've Mastered Branching!
 
-Remember the chaos at the beginning?
+You can now:
+- ✅ Create and manage multiple branches
+- ✅ Merge changes from different branches
+- ✅ Resolve complex merge conflicts
+- ✅ Use rebase for clean history
+- ✅ Stash work and switch contexts
+- ✅ Undo mistakes safely
+- ✅ Work with remote repositories
+- ✅ Handle professional branching workflows
 
-**Before:**
-- ❌ Overwritten code
-- ❌ Permission errors
-- ❌ Merge disasters
-- ❌ No code review
-- ❌ Lost work
-
-**After:**
-- ✅ Protected code with branches
-- ✅ Proper access control
-- ✅ Conflict resolution skills
-- ✅ Professional PR workflow
-- ✅ Full project history
-
-Ahmed's team completed their Student Management System successfully! The professor was impressed not just with the code, but with their **professional Git workflow**. They even got bonus points for their commit history and documentation!
-
----
-
-## 🏆 Challenge: Contribute to a Real Project
-
-Before next session, try this:
-
-1. **Find a project** on GitHub (search for "good first issue")
-2. **Fork** the repository
-3. **Create a branch** for your contribution
-4. **Make a small improvement** (fix typo, update docs)
-5. **Submit a Pull Request**
-
-This is your first step into open source! 🌟
-
----
-
-## 📖 Additional Resources
-
-### Documentation
-- GitHub Collaboration Guide: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests
-- Git Branching: https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell
-- Markdown Guide: https://www.markdownguide.org
-
-### Tools
-- GitKraken: Visual Git client
-- GitHub Desktop: GitHub's official GUI
-- VS Code Git Integration: Built-in Git features
-
----
-
-## 🔮 Next Session Preview
-
-**Session 3 — The Internship: Branching & Professional Workflow**
-
-Sara lands an internship at a tech company! But the codebase is huge, with multiple developers working on different features simultaneously. She needs to master:
-
-- Advanced branching strategies
-- Git Flow vs GitHub Flow
-- Rebasing vs merging
-- Stashing work in progress
-- Cherry-picking commits
-- Tags and releases
-
-See you next week! 🚀
+**Next session:** We'll use these skills for real team collaboration with Pull Requests, code reviews, and professional workflows!
 
 ---
 

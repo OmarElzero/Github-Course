@@ -1,1646 +1,1742 @@
-# Session 4 — The Job: Open Source, Forking & Advanced GitHub
+# Session 4 — Open Source Contribution & Advanced GitHub Features
 
-**Duration:** 2 hours 30 minutes  
-**Venue:** Creativa Lab D  
+**Duration:** 3 hours  
+**Venue:** Creativa Lab C  
 **Instructors:** Omar Betawy, Amr Khaled
 
 ---
 
 ## 📖 Story Introduction
 
-**Ahmed**, Sara's classmate and friend, has been inspired by her journey. While working on a personal project, he discovers a bug in a popular Python library that thousands of developers use. "I can fix this!" he thinks excitedly. But how do you contribute to a project you don't own?
+**Sara** has become a Git master. Her team's project is successful and she's confident with collaboration workflows.
 
-Meanwhile, **Sara** wants to build a portfolio website to showcase all the projects she's built during her internship. She's heard about GitHub Pages but isn't sure how to use it.
+One day, she finds a bug in a popular Python library she uses daily. She mentions it to Professor Hassan:
 
-Both are about to discover the true power of GitHub: **contributing to the global open-source community** and **sharing their work with the world**.
+**Sara:** "Professor, I found a bug in the `data-tools` library. The sorting function crashes with empty lists."
 
-Today, you'll learn:
-- How to contribute to open source projects
-- The forking workflow used by millions
-- Advanced GitHub features for collaboration
-- Automation with GitHub Actions
-- Building and hosting websites with GitHub Pages
-- Security best practices
+**Professor:** "Excellent observation! Did you report it?"
 
-By the end of this session, you'll be ready to join the global developer community as a professional contributor! 🌍
+**Sara:** "I posted on Twitter... no response yet."
+
+**Professor:** *smiles* "Sara, that library is open source. You don't just report bugs—you can **FIX** them! You can contribute to the actual codebase that millions use."
+
+**Sara:** "Me? Contribute to a real project? How?"
+
+**Professor:** "Welcome to **open source contribution**. It's how software advances. You'll also learn GitHub Actions for automation, GitHub Pages for documentation, and advanced features. These skills will make you stand out in the industry!"
+
+Today's journey:
+- 🍴 Forking and contributing to open source projects
+- 🤖 GitHub Actions for CI/CD automation
+- 📄 GitHub Pages for project websites
+- 🔒 Repository security and best practices
+- 📦 Git Submodules for managing dependencies
+- 🏆 Building your developer portfolio
+
+By the end, you'll be contributing to real projects!
 
 ---
 
 ## 🎯 Session Objectives
 
 By the end of this session, you will be able to:
-- Fork repositories and understand upstream remotes
-- Contribute to open source projects professionally
-- Keep your fork synchronized with upstream
-- Use GitHub Projects for project management
-- Set up GitHub Actions for CI/CD
-- Deploy websites using GitHub Pages
-- Implement security best practices
-- Use advanced GitHub features
-- Build a professional developer portfolio
+- ✅ Fork repositories and contribute to open source projects
+- ✅ Follow open source contribution guidelines
+- ✅ Set up GitHub Actions workflows
+- ✅ Create automated tests and deployments
+- ✅ Build project websites with GitHub Pages
+- ✅ Manage dependencies with Git Submodules
+- ✅ Implement security best practices
+- ✅ Build a professional developer portfolio
+- ✅ Navigate large codebases effectively
 
 ---
 
-## 🍴 Part 1: Forking - Your Copy of Any Project
+## Part 1: Forking — Your Copy of Any Project
 
 ### What is Forking?
 
-**Forking** creates your personal copy of someone else's repository on GitHub. Unlike cloning (which creates a local copy), forking creates a **remote copy** under your GitHub account.
+A **fork** is your personal copy of someone else's repository.
 
-**[IMAGE: Fork workflow diagram showing original repo being copied to user's account]**  
-*Description: Arrow from original repository to forked copy with different owner*
+```
+Original Repository (Upstream)
+    👥 Owner: facebook/react
+    ↓ FORK
+Your Copy (Origin)
+    👤 Owner: your-username/react
+```
 
-### Fork vs Clone vs Branch
+**[IMAGE: Fork concept diagram]**  
+*Description: Original repo and forked copy relationship*
 
-| Operation | Where | Purpose | Permission Needed |
-|-----------|-------|---------|-------------------|
-| **Fork** | GitHub → GitHub | Your copy of someone's repo | None (public repos) |
-| **Clone** | GitHub → Local | Get code on your computer | None (public repos) |
-| **Branch** | Same repo | Work on features | Write access required |
+### Why Fork?
 
-**[IMAGE: Visual comparison of fork, clone, and branch]**  
-*Description: Three diagrams showing each operation*
+✅ **Contribute to open source** without direct access  
+✅ **Experiment safely** without affecting original  
+✅ **Customize** projects for your needs  
+✅ **Learn** from real codebases  
+✅ **Build portfolio** with contributions  
 
-### When to Fork
+### Fork vs Clone
 
-✅ **Fork when:**
-- Contributing to open source projects
-- You don't have write access
-- You want to experiment without affecting original
-- Creating your own version of a project
+| Action | Fork | Clone |
+|--------|------|-------|
+| What | Create copy on GitHub | Download to computer |
+| Where | GitHub → GitHub | GitHub → Local |
+| Purpose | Contribute/customize | Work locally |
+| Connection | Linked to original | Independent |
 
-❌ **Don't fork when:**
-- You're on the team (use branches instead)
-- You just want to view code (just browse on GitHub)
-- You want to use a library (use package manager)
+**[IMAGE: Fork vs Clone visual]**  
+*Description: Fork staying on GitHub, clone going to laptop*
 
 ---
 
-## 🔧 Part 2: Contributing to Open Source
+## Part 2: The Complete Fork Workflow
 
-### Ahmed's First Contribution
+### Step-by-Step: Contributing to Open Source
 
-Ahmed found a bug in `awesome-python-lib`. Let's walk through his contribution.
+#### Step 1: Fork the Repository
 
-**[IMAGE: GitHub repository with obvious issue]**  
-*Description: Bug or typo visible in code/docs*
+1. Go to repository (e.g., `github.com/original-owner/project`)
+2. Click **"Fork"** button (top right)
+3. Choose your account
+4. Wait for fork to complete
 
-### Step 1: Fork the Repository
+**Result:** You now have `github.com/your-username/project`
 
-1. Go to the repository: `https://github.com/original-author/awesome-python-lib`
-2. Click the **"Fork"** button in the top-right corner
-3. GitHub creates a copy at: `https://github.com/ahmed/awesome-python-lib`
+**[IMAGE: Fork button on GitHub]**  
+*Description: Location of fork button with counter*
 
-**[IMAGE: GitHub Fork button highlighted]**  
-*Description: Fork button location on repository page*
-
-**[IMAGE: Forking in progress animation]**  
-*Description: GitHub's fork animation/message*
-
-**[IMAGE: Forked repository showing "forked from" label]**  
-*Description: Your forked repo with attribution to original*
-
-### Step 2: Clone Your Fork
+#### Step 2: Clone YOUR Fork
 
 ```bash
-# Clone YOUR fork (not the original)
-git clone https://github.com/ahmed/awesome-python-lib.git
-cd awesome-python-lib
+# Clone YOUR fork (not the original!)
+git clone git@github.com:your-username/project.git
+cd project
+
+# Verify remote
+git remote -v
+# origin	git@github.com:your-username/project.git (fetch)
+# origin	git@github.com:your-username/project.git (push)
 ```
 
-**Expected Output:**
-```
-Cloning into 'awesome-python-lib'...
-remote: Enumerating objects: 250, done.
-remote: Counting objects: 100% (250/250), done.
-remote: Compressing objects: 100% (180/180), done.
-remote: Total 250 (delta 95), reused 200 (delta 60)
-Receiving objects: 100% (250/250), 500.00 KiB | 2.00 MiB/s, done.
-Resolving deltas: 100% (95/95), done.
-```
-
-**[IMAGE: Terminal showing clone of forked repo]**  
+**[IMAGE: Cloning fork terminal]**  
 *Description: Clone command with output*
 
-### Step 3: Add Upstream Remote
-
-Connect to the original repository to sync updates:
+#### Step 3: Add Upstream Remote
 
 ```bash
 # Add original repo as "upstream"
-git remote add upstream https://github.com/original-author/awesome-python-lib.git
+git remote add upstream git@github.com:original-owner/project.git
 
-# Verify remotes
+# Verify
 git remote -v
+# origin	  git@github.com:your-username/project.git
+# upstream	git@github.com:original-owner/project.git
 ```
 
-**Expected Output:**
-```
-origin    https://github.com/ahmed/awesome-python-lib.git (fetch)
-origin    https://github.com/ahmed/awesome-python-lib.git (push)
-upstream  https://github.com/original-author/awesome-python-lib.git (fetch)
-upstream  https://github.com/original-author/awesome-python-lib.git (push)
-```
+**Now you have TWO remotes:**
+- `origin`: Your fork (you can push here)
+- `upstream`: Original repo (read-only for you)
 
-**Understanding the setup:**
-- **origin**: Your fork (you can push here)
-- **upstream**: Original repo (you can only pull from here)
+**[IMAGE: Remote setup diagram]**  
+*Description: Origin (your fork) and upstream (original) relationship*
 
-**[IMAGE: Diagram showing local repo connected to origin and upstream]**  
-*Description: Three boxes showing upstream, your fork, and local with arrows*
-
-### Step 4: Create a Feature Branch
+#### Step 4: Create Feature Branch
 
 ```bash
-# Update your main branch first
+# Update main from upstream
 git checkout main
 git pull upstream main
 
-# Create branch for your fix
-git checkout -b fix/documentation-typo
+# Create feature branch
+git checkout -b fix/empty-list-bug
 ```
 
-**[IMAGE: Terminal showing branch creation]**  
-*Description: Commands and output for branch setup*
+#### Step 5: Make Changes
 
-### Step 5: Make Your Changes
+Find and fix the bug:
 
-Ahmed fixes a typo in `README.md`:
+```python
+# Before (buggy code in data_tools/sorting.py)
+def sort_items(items):
+    return items.sort()  # Returns None! Bug!
 
-**Before:**
-```markdown
-## Installaton
-
-To instal the library, run:
+# After (your fix)
+def sort_items(items):
+    if not items:  # Handle empty list
+        return []
+    return sorted(items)  # Return new sorted list
 ```
 
-**After:**
-```markdown
-## Installation
+Add tests:
 
-To install the library, run:
+```python
+# tests/test_sorting.py
+def test_sort_empty_list():
+    """Test that empty list doesn't crash"""
+    result = sort_items([])
+    assert result == []
+
+def test_sort_normal_list():
+    """Test normal sorting"""
+    result = sort_items([3, 1, 2])
+    assert result == [1, 2, 3]
 ```
 
-**[IMAGE: Side-by-side diff showing the fix]**  
-*Description: Red showing old text, green showing corrected text*
+**[IMAGE: Code diff showing fix]**  
+*Description: Before and after code with highlighting*
 
-### Step 6: Commit and Push
+#### Step 6: Commit Changes
 
 ```bash
-# Stage and commit
-git add README.md
-git commit -m "Fix typos in installation section
+# Run tests first!
+python -m pytest tests/
 
-- Fix 'Installaton' → 'Installation'
-- Fix 'instal' → 'install'
-"
+# If tests pass, commit
+git add data_tools/sorting.py tests/test_sorting.py
+git commit -m "Fix: Handle empty list in sort_items()
 
-# Push to YOUR fork
-git push origin fix/documentation-typo
+- Add check for empty list
+- Return empty list instead of None
+- Add tests for empty list case
+- Fixes issue #42"
 ```
 
-**[IMAGE: Terminal showing commit and push]**  
-*Description: Successful push to fork*
+**[IMAGE: Commit with descriptive message]**  
+*Description: Multi-line commit message*
 
-### Step 7: Create Pull Request to Upstream
+#### Step 7: Push to YOUR Fork
 
-1. Go to your fork on GitHub
-2. You'll see: **"fix/documentation-typo had recent pushes"**
-3. Click **"Compare & pull request"**
+```bash
+git push origin fix/empty-list-bug
+```
 
-**[IMAGE: GitHub banner prompting to create PR]**  
-*Description: Yellow banner with compare button*
+**[IMAGE: Push to fork]**  
+*Description: Terminal showing successful push*
 
-4. **Important:** Make sure the base repository is the **original**, not your fork:
-   - Base repository: `original-author/awesome-python-lib`
+#### Step 8: Create Pull Request
+
+1. Go to **YOUR fork** on GitHub
+2. See banner: "Compare & pull request"
+3. Click button
+4. **IMPORTANT:** 
+   - Base repository: `original-owner/project`
    - Base branch: `main`
-   - Head repository: `ahmed/awesome-python-lib`
-   - Compare branch: `fix/documentation-typo`
+   - Head repository: `your-username/project`
+   - Compare branch: `fix/empty-list-bug`
 
-**[IMAGE: PR creation form with base/head repository selection]**  
-*Description: Dropdown showing correct repository selection*
+**[IMAGE: PR creation showing base and head]**  
+*Description: Dropdown showing cross-repository PR*
 
-5. Fill in PR details:
+5. Fill PR template:
 
 ```markdown
 ## Description
-Fixed spelling errors in the Installation section of README.
+Fixes a bug where `sort_items()` crashes with empty lists.
+
+## Issue
+Closes #42
 
 ## Changes
-- Corrected "Installaton" to "Installation"
-- Corrected "instal" to "install"
+- Added check for empty list in `sort_items()`
+- Return empty list instead of None
+- Added test cases for empty list scenario
 
-## Type of Change
-- [x] Documentation update
-- [ ] Bug fix
-- [ ] New feature
+## Testing
+- All existing tests pass
+- New test `test_sort_empty_list` added and passes
+
+```bash
+python -m pytest tests/ -v
+# All tests passing ✅
+```
 
 ## Checklist
-- [x] I have read the contributing guidelines
-- [x] My changes follow the project's style guidelines
-- [x] I have checked my spelling and grammar
+- [x] Tests added and passing
+- [x] Documentation updated (if needed)
+- [x] Code follows project style guide
+- [x] Signed contributor agreement
 ```
 
 6. Click **"Create pull request"**
 
-**[IMAGE: Completed PR form]**  
-*Description: All fields filled out professionally*
+**[IMAGE: Completed PR from fork]**  
+*Description: PR showing cross-repo contribution*
 
-✅ **Ahmed's first open source contribution is submitted!**
+#### Step 9: Respond to Feedback
 
-**[IMAGE: Created PR page showing status]**  
-*Description: PR with "Open" status and conversation tab*
+Maintainers review your PR:
 
-### Step 8: Responding to Feedback
-
-The maintainer comments:
-
-> "Thanks for the contribution! Could you also check the 'Configuration' section? I think there might be similar typos there."
-
-Ahmed responds:
-
-```bash
-# Make additional fixes
-# Edit README.md to fix Configuration section
-
-git add README.md
-git commit -m "Fix typos in Configuration section as well"
-git push origin fix/documentation-typo
+```
+Maintainer: "Great fix! Could you also add a docstring 
+to explain the function behavior?"
 ```
 
-The PR automatically updates! 🎉
+Make requested changes:
 
-**[IMAGE: PR showing new commit added]**  
-*Description: Timeline with additional commit*
+```bash
+# Make changes
+git add .
+git commit -m "Add docstring to sort_items()"
+git push origin fix/empty-list-bug
+# PR updates automatically!
+```
 
-### Step 9: Contribution Accepted!
+**[IMAGE: PR conversation with updates]**  
+*Description: Review comments and pushed updates*
 
-The maintainer merges Ahmed's PR:
+#### Step 10: Celebration!
 
-**[IMAGE: Merged PR with purple "Merged" badge]**  
-*Description: Successful merge notification*
+Maintainer approves and merges:
 
-Ahmed is now an **open source contributor**! His name appears in:
-- Repository contributors list
-- Commit history
-- The project's changelog
+```
+✅ Merged! Thanks for contributing!
+```
 
-**[IMAGE: GitHub contributors page showing Ahmed]**  
-*Description: Contributors list with avatar and contribution count*
+**Your contribution is now part of the project!**
+
+**Check your GitHub profile → Contributions graph** 📈
+
+**[IMAGE: Contribution merged]**  
+*Description: Merged PR with celebration*
+
+**[IMAGE: GitHub contribution graph]**  
+*Description: Green squares showing contributions*
 
 ---
 
-## 🔄 Part 3: Keeping Your Fork Synchronized
+## PRACTICE 1: Fork and Fix
+
+**Find a beginner-friendly project:**
+
+```bash
+# Good projects for first contribution:
+# - first-contributions/first-contributions
+# - github/training-kit
+# - microsoft/vscode-docs
+
+# 1. Fork the repository
+# (Do on GitHub)
+
+# 2. Clone your fork
+git clone git@github.com:YOUR_USERNAME/REPO.git
+cd REPO
+
+# 3. Add upstream
+git remote add upstream git@github.com:ORIGINAL_OWNER/REPO.git
+
+# 4. Create branch
+git checkout -b add-my-name
+
+# 5. Make a small change (add your name to contributors)
+echo "- Your Name (@your-username)" >> CONTRIBUTORS.md
+
+# 6. Commit
+git add CONTRIBUTORS.md
+git commit -m "Add Your Name to contributors"
+
+# 7. Push
+git push origin add-my-name
+
+# 8. Create PR on GitHub
+```
+
+---
+
+## Part 3: Keeping Your Fork Updated
 
 ### The Problem
 
-After a few weeks, the original repository has new updates. Ahmed's fork is behind.
+```
+Time passes...
+↓
+Upstream (original) gets 50 new commits
+Your fork is OUTDATED
+↓
+Your PR has conflicts!
+```
 
-**[IMAGE: GitHub showing "This branch is 15 commits behind"]**  
-*Description: Fork status message on GitHub*
+**[IMAGE: Outdated fork diagram]**  
+*Description: Fork falling behind upstream*
 
-### Method 1: Sync via Command Line
+### Solution: Sync Regularly
 
 ```bash
-# Switch to main branch
+# 1. Fetch upstream changes
+git fetch upstream
+
+# 2. Checkout your main
 git checkout main
 
-# Fetch updates from upstream
-git fetch upstream
-
-# Merge upstream changes
+# 3. Merge upstream changes
 git merge upstream/main
 
-# Push updates to your fork
+# 4. Push to YOUR fork
 git push origin main
 ```
 
-**[IMAGE: Terminal showing sync process]**  
-*Description: Fetch, merge, push commands with output*
+**[IMAGE: Sync workflow]**  
+*Description: Fetching from upstream, merging, pushing to origin*
 
-### Method 2: Sync via GitHub UI
-
-1. Go to your fork on GitHub
-2. Click **"Fetch upstream"** button
-3. Click **"Fetch and merge"**
-
-**[IMAGE: GitHub Sync fork button]**  
-*Description: Fetch upstream dropdown on fork page*
-
-**[IMAGE: Sync confirmation dialog]**  
-*Description: Dialog showing commits to be synced*
-
-### Handling Conflicts During Sync
-
-If you made changes to your fork that conflict:
+### Update Feature Branch
 
 ```bash
+# Your feature branch needs updates too!
+git checkout fix/empty-list-bug
+git merge main
+# OR
+git rebase main
+
+# Push updated branch
+git push origin fix/empty-list-bug --force-with-lease
+```
+
+### Quick Sync (GitHub UI)
+
+1. Go to your fork on GitHub
+2. See "This branch is 15 commits behind original:main"
+3. Click **"Sync fork"**
+4. Click **"Update branch"**
+
+**[IMAGE: GitHub sync fork button]**  
+*Description: Sync fork UI on GitHub*
+
+---
+
+## PRACTICE 2: Sync Your Fork
+
+```bash
+# Setup: Fork is behind upstream
+
+# 1. Check status
 git fetch upstream
+git log main..upstream/main --oneline
+# Shows commits you're missing
+
+# 2. Update main
+git checkout main
 git merge upstream/main
-
-# If conflicts occur:
-# 1. Edit conflicting files
-# 2. Remove conflict markers
-# 3. Stage resolved files
-git add .
-git commit -m "Merge upstream changes"
-
-# Push to your fork
 git push origin main
+
+# 3. Update feature branch
+git checkout your-feature-branch
+git rebase main
+git push origin your-feature-branch --force-with-lease
+
+# 4. Verify
+git log --oneline --graph --all
 ```
 
 ---
 
-## 🌟 Part 4: Finding and Choosing Open Source Projects
+## Part 4: Open Source Best Practices
 
-### Where to Find Projects
+### Before Contributing
 
-**Popular platforms:**
-- GitHub Explore: https://github.com/explore
-- GitHub Topics: https://github.com/topics
-- First Timers Only: https://www.firsttimersonly.com
-- Good First Issue: https://goodfirstissue.dev
-- Up For Grabs: https://up-for-grabs.net
+**1. Read CONTRIBUTING.md**
+- Every project has guidelines
+- Follow their process!
 
-**[IMAGE: GitHub Explore page screenshot]**  
-*Description: Trending repositories and topics*
+**2. Check CODE_OF_CONDUCT.md**
+- Be respectful and professional
 
-### What to Look For
+**3. Search existing issues**
+- Bug already reported?
+- Feature already requested?
 
-**Good beginner-friendly projects have:**
-- ✅ Clear README with contribution guidelines
-- ✅ `CONTRIBUTING.md` file
-- ✅ Issues labeled `good first issue` or `beginner friendly`
-- ✅ Active maintainers (recent commits)
-- ✅ Welcoming community
-- ✅ Clear code of conduct
+**4. Start with "good first issue" label**
+- Beginner-friendly tasks
 
-**Red flags:**
-- ❌ No documentation
-- ❌ Ignored pull requests
-- ❌ Rude maintainers
-- ❌ No activity in months
+**[IMAGE: Good first issue label]**  
+*Description: GitHub issue with label*
 
-**[IMAGE: Good repository example with labels]**  
-*Description: Repo showing good first issues and documentation*
+### Creating Good Issues
 
-### Reading Contributing Guidelines
-
-Before contributing, ALWAYS read:
-
-1. **README.md**: Understand what the project does
-2. **CONTRIBUTING.md**: Learn how to contribute
-3. **CODE_OF_CONDUCT.md**: Understand community standards
-4. **LICENSE**: Know the project's license
-
-**Example CONTRIBUTING.md structure:**
-```markdown
-# Contributing to Awesome Python Lib
-
-## Getting Started
-- Fork the repository
-- Clone your fork
-- Create a branch
-
-## Development Setup
-- Install dependencies: `pip install -r requirements-dev.txt`
-- Run tests: `pytest`
-- Check style: `flake8`
-
-## Making Changes
-- Write clear commit messages
-- Add tests for new features
-- Update documentation
-
-## Submitting Pull Requests
-- Ensure all tests pass
-- Describe your changes clearly
-- Reference related issues
-
-## Code Style
-- Follow PEP 8
-- Use meaningful variable names
-- Add docstrings to functions
+**Bad Issue:**
+```
+Title: Doesn't work
+Body: It crashes
 ```
 
-**[IMAGE: Well-structured CONTRIBUTING.md file]**  
-*Description: Example of clear contribution guidelines*
+❌ Not helpful!
 
----
+**Good Issue:**
+```
+Title: sort_items() crashes with empty list
 
-## 📋 Part 5: GitHub Projects - Advanced Project Management
+Body:
+## Description
+The `sort_items()` function in `data_tools/sorting.py` 
+raises an AttributeError when passed an empty list.
 
-### What are GitHub Projects?
+## Steps to Reproduce
+1. Call `sort_items([])`
+2. Function crashes
 
-**GitHub Projects** is a built-in project management tool with Kanban boards, tables, and automation.
+## Expected Behavior
+Should return empty list
 
-**[IMAGE: GitHub Projects board view]**  
-*Description: Kanban board with Todo, In Progress, Done columns*
+## Actual Behavior
+```
+AttributeError: 'NoneType' object has no attribute 'sort'
+```
 
-### Creating a Project
+## Environment
+- Python: 3.9
+- data-tools: 1.2.0
+- OS: Ubuntu 20.04
 
-Sara wants to track her portfolio website development:
+## Possible Fix
+Add check for empty list before sorting.
+```
 
-1. Go to repository
-2. Click **"Projects"** tab
-3. Click **"New project"**
-4. Choose template: **"Board"** or **"Table"**
-5. Name it: "Portfolio Website Development"
+✅ Clear, actionable, detailed!
 
-**[IMAGE: New project creation dialog]**  
-*Description: Template selection screen*
+**[IMAGE: Well-written issue]**  
+*Description: Issue with all sections filled*
 
-### Board Layout
+### Writing Good PRs
 
-**Columns:**
-- 📋 **Backlog**: Future features
-- 📝 **Todo**: Ready to start
-- 🚧 **In Progress**: Currently working
-- 👀 **Review**: Awaiting review
-- ✅ **Done**: Completed
-
-**[IMAGE: Full project board with cards in different columns]**  
-*Description: Populated Kanban board*
-
-### Adding Issues to Projects
+**Structure:**
 
 ```markdown
-1. Create an issue
-2. On issue page, click "Projects" in right sidebar
-3. Select your project
-4. Issue appears as a card in the project
+## Summary
+[One-line description]
+
+## Motivation
+[Why is this change needed?]
+
+## Changes
+- [Bullet list of changes]
+
+## Testing
+[How did you test this?]
+
+## Screenshots
+[If UI change]
+
+## Checklist
+- [ ] Tests pass
+- [ ] Docs updated
+- [ ] Breaking changes noted
 ```
 
-**[IMAGE: Issue page showing Projects sidebar]**  
-*Description: Projects dropdown on issue page*
+### Commit Message Style
 
-### Automation
+Many projects follow **Conventional Commits:**
 
-Set up automation rules:
-
-- **When issue is opened** → Add to "Todo"
-- **When PR is opened** → Move to "In Progress"
-- **When PR is merged** → Move to "Done"
-
-**[IMAGE: Project automation settings]**  
-*Description: Automation rules configuration*
-
-### Project Views
-
-**Board View:**
 ```
-[📋 Backlog] [📝 Todo] [🚧 In Progress] [✅ Done]
-   Card 1      Card 2      Card 3        Card 4
-   Card 5                  Card 6        Card 7
+type(scope): short description
+
+Longer explanation if needed.
+
+- Detail 1
+- Detail 2
+
+Closes #issue-number
 ```
 
-**Table View:**
-| Title | Status | Assignee | Priority | Due Date |
-|-------|--------|----------|----------|----------|
-| Add homepage | In Progress | Sara | High | Mar 15 |
-| Create blog | Todo | Sara | Medium | Mar 20 |
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `style`: Formatting
+- `refactor`: Code restructure
+- `test`: Add tests
+- `chore`: Maintenance
 
-**Roadmap View:**
-Timeline visualization of milestones and deadlines.
+**Examples:**
+```
+feat(auth): add OAuth login support
 
-**[IMAGE: Project table view]**  
-*Description: Spreadsheet-like view with sortable columns*
+fix(api): handle timeout errors correctly
+
+docs(readme): update installation instructions
+
+test(sorting): add tests for edge cases
+```
+
+**[IMAGE: Conventional commit format]**  
+*Description: Commit message template with examples*
 
 ---
 
-## 🤖 Part 6: GitHub Actions - Automation & CI/CD
+## Part 5: GitHub Actions — Automation Superpowers
 
-### What are GitHub Actions?
+### What is GitHub Actions?
 
-**GitHub Actions** automate workflows like:
-- Running tests on every commit
-- Deploying code automatically
-- Checking code quality
-- Sending notifications
-- Building documentation
+**GitHub Actions** automates workflows:
+- ✅ Run tests on every push
+- ✅ Deploy to production automatically
+- ✅ Check code style
+- ✅ Build and publish packages
+- ✅ Send notifications
 
-**[IMAGE: GitHub Actions workflow diagram]**  
-*Description: Trigger → Runner → Actions → Results*
+**[IMAGE: GitHub Actions concept]**  
+*Description: Trigger → Action → Result flow*
 
-### Sara's First Workflow
+### Anatomy of a Workflow
 
-Sara wants to automatically run tests when she pushes code.
+**Workflow file:** `.github/workflows/name.yml`
 
-#### Step 1: Create Workflow File
+```yaml
+name: Workflow Name           # What it's called
+on: [push, pull_request]      # When it runs
+jobs:                          # What it does
+  job-name:
+    runs-on: ubuntu-latest     # Where it runs
+    steps:                     # Steps to execute
+      - uses: actions/checkout@v3
+      - name: Step name
+        run: command
+```
 
-Create `.github/workflows/tests.yml`:
+**[IMAGE: Workflow structure]**  
+*Description: YAML file breakdown with annotations*
+
+---
+
+## Part 6: Your First GitHub Action — CI Testing
+
+### Create Test Workflow
+
+Create `.github/workflows/test.yml`:
 
 ```yaml
 name: Run Tests
 
-# Trigger workflow on push or pull request
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
 
-# Jobs to run
 jobs:
   test:
-    # Run on Ubuntu
     runs-on: ubuntu-latest
     
-    # Steps to execute
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
     steps:
-      # Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      # Set up Python
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
-      
-      # Run tests
-      - name: Run tests with coverage
-        run: |
-          pytest --cov=. --cov-report=xml
-      
-      # Upload coverage report
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=src --cov-report=term
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      if: matrix.python-version == '3.11'
 ```
 
-**[IMAGE: Workflow file in code editor]**  
-*Description: YAML file with syntax highlighting*
+**[IMAGE: Test workflow file]**  
+*Description: Complete YAML with syntax highlighting*
 
-#### Step 2: Commit and Push
+### What This Does
+
+1. ✅ Runs on push to main/develop
+2. ✅ Runs on pull requests to main
+3. ✅ Tests with Python 3.8, 3.9, 3.10, 3.11
+4. ✅ Installs dependencies
+5. ✅ Runs pytest with coverage
+6. ✅ Uploads coverage report
+
+**[IMAGE: GitHub Actions tab]**  
+*Description: Actions running with matrix*
+
+### Add Status Badge
+
+In `README.md`:
+
+```markdown
+![Tests](https://github.com/username/repo/actions/workflows/test.yml/badge.svg)
+```
+
+**[IMAGE: Status badge]**  
+*Description: Green passing badge in README*
+
+---
+
+## PRACTICE 3: Set Up CI/CD
 
 ```bash
-git add .github/workflows/tests.yml
-git commit -m "Add GitHub Actions workflow for automated testing"
-git push origin main
-```
+# 1. Create workflow directory
+mkdir -p .github/workflows
 
-**[IMAGE: Terminal showing workflow file commit]**  
-*Description: Git commands for workflow setup*
-
-#### Step 3: View Workflow Run
-
-1. Go to repository on GitHub
-2. Click **"Actions"** tab
-3. See your workflow running
-
-**[IMAGE: GitHub Actions tab showing running workflow]**  
-*Description: Workflow with yellow "in progress" indicator*
-
-**[IMAGE: Completed workflow with green checkmark]**  
-*Description: All steps passed successfully*
-
-#### Step 4: View Detailed Logs
-
-Click on workflow run to see logs for each step:
-
-**[IMAGE: Workflow run details with expandable steps]**  
-*Description: Each step with timing and output logs*
-
-### Common Workflow Examples
-
-#### Linting and Code Quality
-
-```yaml
-name: Code Quality
+# 2. Create test workflow
+cat > .github/workflows/test.yml << 'EOF'
+name: Tests
 
 on: [push, pull_request]
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      - name: Install linters
-        run: |
-          pip install flake8 black mypy
-      - name: Run flake8
-        run: flake8 .
-      - name: Check formatting with black
-        run: black --check .
-      - name: Type checking with mypy
-        run: mypy .
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install deps
+      run: |
+        pip install pytest
+    - name: Run tests
+      run: pytest tests/ -v
+EOF
+
+# 3. Commit and push
+git add .github/
+git commit -m "ci: add GitHub Actions workflow"
+git push origin main
+
+# 4. Check Actions tab on GitHub
+# Should see workflow running!
+
+# 5. Break a test (on purpose)
+# Push again
+# Watch workflow fail (red X)
+
+# 6. Fix test
+# Push again
+# Watch workflow pass (green checkmark)
 ```
 
-#### Automatic Deployment
+---
+
+## Part 7: Deployment with GitHub Actions
+
+### Deploy to GitHub Pages
+
+Create `.github/workflows/deploy.yml`:
 
 ```yaml
-name: Deploy to Production
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main ]
-    tags:
-      - 'v*'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy to server
-        env:
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-        run: |
-          echo "Deploying to production..."
-          # Deployment commands here
-```
-
-#### Multi-Python Version Testing
-
-```yaml
-name: Test Multiple Python Versions
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9, 3.10, 3.11]
+    - uses: actions/checkout@v3
     
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install mkdocs mkdocs-material
+    
+    - name: Build documentation
+      run: mkdocs build
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ./site
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install and test
-        run: |
-          pip install -r requirements.txt
-          pytest
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
 ```
 
-**[IMAGE: Matrix build showing multiple Python versions]**  
-*Description: Workflow running parallel jobs for different Python versions*
-
-### Status Badges
-
-Add badges to README.md:
-
-```markdown
-# My Project
-
-![Tests](https://github.com/sara/my-project/workflows/Tests/badge.svg)
-![Code Quality](https://github.com/sara/my-project/workflows/Code%20Quality/badge.svg)
-[![codecov](https://codecov.io/gh/sara/my-project/branch/main/graph/badge.svg)](https://codecov.io/gh/sara/my-project)
-```
-
-**[IMAGE: README with status badges]**  
-*Description: Green passing badges displayed in README*
+**[IMAGE: Deployment workflow]**  
+*Description: Two-job workflow (build and deploy)*
 
 ---
 
-## 🌐 Part 7: GitHub Pages - Host Your Website
+## Part 8: GitHub Pages — Your Project Website
 
 ### What is GitHub Pages?
 
-**GitHub Pages** hosts static websites directly from your repository for FREE!
+Free hosting for static websites directly from your repository!
 
-**Perfect for:**
-- Personal portfolios
+**Use cases:**
 - Project documentation
-- Blogs
-- Landing pages
+- 🌐 Portfolio website
+- Blog
+- Project demos
 
-**[IMAGE: Example portfolio website hosted on GitHub Pages]**  
-*Description: Professional-looking personal website*
+**[IMAGE: GitHub Pages examples]**  
+*Description: Various Pages sites*
 
-### Sara's Portfolio Website
+### Method 1: Simple HTML
 
-Sara wants to create: `https://sara-ahmed.github.io`
-
-#### Step 1: Create Repository
-
-**Important:** Name it `your-username.github.io`
-
+**Structure:**
 ```
-Repository name: sara-ahmed.github.io
-Description: Personal portfolio and blog
-Public
+repo/
+├── index.html
+├── style.css
+├── script.js
+└── README.md
 ```
 
-**[IMAGE: Create repository form with username.github.io pattern]**  
-*Description: Correctly named repository for GitHub Pages*
-
-#### Step 2: Create Website Files
-
-Create `index.html`:
-
+**index.html:**
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sara Ahmed - Software Developer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>My Awesome Project</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <h1>Sara Ahmed</h1>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <h1>🚀 My Awesome Project</h1>
+        <p>Solving real-world problems with Python</p>
     </header>
-
-    <section id="hero">
-        <h2>Software Developer</h2>
-        <p>Building elegant solutions with Python and Web Technologies</p>
-        <a href="#projects" class="cta-button">View My Work</a>
-    </section>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I'm a computer science student at FCAI Cairo University with a passion 
-        for creating impactful software. I recently completed an internship at 
-        TechWave Solutions where I developed authentication systems and learned 
-        professional Git workflows.</p>
-    </section>
-
-    <section id="projects">
-        <h2>My Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Student Management System</h3>
-                <p>A collaborative team project with CRUD operations, 
-                authentication, and database integration.</p>
-                <a href="https://github.com/sara-ahmed/student-management-system">View on GitHub</a>
+    
+    <main>
+        <section class="features">
+            <div class="feature">
+                <h2>⚡ Fast</h2>
+                <p>Optimized for performance</p>
             </div>
-            <div class="project-card">
-                <h3>Authentication Module</h3>
-                <p>Secure user authentication system with session management 
-                built during my internship.</p>
-                <a href="https://github.com/sara-ahmed/auth-module">View on GitHub</a>
+            <div class="feature">
+                <h2>🔒 Secure</h2>
+                <p>Built with security in mind</p>
             </div>
-            <div class="project-card">
-                <h3>Calculator App</h3>
-                <p>My first Git project - a simple calculator with Python.</p>
-                <a href="https://github.com/sara-ahmed/my-calculator">View on GitHub</a>
+            <div class="feature">
+                <h2>📦 Easy</h2>
+                <p>Simple to install and use</p>
             </div>
-        </div>
-    </section>
+        </section>
+        
+        <section class="install">
+            <h2>Installation</h2>
+            <pre><code>pip install my-awesome-project</code></pre>
+        </section>
+        
+        <section class="example">
+            <h2>Quick Example</h2>
+            <pre><code>from awesome import solve
 
-    <section id="contact">
-        <h2>Get In Touch</h2>
-        <p>Email: sara.ahmed@example.com</p>
-        <p>GitHub: <a href="https://github.com/sara-ahmed">@sara-ahmed</a></p>
-        <p>LinkedIn: <a href="https://linkedin.com/in/sara-ahmed">Sara Ahmed</a></p>
-    </section>
-
+result = solve("problem")
+print(result)  # "solution"</code></pre>
+        </section>
+    </main>
+    
     <footer>
-        <p>&copy; 2025 Sara Ahmed. Built with ❤️ and GitHub Pages.</p>
+        <p>Created by <a href="https://github.com/username">@username</a></p>
+        <p>
+            <a href="https://github.com/username/repo">GitHub</a> |
+            <a href="https://github.com/username/repo/issues">Issues</a> |
+            <a href="docs.html">Documentation</a>
+        </p>
     </footer>
 </body>
 </html>
 ```
 
-Create `styles.css`:
+**[IMAGE: Simple Pages site]**  
+*Description: Clean project landing page*
 
-```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+### Enable GitHub Pages
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-}
-
-header {
-    background: #2c3e50;
-    color: white;
-    padding: 1rem 0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-nav a:hover {
-    color: #3498db;
-}
-
-#hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    text-align: center;
-    padding: 150px 20px 100px;
-    margin-top: 60px;
-}
-
-#hero h2 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.cta-button {
-    display: inline-block;
-    background: white;
-    color: #667eea;
-    padding: 12px 30px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 2rem;
-    transition: transform 0.3s;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-}
-
-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 20px;
-}
-
-h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-.project-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-}
-
-.project-card h3 {
-    color: #667eea;
-    margin-bottom: 1rem;
-}
-
-.project-card a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#contact {
-    background: #f8f9fa;
-    text-align: center;
-}
-
-footer {
-    background: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-}
-```
-
-**[IMAGE: Portfolio website preview]**  
-*Description: Beautiful rendered website with hero section, projects, contact*
-
-#### Step 3: Push to GitHub
-
-```bash
-git add .
-git commit -m "Initial portfolio website"
-git push origin main
-```
-
-#### Step 4: Enable GitHub Pages
-
-1. Go to repository **Settings**
-2. Scroll to **Pages** section
-3. Under "Source", select **main** branch
+1. Settings → Pages
+2. Source: Deploy from a branch
+3. Branch: `main`, folder: `/ (root)` or `/docs`
 4. Click **Save**
+5. Wait ~1 minute
+6. Visit `https://username.github.io/repo/`
 
-**[IMAGE: GitHub Pages settings]**  
-*Description: Pages configuration with branch selection*
+**[IMAGE: Pages settings]**  
+*Description: Settings page with branch selection*
 
-After a minute, your site is live at: `https://sara-ahmed.github.io` 🎉
+### Method 2: MkDocs (Documentation)
 
-**[IMAGE: GitHub Pages success message with URL]**  
-*Description: Green banner showing site is published*
+**Install:**
+```bash
+pip install mkdocs mkdocs-material
+```
 
-### Using Jekyll for Blogging
+**Initialize:**
+```bash
+mkdocs new .
+```
 
-Create `_config.yml`:
+**Structure:**
+```
+repo/
+├── docs/
+│   ├── index.md
+│   ├── installation.md
+│   ├── usage.md
+│   └── api.md
+├── mkdocs.yml
+└── README.md
+```
 
+**mkdocs.yml:**
 ```yaml
-title: Sara Ahmed's Blog
-description: My journey in software development
-theme: minima
-author: Sara Ahmed
-email: sara.ahmed@example.com
+site_name: My Awesome Project
+site_url: https://username.github.io/repo/
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - search.suggest
 
-# Social links
-github_username: sara-ahmed
-linkedin_username: sara-ahmed
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage Guide: usage.md
+  - API Reference: api.md
 
-# Build settings
-markdown: kramdown
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - admonition
+  - codehilite
 ```
 
-Create blog posts in `_posts/`:
-
-`_posts/2025-02-15-my-first-open-source-contribution.md`:
-
+**docs/index.md:**
 ```markdown
----
-layout: post
-title: "My First Open Source Contribution"
-date: 2025-02-15 10:00:00 +0200
-categories: open-source git
----
+# Welcome to My Awesome Project
 
-Today I made my first contribution to an open source project! 
-Here's what I learned...
+A powerful tool for solving problems efficiently.
 
-## Finding the Project
+## Features
 
-I was looking for beginner-friendly projects and found...
+- **Fast**: Optimized algorithms
+- 🔒 **Secure**: Input validation
+- 📦 **Simple**: Easy API
 
-## The Process
+## Quick Start
 
-1. Forked the repository
-2. Created a branch
-3. Made my changes
-4. Submitted a PR
+\```python
+from awesome import solve
 
-## What I Learned
+result = solve("problem")
+print(result)
+\```
 
-Contributing to open source taught me...
+## Installation
+
+\```bash
+pip install my-awesome-project
+\```
+
+See [Installation Guide](installation.md) for details.
 ```
 
-**[IMAGE: Jekyll blog post rendered]**  
-*Description: Beautiful blog layout with post*
+**Build and serve:**
+```bash
+# Local preview
+mkdocs serve
+# Visit http://127.0.0.1:8000/
 
-### Custom Domain
+# Build for production
+mkdocs build
+# Output in site/ directory
+```
 
-To use your own domain (e.g., `saraahmed.com`):
+**Deploy:**
+```bash
+mkdocs gh-deploy
+```
 
-1. Create file named `CNAME` with your domain:
-   ```
-   saraahmed.com
-   ```
+**Automatically deploys to GitHub Pages!**
 
-2. In your domain registrar's DNS settings, add:
-   ```
-   Type: A
-   Name: @
-   Value: 185.199.108.153
-   
-   Type: CNAME
-   Name: www
-   Value: sara-ahmed.github.io
-   ```
-
-3. Wait for DNS propagation (up to 24 hours)
-
-**[IMAGE: Custom domain setup in GitHub Pages]**  
-*Description: Custom domain field in Pages settings*
+**[IMAGE: MkDocs site]**  
+*Description: Professional documentation site*
 
 ---
 
-## 🔒 Part 8: Security Best Practices
-
-### Never Commit Secrets!
-
-**❌ Never commit:**
-- API keys
-- Passwords
-- Database credentials
-- Private keys
-- Access tokens
-
-**Example of what NOT to do:**
-
-```python
-# BAD - NEVER DO THIS!
-API_KEY = "sk-1234567890abcdef"
-DATABASE_URL = "postgresql://user:password@localhost/db"
-```
-
-**[IMAGE: Crossed out code showing exposed secrets]**  
-*Description: Red X over code with sensitive data*
-
-### Using Environment Variables
-
-**Create `.env` file (add to .gitignore!):**
+## PRACTICE 4: Create Project Website
 
 ```bash
-# .env
-API_KEY=sk-1234567890abcdef
-DATABASE_URL=postgresql://user:password@localhost/db
-SECRET_KEY=your-secret-key-here
+# 1. Install MkDocs
+pip install mkdocs mkdocs-material
+
+# 2. Initialize docs
+mkdocs new .
+
+# 3. Configure mkdocs.yml
+# (Edit as shown above)
+
+# 4. Write documentation
+echo "# My Project" > docs/index.md
+echo "## Features" >> docs/index.md
+echo "- Feature 1" >> docs/index.md
+
+# 5. Preview locally
+mkdocs serve
+# Open browser to localhost:8000
+
+# 6. Deploy to Pages
+mkdocs gh-deploy
+
+# 7. Visit your site!
+# https://YOUR_USERNAME.github.io/YOUR_REPO/
 ```
 
-**Add to `.gitignore`:**
+---
+
+## Part 9: Git Submodules — Managing Dependencies
+
+### What are Submodules?
+
+**Submodules** let you include one Git repository inside another.
+
+**Use cases:**
+- Shared libraries
+- 🔌 Third-party components
+- 🏗️ Microservices
+
+**[IMAGE: Submodule concept]**  
+*Description: Main repo containing other repos*
+
+### Adding a Submodule
+
+```bash
+# Add external library as submodule
+git submodule add https://github.com/user/library.git libs/library
+
+# Creates:
+# - libs/library/ directory (the external repo)
+# - .gitmodules file (tracking info)
+```
+
+**.gitmodules:**
+```
+[submodule "libs/library"]
+    path = libs/library
+    url = https://github.com/user/library.git
+```
+
+**[IMAGE: Directory with submodule]**  
+*Description: Folder structure showing submodule*
+
+### Cloning Repository with Submodules
+
+```bash
+# Regular clone doesn't get submodules
+git clone https://github.com/user/main-repo.git
+# libs/library/ is EMPTY!
+
+# Solution 1: Clone with submodules
+git clone --recurse-submodules https://github.com/user/main-repo.git
+
+# Solution 2: Initialize after cloning
+git clone https://github.com/user/main-repo.git
+cd main-repo
+git submodule init
+git submodule update
+```
+
+**[IMAGE: Cloning with submodules]**  
+*Description: Terminal showing recursive clone*
+
+### Updating Submodules
+
+```bash
+# Update all submodules to latest
+git submodule update --remote
+
+# Update specific submodule
+git submodule update --remote libs/library
+
+# Commit the update
+git add .gitmodules libs/library
+git commit -m "Update library submodule"
+git push
+```
+
+### Working Inside Submodules
+
+```bash
+# Go into submodule
+cd libs/library
+
+# It's a full Git repository!
+git status
+git log
+git checkout some-branch
+
+# Go back to main repo
+cd ../..
+
+# Commit the submodule state change
+git add libs/library
+git commit -m "Update library to feature branch"
+```
+
+**[IMAGE: Submodule as independent repo]**  
+*Description: Git operations inside submodule*
+
+### Removing Submodules
+
+```bash
+# 1. Deinitialize
+git submodule deinit libs/library
+
+# 2. Remove from Git
+git rm libs/library
+
+# 3. Commit
+git commit -m "Remove library submodule"
+
+# 4. Clean up (optional)
+rm -rf .git/modules/libs/library
+```
+
+---
+
+## PRACTICE 5: Work with Submodules
+
+```bash
+# 1. Create main project
+mkdir main-project
+cd main-project
+git init
+
+# 2. Add submodule (use a small public repo)
+git submodule add https://github.com/github/training-kit.git external/training
+
+# 3. Check status
+ls external/training/  # Should have files
+cat .gitmodules        # Should show config
+
+# 4. Commit
+git add .
+git commit -m "Add training-kit submodule"
+
+# 5. Simulate another developer cloning
+cd ..
+git clone main-project main-project-2
+cd main-project-2
+ls external/training/  # EMPTY!
+
+# 6. Initialize submodules
+git submodule init
+git submodule update
+ls external/training/  # NOW has files!
+
+# 7. Update submodule
+git submodule update --remote external/training
+git add external/training
+git commit -m "Update training submodule"
+```
+
+---
+
+## Part 10: Repository Security
+
+### Security Best Practices
+
+#### 1. Never Commit Secrets
+
+**Bad:**
+```python
+# config.py
+API_KEY = "sk_live_abcdef123456"  # ❌ NEVER DO THIS!
+DATABASE_URL = "postgres://user:password@host/db"
+```
+
+**Good:**
+```python
+# config.py
+import os
+
+API_KEY = os.getenv("API_KEY")  # ✅ From environment variable
+DATABASE_URL = os.getenv("DATABASE_URL")
+```
+
+**.env:**
+```
+API_KEY=sk_live_abcdef123456
+DATABASE_URL=postgres://user:password@host/db
+```
+
+**.gitignore:**
 ```
 .env
-.env.local
-.env.production
 *.key
+*.pem
 secrets/
 ```
 
-**Use in code:**
+**[IMAGE: Secrets in environment variables]**  
+*Description: Code using os.getenv()*
 
-```python
-import os
-from dotenv import load_dotenv
+#### 2. GitHub Secrets
 
-# Load environment variables
-load_dotenv()
+For GitHub Actions:
 
-# Access securely
-API_KEY = os.getenv('API_KEY')
-DATABASE_URL = os.getenv('DATABASE_URL')
-```
+1. Settings → Secrets and variables → Actions
+2. Click **"New repository secret"**
+3. Name: `API_KEY`
+4. Value: `sk_live_abcdef123456`
+5. Add secret
 
-**[IMAGE: Environment variable usage in code]**  
-*Description: Code properly loading secrets from environment*
-
-### GitHub Secrets for Actions
-
-Store secrets for CI/CD:
-
-1. Go to repository **Settings**
-2. Click **Secrets and variables** → **Actions**
-3. Click **New repository secret**
-4. Name: `API_KEY`
-5. Value: Your actual API key
-6. Click **Add secret**
-
-**[IMAGE: GitHub Secrets settings page]**  
-*Description: Secrets management interface*
-
-**Use in workflows:**
-
+**Use in workflow:**
 ```yaml
+steps:
 - name: Deploy
   env:
     API_KEY: ${{ secrets.API_KEY }}
   run: |
+    echo "Deploying with API key"
     ./deploy.sh
 ```
 
-### Branch Protection Rules
+**[IMAGE: GitHub Secrets page]**  
+*Description: Adding repository secret*
 
-Protect important branches:
+#### 3. Dependabot
 
-1. Go to **Settings** → **Branches**
-2. Click **Add rule**
-3. Branch name pattern: `main`
-4. Enable:
-   - ✅ Require pull request reviews
-   - ✅ Require status checks to pass
-   - ✅ Require conversation resolution
-   - ✅ Require signed commits (advanced)
+**Enable Dependabot:**
 
-**[IMAGE: Branch protection rules configuration]**  
-*Description: Checkboxes for various protection options*
+1. Settings → Code security and analysis
+2. Enable **Dependabot alerts**
+3. Enable **Dependabot security updates**
+4. Enable **Dependabot version updates**
 
-### Security Advisories
+**Create `.github/dependabot.yml`:**
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+```
 
-GitHub can detect vulnerabilities in dependencies:
+**[IMAGE: Dependabot alerts]**  
+*Description: Security alerts in repository*
 
-**[IMAGE: Security advisory alert]**  
-*Description: Dependabot alert showing vulnerable package*
+#### 4. Code Scanning
 
-**Fix vulnerabilities:**
-1. Go to **Security** tab
-2. Review Dependabot alerts
-3. Click **Create security update**
-4. Review and merge the automated PR
+**Enable CodeQL:**
 
-**[IMAGE: Dependabot PR for security update]**  
-*Description: Auto-generated PR updating vulnerable dependency*
+Create `.github/workflows/codeql.yml`:
+```yaml
+name: CodeQL
 
-### Two-Factor Authentication (2FA)
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly
 
-**Enable 2FA on your GitHub account:**
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: github/codeql-action/init@v2
+      with:
+        languages: python
+    - uses: github/codeql-action/analyze@v2
+```
 
-1. Click your profile → **Settings**
-2. **Password and authentication**
-3. **Enable two-factor authentication**
-4. Choose: SMS or Authenticator app (recommended)
-5. Save recovery codes securely!
-
-**[IMAGE: 2FA setup screen]**  
-*Description: QR code for authenticator app*
+**[IMAGE: CodeQL scanning results]**  
+*Description: Security scan showing issues*
 
 ---
 
-## 🎨 Part 9: Advanced GitHub Features
-
-### GitHub CLI
-
-Command-line tool for GitHub operations:
+## PRACTICE 6: Implement Security
 
 ```bash
-# Install
-brew install gh  # Mac
-sudo apt install gh  # Ubuntu
+# 1. Create .env file for secrets
+cat > .env << EOF
+API_KEY=test_key_12345
+DATABASE_URL=sqlite:///db.sqlite
+SECRET_KEY=super_secret_key
+EOF
 
-# Authenticate
-gh auth login
+# 2. Add to .gitignore
+echo ".env" >> .gitignore
+echo "*.key" >> .gitignore
 
-# Create repo from terminal
-gh repo create my-new-project --public
+# 3. Use environment variables in code
+cat > config.py << 'EOF'
+import os
+from dotenv import load_dotenv
 
-# Create issue
-gh issue create --title "Bug: Login fails" --body "Description here"
+load_dotenv()
 
-# Create PR
-gh pr create --title "Add feature" --body "Description"
+API_KEY = os.getenv("API_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# View PRs
-gh pr list
+if not API_KEY:
+    raise ValueError("API_KEY not set in environment")
+EOF
 
-# Checkout PR
-gh pr checkout 123
+# 4. Install python-dotenv
+echo "python-dotenv" >> requirements.txt
 
-# Merge PR
-gh pr merge 123
-```
+# 5. Commit (secrets are protected!)
+git add .gitignore config.py requirements.txt
+git commit -m "Add secure config management"
 
-**[IMAGE: Terminal showing gh CLI commands]**  
-*Description: Various gh commands with output*
-
-### GitHub Codespaces
-
-Cloud development environment:
-
-1. Go to your repository
-2. Click **Code** → **Codespaces**
-3. Click **Create codespace on main**
-
-**[IMAGE: Codespaces interface]**  
-*Description: VS Code running in browser*
-
-**Benefits:**
-- ✅ Code from any device
-- ✅ Pre-configured environment
-- ✅ No local setup needed
-- ✅ Powerful cloud resources
-
-### GitHub Discussions
-
-Community forum for your project:
-
-1. Go to repository
-2. **Settings** → **Features**
-3. Enable **Discussions**
-
-**[IMAGE: GitHub Discussions tab]**  
-*Description: Forum-like interface with categories*
-
-**Use cases:**
-- Q&A
-- Feature requests discussion
-- Community announcements
-- Show and tell
-
-### GitHub Sponsors
-
-Support open source developers:
-
-**[IMAGE: GitHub Sponsors profile]**  
-*Description: Sponsor tiers and donation options*
-
-**Set up sponsorship:**
-1. Join GitHub Sponsors program
-2. Create `.github/FUNDING.yml`:
-   ```yaml
-   github: [sara-ahmed]
-   patreon: sara_dev
-   ko_fi: sara_ahmed
-   custom: ["https://paypal.me/sara"]
-   ```
-
-### Gists - Code Snippets
-
-Share code snippets:
-
-1. Go to https://gist.github.com
-2. Paste your code
-3. Add description
-4. Choose public or secret
-5. Click **Create gist**
-
-**[IMAGE: Gist creation interface]**  
-*Description: Code editor with gist options*
-
-**Embed gists:**
-```html
-<script src="https://gist.github.com/sara-ahmed/1234567890abcdef.js"></script>
+# .env is NOT committed! ✅
 ```
 
 ---
 
-## 🏆 Part 10: Building Your Developer Brand
+## Part 11: Building Your Developer Portfolio
 
-### The Perfect Profile
+### Essential Components
 
-Optimize your GitHub profile:
+**1. Pinned Repositories**
+- Pin your 6 best projects
+- Show diversity (web, CLI, ML, etc.)
 
-**Profile README** (create repo named after your username):
-
-Create `sara-ahmed/README.md`:
-
+**2. Professional README**
 ```markdown
-# Hi there! 👋 I'm Sara Ahmed
+# Hi, I'm Sara Ahmed! 👋
 
-### 💻 Software Developer | 🎓 CS Student at FCAI
+## About Me
+Computer Science student at Cairo University, passionate about 
+backend development and data science.
 
-I'm passionate about building elegant solutions and contributing to open source!
+## Skills
+**Languages:** Python, JavaScript, SQL  
+**Frameworks:** Django, Flask, React  
+**Tools:** Git, Docker, PostgreSQL  
+**Cloud:** AWS, Heroku
 
----
+## 📊 GitHub Stats
+![Stats](https://github-readme-stats.vercel.app/api?username=sara-ahmed&show_icons=true)
 
-### 🚀 About Me
+## Featured Projects
+- [Student Management System](link) - Full-stack Django app
+- [Data Analysis Tool](link) - Python CLI with pandas
+- [Portfolio Website](link) - React + TailwindCSS
 
-- 🔭 Currently working on: **TechWave Authentication System**
-- 🌱 Learning: **Docker, Kubernetes, and DevOps**
-- 👯 Open to collaborate on: **Python and Web Development projects**
-- 💬 Ask me about: **Git, Python, Web Development**
-- 📫 Reach me: sara.ahmed@example.com
-- ⚡ Fun fact: I made my first open source contribution in 2025!
-
----
-
-### 🛠️ Tech Stack
-
-![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white)
-![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github)
-![VS Code](https://img.shields.io/badge/-VS%20Code-007ACC?style=flat-square&logo=visual-studio-code)
-
----
-
-### 📊 GitHub Stats
-
-![Sara's GitHub stats](https://github-readme-stats.vercel.app/api?username=sara-ahmed&show_icons=true&theme=radical)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=sara-ahmed&layout=compact&theme=radical)
-
----
-
-### 📝 Latest Blog Posts
-
-<!-- BLOG-POST-LIST:START -->
-- [My First Open Source Contribution](https://saraahmed.com/blog/first-contribution)
-- [Understanding Git Branching Strategies](https://saraahmed.com/blog/git-branching)
-- [Building a Portfolio with GitHub Pages](https://saraahmed.com/blog/github-pages)
-<!-- BLOG-POST-LIST:END -->
-
----
-
-### 🤝 Connect With Me
-
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/sara-ahmed)
-[![Twitter](https://img.shields.io/badge/-Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white)](https://twitter.com/sara_dev)
-[![Portfolio](https://img.shields.io/badge/-Portfolio-000000?style=flat-square&logo=vercel&logoColor=white)](https://sara-ahmed.github.io)
-
----
-
-⭐️ From [sara-ahmed](https://github.com/sara-ahmed)
+## 📫 Contact
+- LinkedIn: [sara-ahmed](link)
+- Email: sara@example.com
+- Portfolio: [saraahmed.dev](link)
 ```
 
-**[IMAGE: Rendered profile README on GitHub]**  
-*Description: Beautiful profile page with stats and badges*
+**[IMAGE: Professional GitHub profile]**  
+*Description: Well-designed profile README*
 
-### Pinned Repositories
-
-Pin your best projects:
-
-1. Go to your profile
-2. Click **Customize your pins**
-3. Select up to 6 repositories
-4. Drag to reorder
-
-**[IMAGE: Pinned repositories section]**  
-*Description: Grid of 6 featured projects*
-
-### Contribution Graph
-
-Make your contribution graph impressive:
+**3. Contribution Graph**
+- Contribute consistently
+- Open source projects
+- Personal projects
+- Code challenges
 
 **[IMAGE: Active contribution graph]**  
-*Description: Green squares showing daily contributions*
+*Description: Green squares showing regular commits*
 
-**Tips:**
-- Commit regularly (not just on weekends)
-- Contribute to open source
-- Work on side projects
-- Document your learning
+**4. Project READMEs**
 
-### GitHub Achievements
+Every project should have:
+```markdown
+# Project Name
 
-Unlock badges:
+Brief description (1-2 sentences)
 
-- 🌟 **Quickdraw**: Close issue/PR within 5 minutes
-- 🎖️ **Starstruck**: 16+ starred repository
-- ⭐ **Pull Shark**: Merge 2+ pull requests
-- 🐙 **Arctic Code Vault Contributor**: 2020 Archive Program
+![Screenshot](screenshot.png)
 
-**[IMAGE: Achievement badges on profile]**  
-*Description: Various achievement badges displayed*
+## Features
+- Feature 1
+- Feature 2
+
+## Installation
+\```bash
+pip install -r requirements.txt
+\```
+
+## Usage
+\```python
+from project import main
+main()
+\```
+
+## Demo
+[Live Demo](link) | [Video](link)
+
+## Technologies
+- Python 3.11
+- Django 4.2
+- PostgreSQL
+
+## Contributing
+Pull requests welcome! See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+MIT License
+```
+
+**[IMAGE: Excellent project README]**  
+*Description: README with badges, screenshot, clear sections*
 
 ---
 
-## 📝 Part 11: Comprehensive Exercise - Full Contribution Workflow
+## PRACTICE 7: Improve Your Profile
 
-### The Challenge: Contribute to a Real Project
+```bash
+# 1. Create profile README
+# Create repository: YOUR_USERNAME/YOUR_USERNAME
+# Add README.md with bio, skills, projects
 
-**Task:** Find an open source project and make a meaningful contribution.
+# 2. Add GitHub Stats
+# Use: https://github.com/anuraghazra/github-readme-stats
+# ![Stats](https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME)
 
-#### Phase 1: Find a Project (10 minutes)
+# 3. Pin 6 best repositories
+# Go to profile → Customize pins
 
-1. Go to https://goodfirstissue.dev
-2. Filter by language: Python
-3. Find a project with recent activity
-4. Read the README and CONTRIBUTING.md
+# 4. Improve project READMEs
+# Add screenshots, clear installation, usage examples
 
-#### Phase 2: Set Up (15 minutes)
+# 5. Add badges to projects
+# shields.io for status badges
+```
 
-1. Fork the repository
-2. Clone your fork
-3. Add upstream remote
-4. Create a feature branch
-5. Set up development environment
+---
 
-#### Phase 3: Make Contribution (30 minutes)
+## MEGA CHALLENGE: Complete Open Source Contribution
 
-Choose ONE:
-- **Fix a bug** from the issues
-- **Add documentation** for unclear sections
-- **Write tests** for untested code
-- **Improve error messages**
-- **Add examples** to README
+**Time:** 60 minutes  
+**Difficulty:** Advanced
 
-#### Phase 4: Submit (15 minutes)
+### Mission: Find, Fix, Contribute
 
-1. Commit with clear messages
-2. Push to your fork
-3. Create Pull Request
-4. Fill out PR template completely
-5. Respond to any immediate feedback
+**Part 1: Find a Project (10 min)**
 
-#### Phase 5: Portfolio Update (20 minutes)
+```bash
+# Search for beginner-friendly projects:
+# https://github.com/topics/good-first-issue
+# https://github.com/topics/beginner-friendly
+# https://firsttimersonly.com/
 
-1. Add the contribution to your portfolio
-2. Write a blog post about the experience
-3. Share on social media
-4. Update your GitHub profile README
+# Criteria:
+# ✅ Has "good first issue" label
+# ✅ Active maintainers (recent commits)
+# ✅ Clear CONTRIBUTING.md
+# ✅ Friendly community
+# ✅ Technologies you know
+```
+
+**Part 2: Fork and Setup (5 min)**
+
+```bash
+# 1. Fork repository
+# 2. Clone your fork
+git clone git@github.com:YOUR_USERNAME/PROJECT.git
+cd PROJECT
+
+# 3. Add upstream
+git remote add upstream git@github.com:ORIGINAL/PROJECT.git
+
+# 4. Install dependencies
+pip install -r requirements.txt
+# OR
+npm install
+```
+
+**Part 3: Choose an Issue (5 min)**
+
+```bash
+# Find issue with label:
+# - good first issue
+# - help wanted
+# - beginner-friendly
+
+# Comment on issue:
+# "Hi! I'd like to work on this. Is it still available?"
+
+# Wait for maintainer confirmation
+```
+
+**Part 4: Implement Fix (25 min)**
+
+```bash
+# 1. Create branch
+git checkout -b fix/issue-123
+
+# 2. Understand the problem
+# Read issue carefully
+# Reproduce the bug/understand feature
+
+# 3. Implement solution
+# Write code
+# Add/update tests
+# Update documentation
+
+# 4. Test thoroughly
+pytest tests/
+# OR
+npm test
+
+# 5. Check code style
+flake8 .
+# OR
+npm run lint
+```
+
+**Part 5: Create Pull Request (10 min)**
+
+```bash
+# 1. Commit changes
+git add .
+git commit -m "fix: resolve issue #123
+
+- Detailed explanation
+- What changed
+- Why it works
+
+Closes #123"
+
+# 2. Push to your fork
+git push origin fix/issue-123
+
+# 3. Create PR
+# - Clear title
+# - Reference issue
+# - Explain changes
+# - Add screenshots if UI
+
+# 4. Wait for review
+# Be patient and responsive
+```
+
+**Part 6: Respond to Feedback (5 min)**
+
+```bash
+# If changes requested:
+# 1. Make requested changes
+# 2. Commit
+git commit -am "address review feedback"
+
+# 3. Push
+git push origin fix/issue-123
+
+# PR updates automatically!
+```
+
+### Success Criteria
+
+- ✅ Found suitable project
+- ✅ Issue assigned to you
+- ✅ Solution implemented
+- ✅ Tests pass
+- ✅ PR created with clear description
+- ✅ Followed project guidelines
+- ✅ Responded professionally to feedback
+
+**🎉 Bonus:**
+- PR gets merged!
+- You're now an open source contributor!
+
+---
+
+## PRACTICE 8: Set Up Complete CI/CD
+
+**Create full pipeline:**
+
+```yaml
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest pytest-cov flake8
+    - name: Lint
+      run: flake8 src/ --max-line-length=120
+    - name: Test
+      run: pytest tests/ -v --cov=src
+  
+  build:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build package
+      run: python -m build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: package
+        path: dist/
+  
+  deploy-docs:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+    - name: Install MkDocs
+      run: pip install mkdocs mkdocs-material
+    - name: Deploy docs
+      run: mkdocs gh-deploy --force
+```
 
 ---
 
 ## 📚 Session Summary
 
-### What You Accomplished
+### What You Mastered
 
-✅ **Forking**: Created your own copies of repositories  
-✅ **Open Source**: Made contributions to real projects  
-✅ **Upstream Sync**: Kept forks up-to-date  
-✅ **GitHub Projects**: Managed work with project boards  
-✅ **GitHub Actions**: Automated testing and deployment  
-✅ **GitHub Pages**: Built and deployed websites  
-✅ **Security**: Protected secrets and secured repositories  
-✅ **Advanced Features**: Used CLI, Codespaces, Discussions  
-✅ **Developer Brand**: Built impressive profile and portfolio  
+✅ **Open Source Contribution**
+- Forking repositories
+- Contributing to projects
+- Following best practices
+- Writing good issues/PRs
 
-### Essential Commands
+✅ **GitHub Actions**
+- CI/CD pipelines
+- Automated testing
+- Automated deployment
+- Custom workflows
+
+✅ **GitHub Pages**
+- Hosting websites
+- Documentation sites
+- Project landing pages
+
+✅ **Git Submodules**
+- Adding external repos
+- Managing dependencies
+- Updating submodules
+
+✅ **Security**
+- Protecting secrets
+- Dependabot
+- Code scanning
+- Best practices
+
+✅ **Portfolio Building**
+- Professional profile
+- Project documentation
+- Contribution history
+
+### Command Reference
 
 ```bash
-# Forking workflow
-git clone https://github.com/YOU/repo.git
-git remote add upstream https://github.com/ORIGINAL/repo.git
+# FORKING
+git clone git@github.com:YOUR_USERNAME/repo.git
+git remote add upstream git@github.com:ORIGINAL/repo.git
 git fetch upstream
 git merge upstream/main
 
-# Keeping fork updated
-git pull upstream main
-git push origin main
+# SUBMODULES
+git submodule add URL path
+git submodule init
+git submodule update
+git submodule update --remote
+git clone --recurse-submodules URL
 
-# Creating releases
-git tag -a v1.0.0 -m "Release message"
-git push origin v1.0.0
+# PAGES
+mkdocs new .
+mkdocs serve
+mkdocs build
+mkdocs gh-deploy
 
-# Using GitHub CLI
-gh repo fork
-gh pr create
-gh issue list
+# WORKFLOWS
+# Create .github/workflows/name.yml
+git add .github/
+git commit -m "Add workflow"
+git push
 ```
 
 ---
 
-## 🎉 Success Stories
+## Congratulations! You're a Git/GitHub Expert!
 
-### Ahmed's Journey
-
-Ahmed fixed that typo in `awesome-python-lib`. The maintainer was so impressed with his thorough approach that they asked him to help review other PRs. Within a month, Ahmed became a core contributor with merge privileges!
-
-**His stats:**
-- 📊 15 merged pull requests
-- ⭐ 3 repositories starred by 100+ people
-- 👥 Connected with developers worldwide
-- 💼 Job offers from reviewing his GitHub activity
-
-### Sara's Impact
-
-Sara's portfolio site attracted attention from recruiters. Her combination of:
-- Professional portfolio website
-- Active open source contributions
-- Well-documented projects
-- Comprehensive GitHub profile
-
-...led to interviews with 5 companies!
-
-She's now a junior developer at a tech company, and she **teaches Git to new interns** using the skills from this workshop!
-
----
-
-## 🌍 Join the Community
-
-### What's Next?
-
-**Continue your journey:**
-
-1. **Contribute regularly**: Make open source contributions a habit
-2. **Build in public**: Share your projects and learning
-3. **Help others**: Answer questions, review PRs
-4. **Stay updated**: Follow GitHub blog, changelog
-5. **Network**: Connect with other developers
-
-### Resources to Explore
-
-**Open Source Guides:**
-- Open Source Guides: https://opensource.guide
-- First Timers Only: https://www.firsttimersonly.com
-- How to Contribute: https://opensource.guide/how-to-contribute/
-
-**GitHub Features:**
-- GitHub Blog: https://github.blog
-- GitHub Skills: https://skills.github.com
-- GitHub Education: https://education.github.com
-
-**Communities:**
-- Dev.to: https://dev.to
-- Hashnode: https://hashnode.com
-- Reddit: r/opensource, r/github
-- Discord servers for your favorite projects
-
----
-
-## 🎓 Workshop Completion
-
-### You've Mastered Git & GitHub!
-
-From zero to hero in 4 sessions:
-
-**Session 1:** First repository, basic Git, pushing to GitHub  
-**Session 2:** Collaboration, pull requests, merge conflicts  
-**Session 3:** Branching strategies, Git Flow, rebasing  
-**Session 4:** Open source, automation, GitHub Pages, security  
-
-**You can now:**
-- ✅ Manage complex codebases with Git
-- ✅ Collaborate professionally with teams
+You've completed the workshop and can now:
+- ✅ Use Git like a professional
+- ✅ Collaborate effectively with teams
 - ✅ Contribute to open source projects
 - ✅ Automate workflows with GitHub Actions
-- ✅ Build and host websites
-- ✅ Secure your code and projects
-- ✅ Build an impressive developer portfolio
+- ✅ Build professional portfolios
+- ✅ Follow industry best practices
+
+### Next Steps
+
+1. **Contribute to open source** (start today!)
+2. **Build your portfolio** (3-5 strong projects)
+3. **Automate everything** (CI/CD for all projects)
+4. **Stay active** (commit regularly)
+5. **Help others** (answer questions, review PRs)
+
+### Resources
+
+- [GitHub Docs](https://docs.github.com)
+- [Git Book](https://git-scm.com/book/en/v2)
+- [GitHub Skills](https://skills.github.com/)
+- [First Timers Only](https://www.firsttimersonly.com/)
+- [Good First Issue](https://goodfirstissue.dev/)
+
+**Keep coding! Keep contributing! Keep learning!** 🚀
 
 ---
 
-## 🏅 Certificate of Completion
+**End of Session 4 — End of Workshop**
 
-**Congratulations!** You've completed:
-
-**Mastering Git & GitHub — From Zero to Hero**  
-Organized by: DSC Cairo University Chapter  
-Duration: 4 Sessions, 10.5 hours  
-Instructors: Omar Betawy, Amr Khaled  
-
-**Skills Acquired:**
-- Version Control with Git
-- GitHub Collaboration
-- Open Source Contribution
-- CI/CD with GitHub Actions
-- Professional Development Workflows
+Thank you for participating! We hope you enjoyed the workshop and learned valuable skills. Now go out there and make amazing contributions to the world of software development!
 
 ---
 
-## 🚀 Final Challenge
-
-### Build Your Portfolio & Contribute
-
-**Before you leave today:**
-
-1. ✅ Create your GitHub profile README
-2. ✅ Set up your portfolio website on GitHub Pages
-3. ✅ Find and fork one open source project
-4. ✅ Enable GitHub Actions on one of your projects
-5. ✅ Connect with workshop attendees on GitHub
-
-**Share your work:**
-- Post your GitHub profile URL in the workshop Discord/WhatsApp
-- Share your portfolio website
-- Tag us when you make your first open source contribution!
-
----
-
-## 🌟 Closing Thoughts
-
-You're now part of the **global developer community**. Every day, millions of developers use Git and GitHub to:
-- Build amazing software
-- Solve world problems
-- Learn and grow together
-- Share knowledge freely
-
-**Your journey doesn't end here** — it's just beginning!
-
-Whether you build the next big startup, contribute to important open source projects, or help others learn, you now have the tools and knowledge to make an impact.
-
-**Keep coding. Keep sharing. Keep learning.** 🚀
-
----
-
-## 📞 Stay Connected
-
-**Workshop Repository:** https://github.com/dsc-cairo/git-workshop-2025  
-**Discord Community:** [Link to Discord]  
-**Follow us:**
-- GitHub: @dsc-cairo
-- Instagram: @dsccairo
-- LinkedIn: DSC Cairo University
-
-**Instructors:**
-- Omar Betawy: [@omarbetawy](https://github.com/omarbetawy)
-- Amr Khaled: [@amrkhaled](https://github.com/amrkhaled)
-
----
-
-**Thank you for joining us on this journey! Now go build something amazing! 💫**
-
-**End of Session 4**
-
-**End of Workshop**
+**Workshop Complete! 🎊**

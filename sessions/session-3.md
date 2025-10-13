@@ -1,6 +1,6 @@
-# Session 3 — The Internship: Branching & Professional Workflow
+# Session 3 — GitHub Collaboration & Professional Workflows
 
-**Duration:** 2 hours 30 minutes  
+**Duration:** 3 hours  
 **Venue:** Creativa Lab C  
 **Instructors:** Omar Betawy, Amr Khaled
 
@@ -8,1006 +8,1172 @@
 
 ## 📖 Story Introduction
 
-**Sara** is thrilled! After showing her GitHub portfolio with the Student Management System project, she landed a summer internship at **TechWave Solutions**, a fast-growing software company. On her first day, her mentor **Karim** shows her the company's main product codebase.
+**Sara's** skills with Git branching are impressive. Professor Hassan notices and assigns her team a major project: build a **Student Management System** with **four developers** working simultaneously.
 
-Sara is overwhelmed. The repository has:
-- **15 active branches** for different features
-- Multiple developers working simultaneously
-- Automated testing and deployment
-- Strict code review processes
+The team is excited but quickly faces chaos:
+- **Ahmed** pushes code that breaks everyone's work
+- **Mona** can't push because she doesn't have permissions
+- **Youssef** overwrites Sara's changes by accident
+- Code reviews? What are those?
 
-"Welcome to professional software development," Karim smiles. "Here's how we work: we never push directly to `main`. Every feature gets its own branch. Every bug fix is isolated. We use Git Flow to manage releases."
+Their mentor explains: "You know Git, but now you need to learn **GitHub workflows**. This is how professional teams collaborate without destroying each other's work!"
 
-Sara realizes college projects were just the beginning. Today, you'll learn the advanced branching strategies used by real companies to manage complex development workflows.
+Today, you'll master:
+- GitHub collaboration models and permissions
+- Professional Pull Request workflows
+- Authentication (SSH vs Personal Access Tokens)
+- Code review best practices
+- Git Flow and GitHub Flow
+- Tags and releases
+- Cherry-picking commits
+
+By the end, you'll collaborate like senior developers at tech companies!
 
 ---
 
 ## 🎯 Session Objectives
 
 By the end of this session, you will be able to:
-- Understand why branches are essential for team development
-- Create, switch, and manage multiple branches
-- Merge branches using different strategies
-- Use rebase to maintain clean history
-- Implement Git Flow and GitHub Flow
-- Handle complex merge conflicts
-- Undo mistakes safely with reset, revert, and stash
-- Use tags for versioning and releases
-- Conduct professional code reviews
+- ✅ Set up team repositories with proper permissions
+- ✅ Use SSH keys for secure authentication
+- ✅ Create and review Pull Requests professionally
+- ✅ Conduct effective code reviews
+- ✅ Implement Git Flow and GitHub Flow
+- ✅ Create tags and releases
+- ✅ Cherry-pick commits between branches
+- ✅ Handle team collaboration scenarios
+- ✅ Manage repository settings and protection rules
 
 ---
 
-## 🌳 Part 1: Understanding Branches
+## Part 1: GitHub Collaboration Models
 
-### What is a Branch?
+### Model 1: Shared Repository (Centralized)
 
-A **branch** is an independent line of development. Think of it as a parallel universe where you can make changes without affecting the main timeline.
+**Best for:** Small teams, trusted members, private projects
 
-**[IMAGE: Tree diagram showing main branch with feature branches]**  
-*Description: Main trunk with multiple branches growing from it*
-
-### Why Use Branches?
-
-**Scenario without branches:**
+**Structure:**
 ```
-main: feature1 → bug → feature2 → broken → fix → feature3
+Organization/Company Repository
+    ↓
+Team Members (Direct Push Access)
+    ↓
+Everyone pushes to same repo
 ```
-Everything is mixed! Hard to track what belongs where.
 
-**Scenario with branches:**
+**Pros:**
+- ✅ Simple setup
+- ✅ Single source of truth
+- ✅ Easy to manage
+
+**Cons:**
+- ❌ Everyone can push to main
+- ❌ Less control over quality
+- ❌ Requires trust
+
+**[IMAGE: Centralized model diagram]**  
+*Description: One repository with multiple contributors having direct access*
+
+### Model 2: Fork & Pull Request (Distributed)
+
+**Best for:** Open source, large teams, external contributors
+
+**Structure:**
 ```
-main:     v1.0 ────────────────→ v1.1 ──────→ v2.0
-            ↓                      ↑            ↑
-feature-1:  └─→ work ─→ work ─→─┘            │
-bug-fix:         └─→ fix ──────────────────→─┘
-feature-2:              └─→ work ─→ work ─→─┘
+Original Repository (Upstream)
+    ↓
+Fork → Contributor's Copy
+    ↓
+Pull Request → Original
 ```
-Clean, organized, trackable!
 
-**[IMAGE: Comparison diagram of linear vs branched development]**  
-*Description: Messy single line vs organized branches*
+**Pros:**
+- ✅ Code review required
+- ✅ Safe from bad changes
+- ✅ Anyone can contribute
 
-### Real-World Branch Uses
+**Cons:**
+- ❌ More complex workflow
+- ❌ Need to sync forks
+- ❌ Extra steps
 
-1. **Feature Development**: Each new feature gets its own branch
-2. **Bug Fixes**: Isolate fixes to test separately
-3. **Experiments**: Try ideas without risk
-4. **Releases**: Maintain stable release branches
-5. **Hotfixes**: Quick fixes for production issues
+**[IMAGE: Fork & PR model diagram]**  
+*Description: Original repo with multiple forks and PR arrows back*
 
 ---
 
-## 🔄 Part 2: Branch Basics
+## Part 2: Repository Permissions
 
-### Checking Current Branch
+### Permission Levels
 
-```bash
-git branch
-```
+| Level | Read | Clone | Create Issues | Push | Delete | Settings |
+|-------|------|-------|---------------|------|--------|----------|
+| **Read** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Triage** | ✅ | ✅ | ✅ + Manage | ❌ | ❌ | ❌ |
+| **Write** | ✅ | ✅ | ✅ + Manage | ✅ | ❌ | ❌ |
+| **Maintain** | ✅ | ✅ | ✅ + Manage | ✅ | ❌ | Some |
+| **Admin** | ✅ | ✅ | ✅ + Manage | ✅ | ✅ | ✅ |
 
-**Expected Output:**
-```
-* main
-```
+**[IMAGE: Permission pyramid]**  
+*Description: Hierarchy from Read at bottom to Admin at top*
 
-The `*` indicates your current branch.
+### Real-World Usage
 
-**[IMAGE: Terminal showing git branch output]**  
-*Description: Branch list with asterisk*
+**For Sara's team project:**
+- **Sara**: Admin (project lead)
+- **Ahmed, Mona, Youssef**: Write (team members)
+- **Professor Hassan**: Read (observer)
+- **External testers**: Read (view only)
 
-### Creating a New Branch
+---
 
-**Method 1: Create but don't switch**
-```bash
-git branch feature/add-login
-```
+## PRACTICE 1: Set Up Team Repository
 
-**Method 2: Create and switch immediately**
-```bash
-git checkout -b feature/add-login
-```
-
-**Method 3: Modern syntax (Git 2.23+)**
-```bash
-git switch -c feature/add-login
-```
-
-**[IMAGE: Terminal showing branch creation commands]**  
-*Description: All three methods with outputs*
-
-### Branch Naming Conventions
-
-**Good practices:**
-```
-feature/user-authentication
-bugfix/fix-login-error
-hotfix/security-patch
-release/v1.2.0
-```
-
-**Common prefixes:**
-- `feature/` - New features
-- `bugfix/` or `fix/` - Bug fixes
-- `hotfix/` - Urgent production fixes
-- `release/` - Release preparation
-- `experimental/` - Experiments
-- `docs/` - Documentation updates
-
-**[IMAGE: Branch naming convention chart]**  
-*Description: Prefix meanings and examples*
-
-### Switching Between Branches
+**Task:** Create a team project with proper permissions.
 
 ```bash
-# Old way
-git checkout main
+# On GitHub:
+# 1. Create repository "team-project"
+# 2. Make it private (for team work)
+# 3. Add README.md and .gitignore (Python)
 
-# New way (Git 2.23+)
+# 4. Add collaborators:
+#    Settings → Collaborators → Add people
+#    - Add 2-3 teammates with "Write" permission
+#    - Add 1 person with "Read" permission (observer)
+
+# 5. Each team member:
+#    - Check email for invitation
+#    - Accept invitation
+#    - Clone repository
+git clone https://github.com/TEAM_LEAD/team-project.git
+
+# 6. Verify access:
+#    Each member makes a branch and pushes
+git switch -c test/YOUR_NAME
+echo "Test by YOUR_NAME" > test.txt
+git add test.txt
+git commit -m "Test commit by YOUR_NAME"
+git push origin test/YOUR_NAME
+```
+
+**Success:** Everyone can push their test branches! ✅
+
+---
+
+## 🔑 Part 3: Authentication — SSH vs Personal Access Tokens
+
+### The Problem with Passwords
+
+GitHub **disabled password authentication** in 2021. You must use:
+1. **Personal Access Tokens (HTTPS)**
+2. **SSH Keys (SSH protocol)**
+
+**[IMAGE: Comparison of HTTPS vs SSH authentication]**  
+*Description: Two authentication methods side by side*
+
+---
+
+### Method 1: Personal Access Token (PAT)
+
+**When to use:**
+- ✅ Quick setup
+- ✅ Works everywhere
+- ✅ Can be revoked easily
+
+**Setup:**
+
+1. **Generate token on GitHub:**
+   - Settings → Developer settings → Personal access tokens → Tokens (classic)
+   - Click "Generate new token (classic)"
+   - Name: "Git Access"
+   - Expiration: 90 days (your choice)
+   - Scopes: Check **repo** (full control)
+   - Generate token
+   - **COPY IT IMMEDIATELY** (can't see again!)
+
+**[IMAGE: PAT generation page with scopes]**  
+*Description: Token creation form with repo checkbox selected*
+
+2. **Use token when pushing:**
+```bash
+git push origin main
+Username: your-username
+Password: ghp_xxxxxxxxxxxxxxxxxxxx  # Paste token here
+```
+
+3. **Cache credentials (optional):**
+```bash
+# Cache for 1 hour
+git config --global credential.helper 'cache --timeout=3600'
+
+# OR store permanently (less secure)
+git config --global credential.helper store
+```
+
+**[IMAGE: Terminal showing credential prompt]**  
+*Description: Username and password prompt with token*
+
+---
+
+### Method 2: SSH Keys (Recommended!)
+
+**When to use:**
+- ✅ More secure
+- ✅ No password prompts
+- ✅ Professional standard
+
+**Setup:**
+
+#### Step 1: Check for Existing Keys
+
+```bash
+ls -la ~/.ssh
+```
+
+Look for:
+- `id_rsa` and `id_rsa.pub` (RSA)
+- `id_ed25519` and `id_ed25519.pub` (Ed25519 - recommended)
+
+**[IMAGE: SSH directory listing]**  
+*Description: Terminal showing .ssh directory contents*
+
+#### Step 2: Generate New SSH Key
+
+```bash
+# Generate Ed25519 key (modern, secure)
+ssh-keygen -t ed25519 -C "your-email@example.com"
+
+# OR RSA if Ed25519 not supported
+ssh-keygen -t rsa -b 4096 -C "your-email@example.com"
+```
+
+**Prompts:**
+```
+Enter file in which to save the key: (Press Enter for default)
+Enter passphrase: (Optional but recommended)
+Enter same passphrase again:
+```
+
+**Output:**
+```
+Your identification has been saved in /home/user/.ssh/id_ed25519
+Your public key has been saved in /home/user/.ssh/id_ed25519.pub
+```
+
+**[IMAGE: SSH key generation output]**  
+*Description: Terminal showing key generation success*
+
+#### Step 3: Add Key to SSH Agent
+
+```bash
+# Start ssh-agent
+eval "$(ssh-agent -s)"
+
+# Add private key
+ssh-add ~/.ssh/id_ed25519
+```
+
+**[IMAGE: SSH agent started]**  
+*Description: Agent pid shown in terminal*
+
+#### Step 4: Copy Public Key
+
+```bash
+# Linux/Mac
+cat ~/.ssh/id_ed25519.pub
+
+# Windows (Git Bash)
+clip < ~/.ssh/id_ed25519.pub
+
+# Manually copy the output (starts with ssh-ed25519)
+```
+
+**Output looks like:**
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJl3dIeudNqd0DPMRD6OIh65tjkxFNOtwGcWB2gCgPhk your-email@example.com
+```
+
+**[IMAGE: Public key displayed]**  
+*Description: Terminal showing public key (partially blurred)*
+
+#### Step 5: Add to GitHub
+
+1. Go to GitHub: Settings → SSH and GPG keys
+2. Click **New SSH key**
+3. Title: "My Laptop" (descriptive name)
+4. Key type: Authentication Key
+5. Paste the public key
+6. Click **Add SSH key**
+
+**[IMAGE: GitHub SSH key addition page]**  
+*Description: Form with title and key fields*
+
+#### Step 6: Test Connection
+
+```bash
+ssh -T git@github.com
+```
+
+**First time:**
+```
+The authenticity of host 'github.com' can't be established.
+ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+Are you sure you want to continue connecting (yes/no)? yes
+```
+
+**Success:**
+```
+Hi your-username! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+✅ **SSH is working!**
+
+**[IMAGE: Successful SSH test]**  
+*Description: Terminal showing authentication success*
+
+#### Step 7: Use SSH URLs
+
+**Change remote to SSH:**
+```bash
+# Check current remote
+git remote -v
+
+# Change to SSH
+git remote set-url origin git@github.com:username/repo.git
+
+# Verify
+git remote -v
+```
+
+**Now pushing doesn't ask for password!**
+
+**[IMAGE: HTTPS vs SSH URL comparison]**  
+*Description: Two URLs side by side showing difference*
+
+---
+
+## PRACTICE 2: Set Up SSH Authentication
+
+**Full workflow:**
+
+```bash
+# 1. Generate SSH key
+ssh-keygen -t ed25519 -C "student@fcai.edu"
+# Press Enter for default location
+# Enter passphrase (recommended)
+
+# 2. Start agent and add key
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# 3. Copy public key
+cat ~/.ssh/id_ed25519.pub
+# Copy the output
+
+# 4. Add to GitHub
+# Go to: github.com → Settings → SSH keys
+# Add the key
+
+# 5. Test
+ssh -T git@github.com
+
+# 6. Update your repository
+cd ~/path/to/your/repo
+git remote set-url origin git@github.com:USERNAME/REPO.git
+
+# 7. Test push
+echo "SSH test" >> README.md
+git add README.md
+git commit -m "Test SSH push"
+git push origin main
+# No password prompt!
+```
+
+---
+
+## Part 4: Pull Request Workflow
+
+### What is a Pull Request?
+
+A **Pull Request (PR)** is:
+- A request to merge your branch into another branch
+- A place for code review and discussion
+- GitHub's killer feature for collaboration
+
+**[IMAGE: Pull Request concept diagram]**  
+*Description: Feature branch requesting to merge into main*
+
+### Professional PR Workflow
+
+```
+1. Create feature branch
+   ↓
+2. Make changes and commit
+   ↓
+3. Push branch to GitHub
+   ↓
+4. Create Pull Request
+   ↓
+5. Code Review (discussion, changes)
+   ↓
+6. Tests pass (CI/CD)
+   ↓
+7. Approval from reviewers
+   ↓
+8. Merge to main
+   ↓
+9. Delete feature branch
+```
+
+**[IMAGE: Complete PR workflow diagram]**  
+*Description: Nine steps visualized with arrows*
+
+---
+
+## Part 5: Creating a Pull Request
+
+### Step-by-Step: Sara's First PR
+
+#### Step 1: Create Feature Branch
+
+```bash
 git switch main
-```
-
-**Important:** Uncommitted changes travel with you when switching!
-
----
-
-## 💼 Part 3: TechWave's First Feature
-
-### The Task
-
-Karim assigns Sara her first task: Add a login system to the company's web application.
-
-**[IMAGE: Trello/Jira-style task card]**  
-*Description: Task card with description and acceptance criteria*
-
-### Step 1: Create Feature Branch
-
-```bash
-# Make sure you're on main
-git checkout main
-
-# Pull latest changes
 git pull origin main
-
-# Create feature branch
-git checkout -b feature/user-login
+git switch -c feature/add-student-class
 ```
 
-**[IMAGE: Terminal showing workflow]**  
-*Description: Commands executed in sequence*
+#### Step 2: Develop Feature
 
-### Step 2: Develop the Feature
-
-Create `auth.py`:
+Create `student.py`:
 
 ```python
-# auth.py
-# TechWave Solutions - User Authentication Module
-# Author: Sara Ahmed
-# Date: June 2025
-
-import hashlib
-import secrets
-from datetime import datetime, timedelta
-
-class User:
-    """Represents a user in the system"""
+# student.py
+class Student:
+    """Represents a student in the system"""
     
-    def __init__(self, username, email, password_hash):
-        self.username = username
+    def __init__(self, student_id, name, email, major):
+        self.student_id = student_id
+        self.name = name
         self.email = email
-        self.password_hash = password_hash
-        self.created_at = datetime.now()
-        self.last_login = None
-        self.is_active = True
+        self.major = major
+        self.enrolled_courses = []
     
-    def __repr__(self):
-        return f"User({self.username}, {self.email})"
-
-class AuthManager:
-    """Handles user authentication operations"""
-    
-    def __init__(self):
-        self.users = {}
-        self.sessions = {}
-    
-    def hash_password(self, password):
-        """Hash password using SHA-256"""
-        salt = secrets.token_hex(16)
-        pwd_hash = hashlib.sha256((password + salt).encode()).hexdigest()
-        return f"{salt}${pwd_hash}"
-    
-    def verify_password(self, stored_hash, provided_password):
-        """Verify password against stored hash"""
-        salt, pwd_hash = stored_hash.split('$')
-        test_hash = hashlib.sha256((provided_password + salt).encode()).hexdigest()
-        return pwd_hash == test_hash
-    
-    def register_user(self, username, email, password):
-        """Register a new user"""
-        if username in self.users:
-            return False, "Username already exists"
-        
-        if len(password) < 8:
-            return False, "Password must be at least 8 characters"
-        
-        password_hash = self.hash_password(password)
-        user = User(username, email, password_hash)
-        self.users[username] = user
-        
-        return True, "User registered successfully"
-    
-    def login(self, username, password):
-        """Authenticate user and create session"""
-        if username not in self.users:
-            return False, None, "Invalid credentials"
-        
-        user = self.users[username]
-        
-        if not user.is_active:
-            return False, None, "Account is deactivated"
-        
-        if not self.verify_password(user.password_hash, password):
-            return False, None, "Invalid credentials"
-        
-        # Create session token
-        session_token = secrets.token_urlsafe(32)
-        self.sessions[session_token] = {
-            'username': username,
-            'created_at': datetime.now(),
-            'expires_at': datetime.now() + timedelta(hours=24)
-        }
-        
-        user.last_login = datetime.now()
-        return True, session_token, "Login successful"
-    
-    def verify_session(self, session_token):
-        """Check if session is valid"""
-        if session_token not in self.sessions:
-            return False, "Invalid session"
-        
-        session = self.sessions[session_token]
-        
-        if datetime.now() > session['expires_at']:
-            del self.sessions[session_token]
-            return False, "Session expired"
-        
-        return True, session['username']
-    
-    def logout(self, session_token):
-        """Destroy session"""
-        if session_token in self.sessions:
-            del self.sessions[session_token]
+    def enroll(self, course):
+        """Enroll in a course"""
+        if course not in self.enrolled_courses:
+            self.enrolled_courses.append(course)
             return True
         return False
-
-# Example usage
-if __name__ == "__main__":
-    auth = AuthManager()
     
-    # Register user
-    success, message = auth.register_user("sara", "sara@techwave.com", "SecurePass123")
-    print(f"Registration: {message}")
+    def drop(self, course):
+        """Drop a course"""
+        if course in self.enrolled_courses:
+            self.enrolled_courses.remove(course)
+            return True
+        return False
     
-    # Login
-    success, token, message = auth.login("sara", "SecurePass123")
-    print(f"Login: {message}")
-    
-    if success:
-        # Verify session
-        valid, username = auth.verify_session(token)
-        print(f"Session valid for: {username}")
-        
-        # Logout
-        auth.logout(token)
-        print("Logged out successfully")
+    def get_info(self):
+        """Get student information"""
+        return {
+            'id': self.student_id,
+            'name': self.name,
+            'email': self.email,
+            'major': self.major,
+            'courses': self.enrolled_courses
+        }
 ```
 
-**[IMAGE: Code editor showing auth.py]**  
-*Description: Complete authentication module*
+**[IMAGE: Student class code in editor]**  
+*Description: Complete class implementation*
 
-### Step 3: Commit Your Work
+#### Step 3: Write Tests
 
-```bash
-git add auth.py
-git commit -m "Add user authentication module with login/logout"
-```
-
-### Step 4: Add Tests
-
-Create `test_auth.py`:
+Create `test_student.py`:
 
 ```python
-# test_auth.py
-# Unit tests for authentication module
-
+# test_student.py
 import unittest
-from auth import AuthManager, User
+from student import Student
 
-class TestAuthManager(unittest.TestCase):
+class TestStudent(unittest.TestCase):
     
     def setUp(self):
-        """Set up test fixtures"""
-        self.auth = AuthManager()
-    
-    def test_user_registration(self):
-        """Test successful user registration"""
-        success, message = self.auth.register_user(
-            "testuser", 
-            "test@example.com", 
-            "password123"
+        self.student = Student(
+            student_id="12345",
+            name="Sara Ahmed",
+            email="sara@fcai.edu",
+            major="Computer Science"
         )
-        self.assertTrue(success)
-        self.assertIn("testuser", self.auth.users)
     
-    def test_duplicate_username(self):
-        """Test registration with duplicate username"""
-        self.auth.register_user("testuser", "test1@example.com", "password123")
-        success, message = self.auth.register_user("testuser", "test2@example.com", "password123")
-        self.assertFalse(success)
-        self.assertEqual(message, "Username already exists")
+    def test_enroll(self):
+        result = self.student.enroll("Data Structures")
+        self.assertTrue(result)
+        self.assertIn("Data Structures", self.student.enrolled_courses)
     
-    def test_weak_password(self):
-        """Test registration with weak password"""
-        success, message = self.auth.register_user("testuser", "test@example.com", "123")
-        self.assertFalse(success)
-        self.assertIn("at least 8 characters", message)
+    def test_enroll_duplicate(self):
+        self.student.enroll("Algorithms")
+        result = self.student.enroll("Algorithms")
+        self.assertFalse(result)
     
-    def test_successful_login(self):
-        """Test login with correct credentials"""
-        self.auth.register_user("testuser", "test@example.com", "password123")
-        success, token, message = self.auth.login("testuser", "password123")
-        self.assertTrue(success)
-        self.assertIsNotNone(token)
+    def test_drop(self):
+        self.student.enroll("Databases")
+        result = self.student.drop("Databases")
+        self.assertTrue(result)
+        self.assertNotIn("Databases", self.student.enrolled_courses)
     
-    def test_failed_login(self):
-        """Test login with incorrect password"""
-        self.auth.register_user("testuser", "test@example.com", "password123")
-        success, token, message = self.auth.login("testuser", "wrongpassword")
-        self.assertFalse(success)
-        self.assertIsNone(token)
-    
-    def test_session_verification(self):
-        """Test session token verification"""
-        self.auth.register_user("testuser", "test@example.com", "password123")
-        success, token, _ = self.auth.login("testuser", "password123")
-        
-        valid, username = self.auth.verify_session(token)
-        self.assertTrue(valid)
-        self.assertEqual(username, "testuser")
-    
-    def test_logout(self):
-        """Test logout functionality"""
-        self.auth.register_user("testuser", "test@example.com", "password123")
-        success, token, _ = self.auth.login("testuser", "password123")
-        
-        self.auth.logout(token)
-        valid, _ = self.auth.verify_session(token)
-        self.assertFalse(valid)
+    def test_get_info(self):
+        info = self.student.get_info()
+        self.assertEqual(info['name'], "Sara Ahmed")
+        self.assertEqual(info['major'], "Computer Science")
 
 if __name__ == '__main__':
     unittest.main()
 ```
 
-Commit the tests:
+#### Step 4: Commit Changes
 
 ```bash
-git add test_auth.py
-git commit -m "Add comprehensive unit tests for authentication"
+git add student.py test_student.py
+git commit -m "Add Student class with enrollment features
+
+- Implement Student class with basic attributes
+- Add enroll() and drop() methods
+- Include comprehensive unit tests
+- All tests passing"
 ```
 
-**[IMAGE: Terminal showing test file commit]**  
-*Description: Git commit output for tests*
+**[IMAGE: Terminal showing commit]**  
+*Description: Multi-line commit message*
 
-### Step 5: Check Your Branch History
+#### Step 5: Push Branch
 
 ```bash
-git log --oneline
+git push origin feature/add-student-class
 ```
 
-**Expected Output:**
+**Output:**
 ```
-b3c4d5e Add comprehensive unit tests for authentication
-a2b3c4d Add user authentication module with login/logout
+remote: Create a pull request for 'feature/add-student-class' on GitHub by visiting:
+remote:      https://github.com/username/repo/pull/new/feature/add-student-class
 ```
 
-**[IMAGE: Terminal showing commit log]**  
-*Description: Two commits on feature branch*
+**[IMAGE: Terminal with PR creation link]**  
+*Description: Helpful link to create PR*
+
+#### Step 6: Create PR on GitHub
+
+1. Go to repository on GitHub
+2. See banner: "feature/add-student-class had recent pushes"
+3. Click **"Compare & pull request"**
+
+**[IMAGE: GitHub PR creation banner]**  
+*Description: Yellow banner with button*
+
+4. Fill PR form:
+
+**Title:**
+```
+Add Student class with enrollment features
+```
+
+**Description:**
+```markdown
+## Description
+Implements the Student class for the student management system.
+
+## Changes
+- ✅ Student class with basic attributes (id, name, email, major)
+- ✅ Enroll/drop course functionality
+- ✅ Get info method for student data
+- ✅ Comprehensive unit tests
+
+## Testing
+- All unit tests pass
+- Tested with Python 3.9
+```
+
+Run:
+```bash
+python -m pytest test_student.py -v
+```
+
+## Type of Change
+- [x] New feature
+- [ ] Bug fix
+- [ ] Documentation update
+
+## Checklist
+- [x] Code follows project style
+- [x] Tests added and passing
+- [x] Documentation updated
+- [x] No breaking changes
+
+## Related Issues
+Implements #12
+```
+
+5. Select reviewers (Ahmed, Mona)
+6. Add labels: `enhancement`, `priority: high`
+7. Link to project board
+8. Click **"Create pull request"**
+
+**[IMAGE: Completed PR form]**  
+*Description: All fields filled professionally*
+
+**[IMAGE: Created PR page]**  
+*Description: PR showing all details, reviewers, labels*
 
 ---
 
-## 🔀 Part 4: Merging Strategies
+## PRACTICE 3: Create Your First Pull Request
 
-### The Scenario
-
-Sara's feature is ready. Meanwhile, her colleague **Hassan** has merged changes to `main`. Now Sara needs to integrate her work.
-
-**[IMAGE: Diagram showing diverged branches]**  
-*Description: main and feature branches with different commits*
-
-### Strategy 1: Merge Commit (Default)
-
-Creates a new "merge commit" that ties two branches together.
+**Complete workflow:**
 
 ```bash
-# Switch to main
-git checkout main
+# 1. Create feature
+git switch -c feature/add-calculator-power
 
-# Pull latest changes
-git pull origin main
+# 2. Implement feature
+echo "def power(a, b): return a ** b" >> calculator.py
+git add calculator.py
+git commit -m "Add power function to calculator"
 
-# Merge feature branch
-git merge feature/user-login
+# 3. Push
+git push origin feature/add-calculator-power
+
+# 4. Go to GitHub and create PR with:
+#    - Clear title
+#    - Detailed description
+#    - Select 1-2 reviewers
+#    - Add label "enhancement"
+
+# 5. Wait for review...
 ```
 
-**Result:**
+---
+
+## Part 6: Code Review Best Practices
+
+### For Reviewers
+
+**What to look for:**
+
+1. **Functionality**: Does it work correctly?
+2. **Tests**: Are there tests? Do they pass?
+3. **Code Quality**: Is it readable and maintainable?
+4. **Performance**: Any obvious inefficiencies?
+5. **Security**: Any vulnerabilities?
+6. **Documentation**: Is it documented?
+
+**[IMAGE: Code review checklist]**  
+*Description: Checklist with all points*
+
+### Reviewing Sara's PR
+
+Ahmed reviews Sara's Student class:
+
+**Good comment:**
 ```
-*   Merge branch 'feature/user-login' into main
-|\
-| * Add comprehensive unit tests
-| * Add user authentication module
-* | Other team's commit
-* | Another commit
-|/
-* Previous commit
+Great work on the Student class! I have a few suggestions:
+
+1. Line 15: Consider adding email validation. We should check 
+   if it's a valid email format before accepting.
+   
+   Suggestion:
+   ```python
+   import re
+   EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+   
+   if not re.match(EMAIL_REGEX, email):
+       raise ValueError("Invalid email format")
+   ```
+
+2. Line 25: The `enroll` method doesn't check if the course 
+   exists in the system. Should we validate against a course list?
+
+3. Great job on the tests! Could you add a test for invalid email?
+
+Overall: ✅ Approve with minor suggestions
 ```
 
-**[IMAGE: Git graph showing merge commit]**  
-*Description: Two lines converging into one merge commit*
+✅ Constructive, specific, helpful
 
-**Pros:**
-- ✅ Preserves complete history
-- ✅ Shows when features were integrated
-- ✅ Non-destructive
+**[IMAGE: Good code review comment]**  
+*Description: Inline comment on specific lines*
 
-**Cons:**
-- ❌ Creates extra merge commits
-- ❌ History can become cluttered
+**Bad comment:**
+```
+This is wrong. Fix it.
+```
 
-### Strategy 2: Fast-Forward Merge
+❌ Not helpful, no explanation, rude
 
-If no changes occurred on main, Git simply moves the pointer forward.
+### Responding to Reviews
 
+Sara responds professionally:
+
+```
+Thanks for the thorough review, @ahmed! Great catches!
+
+1. ✅ Email validation: Added in commit abc123
+2. ✅ Course validation: Added `validate_course()` method
+3. ✅ Invalid email test: Added to test suite
+
+All tests still passing. Ready for another review!
+```
+
+**[IMAGE: PR conversation thread]**  
+*Description: Review comments and author responses*
+
+### Requesting Changes
+
+Ahmed clicks **"Request changes"** with:
+
+```
+Please address the email validation before merging.
+Also add documentation for the new validate_course method.
+```
+
+PR status: **🔴 Changes requested**
+
+**[IMAGE: PR with changes requested status]**  
+*Description: Red status badge on PR*
+
+### Approving PR
+
+After Sara makes changes:
+
+Ahmed clicks **"Approve"** with:
+
+```
+Perfect! All concerns addressed. LGTM!
+```
+
+PR status: **✅ Approved**
+
+Mona also approves: **✅ 2/2 approvals**
+
+**[IMAGE: PR with approvals]**  
+*Description: Green checkmarks from reviewers*
+
+---
+
+## PRACTICE 4: Code Review Exercise
+
+**Pair up with a partner:**
+
+**Person A:**
 ```bash
-git merge feature/user-login
+# 1. Create feature with intentional issues
+git switch -c feature/with-issues
+
+# 2. Add code with problems:
+#    - No error handling
+#    - No documentation
+#    - Magic numbers
+#    - No tests
+
+def calculate(x, y):
+    return x * 2.5 + y / 3.7
+
+git add .
+git commit -m "Add calculation"
+git push origin feature/with-issues
+
+# 3. Create PR
 ```
 
-**Result:**
+**Person B:**
+```bash
+# 1. Review the PR on GitHub
+# 2. Leave at least 3 constructive comments
+# 3. Request changes
+```
+
+**Person A:**
+```bash
+# 1. Address all comments
+# 2. Push fixes
+# 3. Respond to reviewer
+```
+
+**Person B:**
+```bash
+# 1. Review fixes
+# 2. Approve PR
+```
+
+---
+
+## Part 7: Merging Pull Requests
+
+### Merge Strategies on GitHub
+
+#### 1. Create a Merge Commit (Default)
+
 ```
 Before:
-main:    A - B
-            \
-feature:     C - D
+       ┌─ C ─ D (feature)
+A ─ B ─┤
+       └─ E (main)
 
 After:
-main:    A - B - C - D
+A ─ B ─ E ─ F (merge commit)
+     └─ C ─ D ─┘
 ```
-
-**[IMAGE: Fast-forward merge diagram]**  
-*Description: Linear progression without merge commit*
-
-**Automatic** if possible, otherwise falls back to merge commit.
-
-### Strategy 3: Squash Merge
-
-Combines all feature commits into one commit on main.
-
-```bash
-git checkout main
-git merge --squash feature/user-login
-git commit -m "Add user authentication feature"
-```
-
-**Result:**
-```
-feature: A - B - C - D (multiple commits)
-main:    E (single combined commit)
-```
-
-**[IMAGE: Squash merge visualization]**  
-*Description: Multiple commits compressed into one*
-
-**Pros:**
-- ✅ Clean, linear history
-- ✅ Each feature = one commit
-
-**Cons:**
-- ❌ Loses detailed commit history
-- ❌ Harder to revert individual changes
-
-### Strategy 4: Rebase (We'll cover this next!)
-
----
-
-## ⚡ Part 5: Rebasing - The Secret Weapon
-
-### What is Rebasing?
-
-**Rebasing** replays your commits on top of another branch, creating a linear history.
-
-**[IMAGE: Rebase vs Merge comparison diagram]**  
-*Description: Left side showing merge commit tree, right side showing linear rebased history*
-
-### Why Rebase?
-
-**Benefits:**
-- ✅ Clean, linear history
-- ✅ Easier to understand commit progression
-- ✅ No merge commit clutter
-- ✅ Makes git log beautiful
 
 **When to use:**
-- ✅ On your local feature branch before merging
-- ✅ To catch up with main branch
-- ✅ To clean up commits before PR
+- ✅ Want to preserve feature branch history
+- ✅ Want to see when features were integrated
 
-**When NOT to use:**
-- ❌ On public/shared branches
-- ❌ After pushing to shared repository
-- ❌ On commits others depend on
+**[IMAGE: Merge commit diagram]**  
+*Description: Branch merging with merge commit*
 
-### Interactive Rebase Demo
-
-Sara wants to clean up her commits before merging.
-
-```bash
-# View commit history
-git log --oneline
-
-# Output:
-# b3c4d5e Add comprehensive unit tests for authentication
-# a2b3c4d Add user authentication module with login/logout
-# f1e2d3c Fix typo in comment
-# a1b2c3d Update function name
-```
-
-Start interactive rebase:
-
-```bash
-git rebase -i HEAD~4
-```
-
-An editor opens:
+#### 2. Squash and Merge
 
 ```
-pick a1b2c3d Update function name
-pick f1e2d3c Fix typo in comment
-pick a2b3c4d Add user authentication module with login/logout
-pick b3c4d5e Add comprehensive unit tests for authentication
+Before:
+Feature branch: C ─ D ─ E ─ F (4 commits)
 
-# Commands:
-# p, pick = use commit
-# r, reword = use commit, but edit the commit message
-# e, edit = use commit, but stop for amending
-# s, squash = use commit, but meld into previous commit
-# f, fixup = like "squash", but discard this commit's log message
-# d, drop = remove commit
+After:
+Main: A ─ B ─ G (1 combined commit)
 ```
 
-**[IMAGE: Interactive rebase editor view]**  
-*Description: Vim/nano editor showing rebase commands*
+**When to use:**
+- ✅ Want clean, linear history
+- ✅ Feature has messy commits
+- ✅ Want one commit per feature
 
-Sara decides to combine the small fixes:
+**[IMAGE: Squash merge diagram]**  
+*Description: Multiple commits compressed to one*
 
-```
-pick a1b2c3d Update function name
-fixup f1e2d3c Fix typo in comment
-pick a2b3c4d Add user authentication module with login/logout
-pick b3c4d5e Add comprehensive unit tests for authentication
-```
-
-Save and close. Result:
+#### 3. Rebase and Merge
 
 ```
-# New clean history:
-b3c4d5e Add comprehensive unit tests for authentication
-a2b3c4d Add user authentication module with login/logout
-a1b2c3d Update function name
+Before:
+       ┌─ C ─ D (feature)
+A ─ B ─┤
+       └─ E (main)
+
+After:
+A ─ B ─ E ─ C' ─ D' (linear)
 ```
 
-**[IMAGE: Before and after rebase comparison]**  
-*Description: Messy history transformed into clean history*
+**When to use:**
+- ✅ Want perfectly linear history
+- ✅ Feature branch is clean
+- ✅ No merge commits wanted
 
-### Rebasing onto Main
+**[IMAGE: Rebase merge diagram]**  
+*Description: Linear history without merge commit*
 
-To update feature branch with latest main:
+### Merging Sara's PR
 
-```bash
-# On feature branch
-git checkout feature/user-login
+1. All checks pass ✅
+2. 2 approvals ✅
+3. No conflicts ✅
+4. Branch is up to date ✅
 
-# Rebase onto main
-git rebase main
+Sara clicks **"Squash and merge"**:
+
+**Commit message:**
+```
+Add Student class with enrollment features (#15)
+
+* Add Student class implementation
+* Add enroll/drop methods
+* Add email validation
+* Add comprehensive tests
+* Address code review feedback
 ```
 
-**What happens:**
-1. Git finds common ancestor
-2. Saves your commits temporarily
-3. Fast-forwards to main's latest commit
-4. Replays your commits on top
+5. Click **"Confirm squash and merge"**
+6. Click **"Delete branch"** (cleanup)
 
-**[IMAGE: Rebase process step-by-step diagram]**  
-*Description: Three stages showing commit replay process*
+**[IMAGE: Merge button options]**  
+*Description: Dropdown with three merge strategies*
 
-### Handling Rebase Conflicts
-
-If conflicts occur during rebase:
-
-```bash
-# Git pauses and shows:
-# CONFLICT (content): Merge conflict in auth.py
-# error: could not apply a2b3c4d... Add user authentication
-```
-
-**Resolve the conflict:**
-1. Edit conflicting files
-2. Remove conflict markers
-3. Stage resolved files: `git add auth.py`
-4. Continue rebase: `git rebase --continue`
-
-**If you want to abort:**
-```bash
-git rebase --abort
-```
-
-**[IMAGE: Rebase conflict resolution workflow]**  
-*Description: Flowchart showing resolve, continue, or abort options*
+**[IMAGE: Delete branch option]**  
+*Description: Delete branch button after merge*
 
 ---
 
-## 🏢 Part 6: Git Flow - Enterprise Workflow
+## PRACTICE 5: Complete PR Workflow
+
+**Full cycle:**
+
+```bash
+# 1. Feature development
+git switch -c feature/add-course-class
+# Write Course class
+# Write tests
+git add .
+git commit -m "Add Course class"
+git push origin feature/add-course-class
+
+# 2. Create PR
+# Do this on GitHub
+
+# 3. Get review
+# Wait for partner's review
+
+# 4. Address feedback
+# Make requested changes
+git add .
+git commit -m "Address review feedback"
+git push origin feature/add-course-class
+
+# 5. Get approval and merge
+# Do this on GitHub
+
+# 6. Update local main
+git switch main
+git pull origin main
+git branch -d feature/add-course-class
+
+# 7. Verify
+git log --oneline
+# Your feature should be in main!
+```
+
+---
+
+## 🏢 Part 8: Git Flow — Enterprise Workflow
 
 ### What is Git Flow?
 
-**Git Flow** is a branching model designed for projects with scheduled releases.
+A branching model for projects with **scheduled releases**.
 
-**[IMAGE: Complete Git Flow diagram with all branch types]**  
-*Description: Main, develop, feature, release, and hotfix branches*
+**Branch Types:**
 
-### Branch Types in Git Flow
+| Branch | Purpose | Base | Merge Into | Lifetime |
+|--------|---------|------|------------|----------|
+| `main` | Production code | - | - | Permanent |
+| `develop` | Integration | main | main | Permanent |
+| `feature/*` | New features | develop | develop | Temporary |
+| `release/*` | Release prep | develop | main & develop | Temporary |
+| `hotfix/*` | Urgent fixes | main | main & develop | Temporary |
 
-| Branch | Purpose | Lifespan | Base | Merge Into |
-|--------|---------|----------|------|------------|
-| `main` | Production code | Permanent | - | - |
-| `develop` | Integration branch | Permanent | main | main |
-| `feature/*` | New features | Temporary | develop | develop |
-| `release/*` | Release prep | Temporary | develop | main & develop |
-| `hotfix/*` | Urgent fixes | Temporary | main | main & develop |
+**[IMAGE: Complete Git Flow diagram]**  
+*Description: All branch types and their relationships*
 
-### Git Flow Workflow
+### Git Flow in Action
 
-#### 1. Feature Development
+#### Feature Development
 
 ```bash
-# Start from develop
+# Start feature
 git checkout develop
-git pull origin develop
+git checkout -b feature/user-profile
 
-# Create feature branch
-git checkout -b feature/payment-integration
-
-# Work on feature...
+# Work on feature
 git add .
-git commit -m "Add payment integration"
+git commit -m "Add user profile page"
 
 # Finish feature
 git checkout develop
-git merge feature/payment-integration
+git merge feature/user-profile
+git branch -d feature/user-profile
 git push origin develop
-git branch -d feature/payment-integration
 ```
 
-**[IMAGE: Feature branch lifecycle in Git Flow]**  
-*Description: Branch creation from develop, work, merge back*
+**[IMAGE: Feature branch lifecycle]**  
+*Description: Feature branching from develop and merging back*
 
-#### 2. Release Preparation
+#### Release Preparation
 
 ```bash
-# Create release branch from develop
+# Create release branch
 git checkout develop
 git checkout -b release/v1.5.0
 
-# Bug fixes, version bumps, documentation updates
+# Prepare release (version bumps, changelog, bug fixes)
+echo "1.5.0" > VERSION
+git add VERSION
 git commit -m "Bump version to 1.5.0"
-git commit -m "Update CHANGELOG"
+
+# Update changelog
+git add CHANGELOG.md
+git commit -m "Update changelog for v1.5.0"
 
 # Merge to main (production)
 git checkout main
 git merge release/v1.5.0
 git tag -a v1.5.0 -m "Release version 1.5.0"
-git push origin main --tags
 
 # Also merge back to develop
 git checkout develop
 git merge release/v1.5.0
 
-# Delete release branch
+# Cleanup
 git branch -d release/v1.5.0
+git push origin main develop --tags
 ```
 
 **[IMAGE: Release branch workflow]**  
-*Description: Release branch merging to both main and develop*
+*Description: Release merging to both main and develop*
 
-#### 3. Hotfix (Emergency Fix)
+#### Hotfix (Emergency)
 
 ```bash
-# Branch from main (production)
+# Critical bug in production!
 git checkout main
-git checkout -b hotfix/critical-security-fix
+git checkout -b hotfix/security-fix
 
-# Make the fix
-git commit -m "Fix SQL injection vulnerability"
+# Fix the bug
+git add .
+git commit -m "Fix critical security vulnerability"
 
 # Merge to main
 git checkout main
-git merge hotfix/critical-security-fix
+git merge hotfix/security-fix
 git tag -a v1.5.1 -m "Hotfix: Security patch"
-git push origin main --tags
 
 # Also merge to develop
 git checkout develop
-git merge hotfix/critical-security-fix
+git merge hotfix/security-fix
 
-# Delete hotfix branch
-git branch -d hotfix/critical-security-fix
+# Cleanup
+git branch -d hotfix/security-fix
+git push origin main develop --tags
 ```
 
-**[IMAGE: Hotfix branch workflow]**  
-*Description: Emergency fix branching from and merging to main and develop*
-
-### TechWave's Git Flow Implementation
-
-Karim explains TechWave's setup:
-
-```
-main          [v1.0.0] ─────────────── [v1.1.0] ─────────
-                           ↑               ↑
-develop       ────────────────────────────────────────────
-                 ↓        ↑       ↓      ↑
-feature/login    └─ work ─┘       │      │
-feature/payment            └─ work ──────┘
-```
-
-**Protected Branches:**
-- `main` - Only release and hotfix merges allowed
-- `develop` - Requires PR approval
+**[IMAGE: Hotfix workflow]**  
+*Description: Hotfix from main to main and develop*
 
 ---
 
-## 🔄 Part 7: GitHub Flow - Simplified Workflow
+## Part 9: GitHub Flow — Simplified
 
 ### What is GitHub Flow?
 
-A simpler alternative to Git Flow, used by GitHub itself and many companies.
+A simpler workflow for **continuous deployment**.
+
+**Rules:**
+1. `main` branch is **always deployable**
+2. Create **descriptive branches** from main
+3. **Commit often** to your branch
+4. **Open PR early** for feedback
+5. **Deploy from branch** for testing
+6. **Merge after approval** and tests pass
 
 **[IMAGE: GitHub Flow diagram]**  
-*Description: Simple flow showing main branch with feature branches*
+*Description: Simple flow with main and feature branches*
 
-### Core Principles
-
-1. **Main branch is always deployable**
-2. **Create descriptive branches** from main
-3. **Commit often** with clear messages
-4. **Open Pull Request** early for feedback
-5. **Deploy from branch** for testing
-6. **Merge after approval** and automated checks pass
-
-### GitHub Flow in Practice
-
-```bash
-# 1. Create branch from main
-git checkout main
-git pull origin main
-git checkout -b add-notifications
-
-# 2. Make commits
-git commit -m "Add notification service"
-git commit -m "Add email templates"
-git commit -m "Add push notification support"
-
-# 3. Push and create PR
-git push origin add-notifications
-# Go to GitHub and create Pull Request
-
-# 4. Address review feedback
-git commit -m "Address review comments"
-git push origin add-notifications
-
-# 5. After approval, merge via GitHub interface
-
-# 6. Delete branch
-git branch -d add-notifications
-```
-
-**[IMAGE: GitHub Flow step-by-step with screenshots]**  
-*Description: Each step visualized with terminal and GitHub UI*
-
-### Git Flow vs GitHub Flow
+### Comparison
 
 | Aspect | Git Flow | GitHub Flow |
 |--------|----------|-------------|
 | Complexity | High | Low |
-| Branches | 5 types | 2 types (main + features) |
+| Branches | 5 types | 2 types |
 | Best For | Scheduled releases | Continuous deployment |
 | Release Cycle | Weeks/months | Daily/hourly |
 | Learning Curve | Steep | Gentle |
+| Team Size | Large | Any size |
 
-**[IMAGE: Comparison infographic]**  
-*Description: Side-by-side visual comparison*
+**[IMAGE: Side-by-side comparison]**  
+*Description: Visual comparison of both workflows*
 
 ---
 
-## 🎯 Part 8: Advanced Branch Operations
+## PRACTICE 6: Git Flow Simulation
 
-### Stashing - Save Work for Later
-
-You're working on a feature but need to switch branches urgently:
+**Simulate a complete release cycle:**
 
 ```bash
-# You have uncommitted changes
-git status
-# Output: modified: auth.py
+# Setup
+git init git-flow-demo
+cd git-flow-demo
 
-# Stash your work
-git stash save "Work in progress on auth module"
+# Create develop branch
+git checkout -b develop
+echo "# App" > README.md
+git add README.md
+git commit -m "Initial commit"
 
-# Your working directory is now clean
-git status
-# Output: nothing to commit, working tree clean
+# Feature 1
+git checkout -b feature/login develop
+echo "login" > login.py
+git add login.py
+git commit -m "Add login"
+git checkout develop
+git merge feature/login
+git branch -d feature/login
 
-# Switch to another branch
-git checkout hotfix/urgent-bug
+# Feature 2
+git checkout -b feature/dashboard develop
+echo "dashboard" > dashboard.py
+git add dashboard.py
+git commit -m "Add dashboard"
+git checkout develop
+git merge feature/dashboard
+git branch -d feature/dashboard
 
-# After fixing the bug, come back
-git checkout feature/user-login
+# Release
+git checkout -b release/v1.0.0 develop
+echo "1.0.0" > VERSION
+git add VERSION
+git commit -m "Version 1.0.0"
 
-# Restore your stashed work
-git stash pop
-```
+# Merge to main
+git checkout -b main develop
+git merge release/v1.0.0
+git tag -a v1.0.0 -m "Release 1.0.0"
 
-**[IMAGE: Stash workflow diagram]**  
-*Description: Changes being saved, branch switch, changes restored*
+# Merge back to develop
+git checkout develop
+git merge release/v1.0.0
+git branch -d release/v1.0.0
 
-**Stash commands:**
+# Hotfix
+git checkout -b hotfix/critical main
+echo "fix" > fix.txt
+git add fix.txt
+git commit -m "Critical fix"
+git checkout main
+git merge hotfix/critical
+git tag -a v1.0.1 -m "Hotfix 1.0.1"
+git checkout develop
+git merge hotfix/critical
+git branch -d hotfix/critical
 
-```bash
-git stash list              # View all stashes
-git stash apply             # Apply stash but keep it
-git stash pop               # Apply and delete stash
-git stash drop stash@{0}    # Delete specific stash
-git stash clear             # Delete all stashes
-```
-
-**[IMAGE: Terminal showing stash commands]**  
-*Description: List of stashes with descriptions*
-
-### Cherry-Picking - Copy Specific Commits
-
-You want ONE commit from another branch:
-
-```bash
-# On feature-a, there's a useful commit
-git log feature-a --oneline
-# a1b2c3d Fix validation bug
-# e4f5g6h Add feature A
-
-# You want just the bug fix on your branch
-git checkout feature-b
-git cherry-pick a1b2c3d
-```
-
-**[IMAGE: Cherry-pick visualization]**  
-*Description: Single commit being copied between branches*
-
-**Use cases:**
-- Apply hotfix to multiple branches
-- Backport features to older versions
-- Extract specific fixes
-
-### Viewing Branch Differences
-
-```bash
-# See what's in feature that's not in main
-git log main..feature/user-login
-
-# See what's in main that's not in feature
-git log feature/user-login..main
-
-# See all commits in both but not in both
-git log main...feature/user-login
-
-# See actual file differences
-git diff main..feature/user-login
-```
-
-**[IMAGE: Terminal showing log differences]**  
-*Description: Commit logs showing branch divergence*
-
-### Renaming Branches
-
-```bash
-# Rename current branch
-git branch -m new-name
-
-# Rename another branch
-git branch -m old-name new-name
-
-# Update remote
-git push origin -u new-name
-git push origin --delete old-name
+# Visualize
+git log --oneline --graph --all
 ```
 
 ---
 
-## 🏷️ Part 9: Tags and Releases
+## Part 10: Tags and Releases
 
 ### What are Tags?
 
-**Tags** mark specific points in history, typically for releases.
+**Tags** mark specific points in history, typically releases.
 
-**[IMAGE: Timeline with tags marking release versions]**  
-*Description: Commit history with v1.0, v1.1, v2.0 tags*
+**Types:**
 
-### Types of Tags
-
-**Lightweight tags** (simple pointers):
+**Lightweight tag** (simple pointer):
 ```bash
 git tag v1.0.0
 ```
 
-**Annotated tags** (with metadata - recommended):
+**Annotated tag** (recommended - includes metadata):
 ```bash
 git tag -a v1.0.0 -m "Release version 1.0.0"
 ```
 
-### Creating a Release
-
-Sara's team is releasing TechWave App v1.0:
-
-```bash
-# Make sure main is ready
-git checkout main
-git pull origin main
-
-# Create annotated tag
-git tag -a v1.0.0 -m "Initial release - User authentication system"
-
-# Push tag to GitHub
-git push origin v1.0.0
-
-# Or push all tags
-git push origin --tags
-```
-
-**[IMAGE: Terminal showing tag creation and push]**  
-*Description: Tag commands with output*
-
-### Viewing Tags
-
-```bash
-# List all tags
-git tag
-
-# Output:
-# v0.1.0
-# v0.2.0
-# v1.0.0
-
-# Show tag details
-git show v1.0.0
-```
-
-**[IMAGE: Tag details output]**  
-*Description: Tag information with commit details*
+**[IMAGE: Tag on commit timeline]**  
+*Description: Commit history with tags marking releases*
 
 ### Semantic Versioning
 
-TechWave follows **SemVer**: `MAJOR.MINOR.PATCH`
+Format: `MAJOR.MINOR.PATCH`
 
 ```
-v1.2.3
-│ │ └── PATCH: Bug fixes
-│ └──── MINOR: New features (backward compatible)
-└────── MAJOR: Breaking changes
+v2.3.1
+│ │ └─ PATCH: Bug fixes (backward compatible)
+│ └─── MINOR: New features (backward compatible)
+└───── MAJOR: Breaking changes
 ```
 
 **Examples:**
@@ -1015,391 +1181,516 @@ v1.2.3
 - `v1.0.1` → `v1.1.0`: New feature
 - `v1.1.0` → `v2.0.0`: Breaking change
 
-**[IMAGE: Semantic versioning breakdown]**  
-*Description: Visual explanation of version numbers*
+**[IMAGE: SemVer breakdown visual]**  
+*Description: Version number explained with examples*
+
+### Creating Tags
+
+```bash
+# Create annotated tag
+git tag -a v1.2.0 -m "Release 1.2.0: Add user authentication"
+
+# List tags
+git tag
+
+# Show tag details
+git show v1.2.0
+
+# Push single tag
+git push origin v1.2.0
+
+# Push all tags
+git push origin --tags
+```
+
+**[IMAGE: Tag creation and push]**  
+*Description: Terminal showing tag commands*
 
 ### Creating GitHub Release
 
-1. Go to repository on GitHub
-2. Click **Releases** → **Create a new release**
-3. Choose tag: `v1.0.0`
-4. Release title: "TechWave App v1.0.0"
+1. Go to repository → **Releases**
+2. Click **"Create a new release"**
+3. Choose tag: `v1.2.0` (or create new)
+4. Release title: "Version 1.2.0 - Authentication Update"
 5. Description:
-   ```markdown
-   ## Features
-   - User registration and login
-   - Session management
-   - Password hashing
-   - Comprehensive test suite
-   
-   ## Installation
-   Download the source code and run:
-   `pip install -r requirements.txt`
-   
-   ## Documentation
-   See the [Wiki](link) for full documentation.
-   ```
-6. Attach binary files (optional)
-7. Click **Publish release**
 
-**[IMAGE: GitHub release creation form]**  
-*Description: Form filled with release details*
+```markdown
+## What's New
 
-**[IMAGE: Published release page]**  
-*Description: Release showing download statistics and assets*
+### Features
+- User registration and login
+- Password hashing with bcrypt
+- 🎫 Session management
+- Email validation
 
-### Checking Out Tags
+### Improvements
+- Faster database queries
+- Better error messages
+- Updated UI design
+
+### Bug Fixes
+- Fix login redirect issue (#42)
+- Fix session timeout (#38)
+
+### Documentation
+- API documentation updated
+- Installation guide improved
+
+## 📦 Installation
 
 ```bash
-# View code at specific tag
-git checkout v1.0.0
+pip install -r requirements.txt
+python setup.py install
+```
 
-# Warning: You're in "detached HEAD" state
-# To make changes, create a branch:
-git checkout -b hotfix-from-v1.0.0
+## 🔄 Upgrade
+
+```bash
+git pull origin main
+pip install -r requirements.txt --upgrade
+```
+
+## Breaking Changes
+
+None! This is a backward-compatible release.
+
+## 👥 Contributors
+
+Thanks to @ahmed, @mona, @youssef for their contributions!
+
+## Stats
+
+- 45 commits
+- 12 files changed
+- 850 additions, 320 deletions
+```
+
+6. Attach files (optional): Binary downloads, documentation
+7. **Prerelease** checkbox if beta/RC
+8. Click **"Publish release"**
+
+**[IMAGE: GitHub release creation form]**  
+*Description: Complete form with all sections filled*
+
+**[IMAGE: Published release page]**  
+*Description: Release showing download counts and assets*
+
+---
+
+## PRACTICE 7: Create a Release
+
+```bash
+# 1. Prepare for release
+git checkout main
+git pull origin main
+
+# 2. Update version
+echo "2.0.0" > VERSION
+git add VERSION
+git commit -m "Bump version to 2.0.0"
+
+# 3. Update changelog
+cat >> CHANGELOG.md << EOF
+## [2.0.0] - 2025-02-20
+
+### Added
+- New feature X
+- New feature Y
+
+### Changed
+- Improved performance
+
+### Fixed
+- Bug #123
+EOF
+
+git add CHANGELOG.md
+git commit -m "Update changelog for v2.0.0"
+
+# 4. Create tag
+git tag -a v2.0.0 -m "Release 2.0.0: Major update"
+
+# 5. Push
+git push origin main --tags
+
+# 6. Create release on GitHub
+# Follow the steps above
 ```
 
 ---
 
-## ↩️ Part 10: Undoing Mistakes
+## Part 11: Cherry-Picking
 
-### The Three Ways to Undo
+### What is Cherry-Picking?
 
-| Command | Changes History? | Use When |
-|---------|------------------|----------|
-| `git revert` | No | Public branches |
-| `git reset` | Yes | Local, not pushed |
-| `git checkout` | No | Discard unstaged changes |
+**Cherry-pick** copies a specific commit from one branch to another.
 
-**[IMAGE: Undo commands comparison flowchart]**  
-*Description: Decision tree for choosing undo method*
-
-### Scenario 1: Undo Uncommitted Changes
-
-**Discard changes in one file:**
-```bash
-git restore auth.py
-# Or old syntax: git checkout -- auth.py
+```
+Branch A: A ─ B ─ C ─ D
+                  ↓ (cherry-pick)
+Branch B: E ─ F ─ C' (copy of C)
 ```
 
-**Discard all changes:**
+**[IMAGE: Cherry-pick visualization]**  
+*Description: Single commit being copied between branches*
+
+### When to Use
+
+✅ **Good uses:**
+- Apply hotfix to multiple branches
+- Port feature to older version
+- Extract specific fix
+
+❌ **Avoid when:**
+- Should merge entire branch instead
+- Creates duplicate commits
+
+### Cherry-Pick Example
+
 ```bash
-git restore .
+# Scenario: Bug fix on develop, need on release branch
+
+# 1. Find commit hash
+git log develop --oneline
+# a1b2c3d Fix critical bug
+
+# 2. Switch to release branch
+git checkout release/v2.0.0
+
+# 3. Cherry-pick the fix
+git cherry-pick a1b2c3d
+
+# Done! Commit copied to release branch
 ```
 
-**[IMAGE: Terminal showing restore command]**  
-*Description: File changes being discarded*
+**[IMAGE: Cherry-pick terminal output]**  
+*Description: Successful cherry-pick with commit info*
 
-### Scenario 2: Undo Last Commit (Not Pushed)
+### Cherry-Pick with Conflicts
 
-**Keep the changes, undo the commit:**
 ```bash
-git reset --soft HEAD~1
+git cherry-pick a1b2c3d
+
+# If conflict:
+# 1. Fix conflicts manually
+# 2. Stage files
+git add fixed-file.py
+
+# 3. Continue cherry-pick
+git cherry-pick --continue
+
+# OR abort
+git cherry-pick --abort
 ```
 
-**Discard the changes entirely:**
+### Cherry-Pick Multiple Commits
+
 ```bash
-git reset --hard HEAD~1
+# Cherry-pick range of commits
+git cherry-pick a1b2c3d..e5f6g7h
+
+# Cherry-pick specific commits
+git cherry-pick a1b2c3d c3d4e5f e5f6g7h
 ```
 
-**Undo multiple commits:**
+---
+
+## PRACTICE 8: Cherry-Pick Exercise
+
 ```bash
-git reset --soft HEAD~3  # Undo last 3 commits
+# Setup scenario
+git init cherry-demo
+cd cherry-demo
+
+# Main branch
+git checkout -b main
+echo "main" > main.txt
+git add main.txt
+git commit -m "Main commit"
+
+# Feature branch with 3 commits
+git checkout -b feature
+echo "feature 1" > feature1.txt
+git add feature1.txt
+git commit -m "Feature 1"
+
+echo "feature 2" > feature2.txt
+git add feature2.txt
+git commit -m "Feature 2 - the one we want"
+
+echo "feature 3" > feature3.txt
+git add feature3.txt
+git commit -m "Feature 3"
+
+# Now cherry-pick just Feature 2 to main
+git log feature --oneline
+# Note the hash of "Feature 2" commit
+
+git checkout main
+git cherry-pick <HASH_OF_FEATURE_2>
+
+# Verify
+git log --oneline
+ls  # Should have main.txt and feature2.txt only
 ```
 
-**[IMAGE: Reset options diagram]**  
-*Description: Soft, mixed, and hard reset effects*
+---
 
-### Scenario 3: Undo Pushed Commit (Safely)
+## Part 12: Branch Protection Rules
 
-Sara accidentally pushed broken code to main:
+### Why Protect Branches?
 
+Prevent:
+- ❌ Direct pushes to main
+- ❌ Merging without review
+- ❌ Merging with failing tests
+- ❌ Force pushes
+- ❌ Branch deletion
+
+**[IMAGE: Unprotected vs protected branch]**  
+*Description: Comparison showing protection benefits*
+
+### Setting Up Protection
+
+**On GitHub:**
+1. Settings → Branches
+2. Click **"Add rule"**
+3. Branch name pattern: `main`
+4. Enable:
+   - ✅ Require pull request before merging
+     - ✅ Require approvals (2)
+     - ✅ Dismiss stale reviews
+   - ✅ Require status checks to pass
+     - ✅ Require branches to be up to date
+   - ✅ Require conversation resolution
+   - ✅ Require signed commits (optional)
+   - ✅ Require linear history (optional)
+   - ✅ Include administrators
+5. Click **"Create"**
+
+**[IMAGE: Branch protection settings]**  
+*Description: All checkboxes and options*
+
+### Result
+
+Now if you try:
 ```bash
-# Create a reverse commit (safe for public branches)
-git revert HEAD
-
-# This creates a new commit that undoes the changes
 git push origin main
 ```
 
-**Result:**
+**Error:**
 ```
-* d4e5f6g Revert "Add broken feature"
-* c3d4e5f Add broken feature  ← This is undone
-* b2c3d4e Previous commit
-```
-
-**[IMAGE: Revert commit in history]**  
-*Description: New commit undoing previous commit*
-
-### Scenario 4: Edit Last Commit Message
-
-```bash
-# Change the last commit message
-git commit --amend -m "Corrected message"
-
-# Add forgotten files to last commit
-git add forgotten_file.py
-git commit --amend --no-edit
+! [remote rejected] main -> main (protected branch hook declined)
+error: failed to push some refs
 ```
 
-**⚠️ Warning:** Only amend if you haven't pushed!
+**Must use Pull Request!** ✅
 
-### Scenario 5: Emergency - Find Lost Commits
-
-```bash
-# View all actions (including deleted commits)
-git reflog
-
-# Output:
-# a1b2c3d HEAD@{0}: reset: moving to HEAD~1
-# b2c3d4e HEAD@{1}: commit: Important feature
-# c3d4e5f HEAD@{2}: commit: Another feature
-
-# Recover the lost commit
-git checkout b2c3d4e
-git checkout -b recovered-feature
-```
-
-**[IMAGE: reflog output showing commit history]**  
-*Description: Complete history including resets and rebases*
+**[IMAGE: Protected branch push rejection]**  
+*Description: Error message from protected branch*
 
 ---
 
-## 👥 Part 11: Code Review Best Practices
-
-### What Makes a Good Code Review?
-
-**For Reviewers:**
-- ✅ Be constructive and respectful
-- ✅ Explain *why* changes are needed
-- ✅ Ask questions to understand intent
-- ✅ Praise good code
-- ✅ Look for bugs, style issues, and architecture
-
-**For Authors:**
-- ✅ Keep PRs small and focused
-- ✅ Write descriptive PR descriptions
-- ✅ Respond to all comments
-- ✅ Don't take criticism personally
-- ✅ Update PR based on feedback
-
-**[IMAGE: Good vs bad code review comments comparison]**  
-*Description: Helpful vs unhelpful review comments*
-
-### PR Review Checklist
-
-Create `.github/PULL_REQUEST_TEMPLATE.md`:
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Testing
-- [ ] Unit tests pass
-- [ ] Manual testing completed
-- [ ] Edge cases considered
-
-## Checklist
-- [ ] Code follows project style guide
-- [ ] Comments added for complex logic
-- [ ] Documentation updated
-- [ ] No console.log or debug code
-- [ ] All variables have meaningful names
-
-## Screenshots (if applicable)
-Add screenshots here
-
-## Related Issues
-Closes #123
-```
-
-**[IMAGE: PR template in action on GitHub]**  
-*Description: PR with all sections filled*
-
-### Sara's Code Review Experience
-
-Hassan reviews Sara's authentication PR:
-
-**Good comment:**
-```
-I like the session management approach! One suggestion: 
-consider using bcrypt instead of SHA-256 for password 
-hashing. Bcrypt is specifically designed for passwords 
-and includes automatic salting. 
-
-Example: https://pypi.org/project/bcrypt/
-```
-
-✅ Constructive, explains why, provides resources
-
-**Bad comment:**
-```
-This is wrong. Use bcrypt.
-```
-
-❌ Not helpful, no explanation
-
-**[IMAGE: GitHub PR conversation showing constructive feedback]**  
-*Description: Comments with suggestions and discussions*
-
----
-
-## 🎯 Hands-On Exercise: Git Flow Simulation
-
-### Team Project: Build a Blog Application
-
-**Teams of 3-4 people**
-
-#### Roles:
-- **Product Owner**: Manages releases
-- **Developer 1**: User authentication
-- **Developer 2**: Blog post CRUD
-- **Developer 3**: Comment system
-
-#### Setup:
+## PRACTICE 9: Set Up Branch Protection
 
 ```bash
-# Product Owner creates repository and main/develop branches
-git init blog-application
-cd blog-application
+# 1. On GitHub, protect main branch:
+#    - Require PR
+#    - Require 1 approval
+#    - Require status checks
 
-# Create initial commit
-echo "# Blog Application" > README.md
+# 2. Try to push directly (should fail)
+git checkout main
+echo "test" >> README.md
 git add README.md
+git commit -m "Test direct push"
+git push origin main
+# ❌ Should fail!
+
+# 3. Do it the right way
+git checkout -b fix/update-readme
+git push origin fix/update-readme
+# Create PR on GitHub
+# Get approval
+# Merge via PR
+```
+
+---
+
+## MEGA CHALLENGE: Complete Team Collaboration
+
+**Scenario:** Build a Library Management System as a team of 4.
+
+### Setup Phase (10 min)
+
+```bash
+# Team Lead:
+# 1. Create repository "library-system"
+# 2. Add 3 teammates as collaborators
+# 3. Set up branch protection on main
+# 4. Create initial structure
+
+mkdir library-system
+cd library-system
+git init
+echo "# Library Management System" > README.md
+echo "python-library" > .gitignore
+git add .
 git commit -m "Initial commit"
-
-# Create develop branch
-git branch develop
-git push -u origin main
-git push -u origin develop
+# Push to GitHub
 ```
 
-#### Tasks:
+### Development Phase (40 min)
 
-**1. Feature Development (30 minutes)**
-- Each developer creates feature branch from `develop`
-- Implements their feature
-- Commits with good messages
-- Pushes to GitHub
-
-**2. Code Review (15 minutes)**
-- Create Pull Requests to `develop`
-- Review each other's code
-- Address feedback
-
-**3. Release Preparation (15 minutes)**
-- Product Owner creates `release/v1.0.0` from `develop`
-- Update version numbers
-- Update CHANGELOG
-- Merge to `main` with tag
-
-**4. Hotfix Simulation (10 minutes)**
-- Introduce a "bug" in main
-- Create hotfix branch
-- Fix and merge to both main and develop
-
-**[IMAGE: Exercise workflow diagram]**  
-*Description: Complete Git Flow cycle for exercise*
-
----
-
-## 🔧 Part 12: Troubleshooting Advanced Issues
-
-### Issue 1: Merge Conflict in Binary Files
-
-**Problem:** Can't merge image/PDF files
-
-**Solution:**
+**Person 1: Book Management**
 ```bash
-# Choose your version
-git checkout --ours file.png
-
-# Or choose their version
-git checkout --theirs file.png
-
-git add file.png
-git commit
+git checkout -b feature/books
+# Create books.py with Book class
+# Create tests
+git add .
+git commit -m "Add Book management"
+git push origin feature/books
+# Create PR → Get review → Merge
 ```
 
-### Issue 2: Accidentally Committed to Wrong Branch
-
-**Solution:**
+**Person 2: Member Management**
 ```bash
-# Move commit to correct branch
-git branch correct-branch      # Create branch with commit
-git reset --hard HEAD~1        # Remove from current branch
-git checkout correct-branch    # Switch to correct branch
+git checkout -b feature/members
+# Create members.py with Member class
+# Create tests
+git add .
+git commit -m "Add Member management"
+git push origin feature/members
+# Create PR → Get review → Merge
 ```
 
-### Issue 3: Need to Merge Specific Files Only
-
-**Solution:**
+**Person 3: Borrowing System**
 ```bash
-# Checkout specific files from another branch
-git checkout feature-branch -- path/to/file.py
-git commit -m "Cherry-pick specific file from feature"
+git checkout -b feature/borrowing
+# Create borrowing.py
+# Handle book checkout/return
+# Create tests
+git add .
+git commit -m "Add borrowing system"
+git push origin feature/borrowing
+# Create PR → Get review → Merge
 ```
 
-### Issue 4: Branches Diverged Too Much
-
-**Solution:**
+**Person 4: Search & Filters**
 ```bash
-# Rebase interactively to clean up
-git rebase -i main
-
-# Or create a fresh branch with desired changes
-git checkout -b clean-feature
-git cherry-pick commit1 commit2 commit3
+git checkout -b feature/search
+# Create search.py
+# Add search functionality
+# Create tests
+git add .
+git commit -m "Add search features"
+git push origin feature/search
+# Create PR → Get review → Merge
 ```
 
-**[IMAGE: Troubleshooting flowchart]**  
-*Description: Common issues and their solutions*
+### Integration Phase (20 min)
 
----
-
-## 📊 Part 13: Visualizing Your Repository
-
-### Using Git Log Effectively
-
-**Beautiful graph view:**
+**Everyone:**
 ```bash
-git log --oneline --graph --all --decorate
+# Pull latest main
+git checkout main
+git pull origin main
+
+# Create integration branch together
+git checkout -b feature/integrate-all
+
+# Integrate all features
+# Create main.py that uses all modules
+# Fix any integration issues
+# Test everything works together
+
+git add .
+git commit -m "Integrate all features"
+git push origin feature/integrate-all
+# Create PR → Team reviews → Merge
 ```
 
-**[IMAGE: Terminal showing colorful git log graph]**  
-*Description: ASCII art representation of branches*
+### Release Phase (15 min)
 
-**See who changed what:**
+**Team Lead:**
 ```bash
-git log --author="Sara" --since="2 weeks ago"
+# Create release
+git checkout main
+git pull origin main
+
+# Use Git Flow for release
+git checkout -b release/v1.0.0
+
+# Update version
+echo "1.0.0" > VERSION
+
+# Create changelog
+cat > CHANGELOG.md << EOF
+# Changelog
+
+## [1.0.0] - 2025-02-20
+
+### Features
+- Book management system
+- Member management
+- Borrowing and returns
+- Search and filtering
+
+### Contributors
+- Person 1: Book management
+- Person 2: Member management
+- Person 3: Borrowing system
+- Person 4: Search features
+EOF
+
+git add VERSION CHANGELOG.md
+git commit -m "Prepare release 1.0.0"
+
+# Merge to main
+git checkout main
+git merge release/v1.0.0
+git tag -a v1.0.0 -m "Release 1.0.0"
+
+# Push with tags
+git push origin main --tags
+
+# Create GitHub Release (on website)
 ```
 
-**Find when a bug was introduced:**
+### Hotfix Phase (10 min)
+
+**Simulate bug in production:**
+
 ```bash
-git bisect start
-git bisect bad                 # Current version has bug
-git bisect good v1.0.0         # v1.0.0 was good
-# Git checks out middle commit, test it
-git bisect good  # or bad
-# Repeat until bug commit is found
+# Bug discovered in production!
+git checkout main
+git checkout -b hotfix/fix-borrow-bug
+
+# Fix the bug
+# (edit borrowing.py)
+git add borrowing.py
+git commit -m "Fix critical borrowing bug"
+
+# Create PR with "hotfix" label
+git push origin hotfix/fix-borrow-bug
+
+# Fast-track review and merge
+# Create tag v1.0.1
 ```
 
-### GitKraken / Git Graph Extensions
+### Success Criteria
 
-**For visual learners, use GUI tools:**
-- GitKraken
-- SourceTree
-- VS Code Git Graph extension
+- ✅ 4 feature branches created and merged
+- ✅ All merges via Pull Request
+- ✅ At least 2 code reviews per PR
+- ✅ Branch protection enforced
+- ✅ Release created with tag
+- ✅ Hotfix applied successfully
+- ✅ Clean commit history
+- ✅ All features working together
 
-**[IMAGE: GitKraken interface showing branch visualization]**  
-*Description: Modern GUI showing repository history*
+**[IMAGE: Final git network graph]**  
+*Description: Complex but organized branching structure*
 
 ---
 
@@ -1407,105 +1698,91 @@ git bisect good  # or bad
 
 ### What You Mastered
 
-✅ **Branch Management**: Create, switch, merge, delete  
-✅ **Merge Strategies**: Merge commit, fast-forward, squash  
-✅ **Rebasing**: Interactive rebase, rebasing onto main  
-✅ **Git Flow**: Enterprise workflow with multiple branch types  
-✅ **GitHub Flow**: Simplified continuous deployment workflow  
-✅ **Advanced Operations**: Stash, cherry-pick, reflog  
-✅ **Tags & Releases**: Semantic versioning, creating releases  
-✅ **Undoing Mistakes**: Revert, reset, restore  
-✅ **Code Review**: Best practices for reviews  
+✅ **GitHub Collaboration**
+- Team repository setup
+- Permission management
+- Collaboration models
 
-### Essential Commands
+✅ **Authentication**
+- SSH keys (recommended!)
+- Personal Access Tokens
+- Secure workflows
+
+✅ **Pull Requests**
+- Creating professional PRs
+- Code review process
+- Merging strategies
+
+✅ **Workflows**
+- Git Flow (enterprise)
+- GitHub Flow (agile)
+- When to use each
+
+✅ **Release Management**
+- Tags and versioning
+- Creating releases
+- Semantic versioning
+
+✅ **Advanced Techniques**
+- Cherry-picking commits
+- Branch protection
+- Team workflows
+
+### Command Reference
 
 ```bash
-# Branch operations
-git branch feature-name           # Create branch
-git checkout -b feature-name      # Create and switch
-git switch feature-name           # Switch branch (modern)
-git branch -d feature-name        # Delete branch
-git push origin feature-name      # Push branch
+# AUTHENTICATION
+ssh-keygen -t ed25519 -C "email@example.com"
+ssh-add ~/.ssh/id_ed25519
+ssh -T git@github.com
+git remote set-url origin git@github.com:user/repo.git
 
-# Merging
-git merge feature-name            # Merge branch
-git merge --squash feature-name   # Squash merge
-git rebase main                   # Rebase onto main
-git rebase -i HEAD~3              # Interactive rebase
+# COLLABORATION
+git clone URL
+git remote add upstream URL
+git fetch origin
+git pull origin main
+git push origin branch
 
-# Stashing
-git stash                         # Save work temporarily
-git stash pop                     # Restore and remove stash
-git stash list                    # View all stashes
-
-# Tags
-git tag v1.0.0                    # Create tag
-git tag -a v1.0.0 -m "Release"    # Annotated tag
+# TAGGING
+git tag                           # List tags
+git tag v1.0.0                    # Lightweight tag
+git tag -a v1.0.0 -m "message"   # Annotated tag
 git push origin v1.0.0            # Push tag
+git push origin --tags            # Push all tags
+git tag -d v1.0.0                 # Delete local tag
+git push origin :refs/tags/v1.0.0 # Delete remote tag
 
-# Undoing
-git restore file.py               # Discard unstaged changes
-git reset --soft HEAD~1           # Undo commit, keep changes
-git revert HEAD                   # Create reverse commit
+# CHERRY-PICK
+git cherry-pick <commit-hash>     # Copy commit
+git cherry-pick <hash1> <hash2>   # Multiple commits
+git cherry-pick --continue        # After fixing conflicts
+git cherry-pick --abort           # Cancel cherry-pick
 
-# Advanced
-git cherry-pick commit-hash       # Copy specific commit
-git reflog                        # View all actions
+# GIT FLOW
+git checkout -b feature/name develop
+git checkout develop
+git merge feature/name
+git checkout -b release/v1.0.0 develop
+git checkout main
+git merge release/v1.0.0
+git tag -a v1.0.0
 ```
 
 ---
 
-## 🎉 Sara's Internship Success
+## You're a Collaboration Pro!
 
-Sara successfully implemented the authentication feature using professional Git workflows. Her achievements:
+You can now:
+- ✅ Set up team repositories securely
+- ✅ Authenticate with SSH
+- ✅ Create and review Pull Requests
+- ✅ Follow professional workflows
+- ✅ Manage releases and tags
+- ✅ Use advanced Git techniques
+- ✅ Work effectively in teams
 
-- ✅ Used feature branches for clean development
-- ✅ Rebased to maintain linear history
-- ✅ Created comprehensive tests
-- ✅ Submitted well-documented PR
-- ✅ Addressed code review feedback promptly
-- ✅ Tagged and released v1.0.0
-
-Karim was impressed: "You've mastered what takes some developers years to learn. You're thinking like a senior engineer already!"
-
-At the end of summer, Sara received a job offer from TechWave Solutions! 🎊
-
----
-
-## 📖 Additional Resources
-
-### Documentation
-- Git Branching Guide: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
-- Git Flow Guide: https://nvie.com/posts/a-successful-git-branching-model/
-- GitHub Flow: https://guides.github.com/introduction/flow/
-- Interactive Rebase: https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
-
-### Tools
-- GitKraken: https://www.gitkraken.com
-- SourceTree: https://www.sourcetreeapp.com
-- Git Graph (VS Code): Search in extensions marketplace
-
-### Practice
-- Learn Git Branching: https://learngitbranching.js.org
-- Visualizing Git: http://git-school.github.io/visualizing-git/
-
----
-
-## 🔮 Next Session Preview
-
-**Session 4 — The Job: Open Source, Forking & Advanced GitHub**
-
-Sara's friend **Ahmed** discovers open source! He finds a bug in a popular Python library and wants to contribute. He also wants to create a portfolio website to showcase his projects.
-
-You'll learn:
-- Contributing to open source projects
-- Forking workflow and upstream remotes
-- GitHub Actions for CI/CD
-- GitHub Pages for hosting websites
-- Advanced GitHub features
-- Security best practices
-
-Get ready to become part of the global developer community! 🌍
+**Next session:** Open source contribution, forking, GitHub Actions, and building your portfolio!
 
 ---
 
