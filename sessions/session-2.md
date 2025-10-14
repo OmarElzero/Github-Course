@@ -1822,6 +1822,389 @@ git log --oneline --graph --all
 - fetch vs pull
 - Branch management on remotes
 
+---
+
+## Part 12: Visualizing Your Git History
+
+### Understanding Git Log Visualization
+
+Being able to **see** your repository's structure is crucial for understanding branches, merges, and history. Git provides powerful visualization tools through `git log` commands.
+
+### Basic Git Log
+
+The simplest way to view history:
+
+```bash
+git log
+```
+
+**Expected Output:**
+```
+commit a7f3d2e1b9c8f6d5e4a3b2c1d0e9f8a7b6c5d4e3
+Author: Sara Ahmed <sara.ahmed@example.com>
+Date:   Mon Feb 10 15:45:32 2025 +0200
+
+    Add scientific calculator features
+    
+    - Added sin, cos, tan functions
+    - Added logarithm support
+    - Updated menu interface
+
+commit b8e4f3c2d1a0b9c8d7e6f5a4b3c2d1e0f9e8d7f6
+Author: Sara Ahmed <sara.ahmed@example.com>
+Date:   Mon Feb 10 14:30:15 2025 +0200
+
+    Fix division by zero bug
+    
+    Added proper error handling for division operation
+
+commit c9f5e4d3c2b1a0c9d8e7f6e5d4c3b2a1f0e9f8e7
+Author: Sara Ahmed <sara.ahmed@example.com>
+Date:   Mon Feb 10 10:15:00 2025 +0200
+
+    Initial calculator implementation
+```
+
+**[IMAGE: Terminal showing full git log output with commit details]**  
+*Description: Multi-line log entries with full commit hashes, author, date, and messages*
+
+### Compact One-Line View
+
+For a cleaner, more scannable view:
+
+```bash
+git log --oneline
+```
+
+**Expected Output:**
+```
+a7f3d2e Add scientific calculator features
+b8e4f3c Fix division by zero bug
+c9f5e4d Initial calculator implementation
+```
+
+**Benefits:**
+- ✅ Short commit hashes (7 characters)
+- ✅ One line per commit
+- ✅ Easy to scan through history
+- ✅ Great for getting quick overview
+
+**[IMAGE: Terminal showing compact git log --oneline output]**  
+*Description: Clean list of commits with abbreviated hashes*
+
+### The Ultimate Visualization Command
+
+The most powerful visualization shows branches, merges, and relationships:
+
+```bash
+git log --oneline --graph --decorate --all
+```
+
+**Let's break down what each flag does:**
+
+| Flag | Purpose |
+|------|---------|
+| `--oneline` | Compact one-line format |
+| `--graph` | Draw ASCII branch structure |
+| `--decorate` | Show branch and tag names |
+| `--all` | Show all branches (not just current) |
+
+**Expected Output:**
+```
+* a7f3d2e (HEAD -> main, origin/main) Merge branch 'feature-scientific'
+|\  
+| * f6e5d4c (feature-scientific) Add trigonometric functions
+| * e5d4c3b Add logarithm support
+| * d4c3b2a Create scientific calculator base
+|/  
+* b8e4f3c Fix division by zero bug
+| * c3b2a1f (feature-ui) Add colorful menu
+| * b2a1f0e Improve user prompts
+|/  
+* a1f0e9d Initial calculator implementation
+```
+
+**[IMAGE: Terminal showing git log with graph visualization]**  
+*Description: ASCII art showing branch structure with commits, merges, and branch labels*
+
+### Reading the Graph
+
+**Understanding the symbols:**
+
+```
+*   = Commit
+|   = Branch line
+/   = Branch diverging
+\   = Branch merging
+|\  = Merge commit (two parents)
+```
+
+**Example interpretation:**
+```
+* a7f3d2e (HEAD -> main) Merge feature-scientific
+|\  
+| * f6e5d4c Add trigonometric functions    ← On feature branch
+| * e5d4c3b Add logarithm support          ← On feature branch
+|/                                          ← Branches merged
+* b8e4f3c Fix division by zero bug         ← Back on main
+```
+
+**This shows:**
+1. Feature branch split from main at commit `b8e4f3c`
+2. Two commits were made on the feature branch
+3. Feature branch was merged back into main
+4. HEAD is now on main at the merge commit
+
+**[IMAGE: Annotated graph showing branch lifecycle]**  
+*Description: Same graph with arrows and labels explaining each part*
+
+### Practical Visualization Scenarios
+
+#### Scenario 1: Check Current Branch Structure
+
+```bash
+git log --oneline --graph --decorate --all
+```
+
+**Use this when:**
+- Starting work to see what branches exist
+- Before merging to verify branch status
+- After merge to confirm success
+- Troubleshooting branch issues
+
+#### Scenario 2: View Last 5 Commits
+
+```bash
+git log --oneline --graph --decorate -5
+```
+
+**Output:**
+```
+* a7f3d2e (HEAD -> main) Merge feature-scientific
+|\  
+| * f6e5d4c Add trigonometric functions
+| * e5d4c3b Add logarithm support
+|/  
+* b8e4f3c Fix division by zero bug
+```
+
+#### Scenario 3: See Only Your Branch
+
+```bash
+git log --oneline --graph
+```
+
+(Without `--all`, shows only current branch history)
+
+**Output:**
+```
+* a7f3d2e (HEAD -> main) Merge feature-scientific
+* b8e4f3c Fix division by zero bug
+* a1f0e9d Initial calculator implementation
+```
+
+### Creating an Alias for Easy Visualization
+
+Typing the full command is tedious. Create a shortcut:
+
+```bash
+git config --global alias.tree "log --oneline --graph --decorate --all"
+```
+
+**Now you can just type:**
+```bash
+git tree
+```
+
+**[IMAGE: Terminal showing alias creation and usage]**  
+*Description: Creating alias and then using git tree command*
+
+### More Useful Aliases
+
+Add these to your Git config:
+
+```bash
+# Detailed tree view
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+
+# Show last 10 commits
+git config --global alias.last "log --oneline --graph --decorate -10"
+
+# Show branches with last commit
+git config --global alias.branches "branch -v"
+```
+
+**Using the detailed alias:**
+```bash
+git lg
+```
+
+**Expected Output (with colors):**
+```
+* a7f3d2e - (HEAD -> main, origin/main) Merge feature-scientific (2 hours ago) <Sara Ahmed>
+|\  
+| * f6e5d4c - (feature-scientific) Add trigonometric functions (3 hours ago) <Sara Ahmed>
+| * e5d4c3b - Add logarithm support (4 hours ago) <Sara Ahmed>
+|/  
+* b8e4f3c - Fix division by zero bug (1 day ago) <Sara Ahmed>
+```
+
+**[IMAGE: Colorful git log output with custom format]**  
+*Description: Enhanced log view with colors, relative dates, and author names*
+
+### Hands-On Practice: Visualization
+
+Let's practice reading Git graphs!
+
+#### Exercise 1: Create a Branch Structure
+
+```bash
+# Start fresh
+cd ~/Documents
+mkdir git-viz-practice
+cd git-viz-practice
+git init
+
+# Create initial commits
+echo "v1" > file.txt
+git add file.txt
+git commit -m "Initial commit"
+
+echo "v2" >> file.txt
+git commit -am "Second commit"
+
+# Create and work on feature branch
+git switch -c feature-a
+echo "Feature A work" >> file.txt
+git commit -am "Add feature A part 1"
+echo "More A work" >> file.txt
+git commit -am "Add feature A part 2"
+
+# Switch back and create another branch
+git switch main
+git switch -c feature-b
+echo "Feature B work" >> file.txt
+git commit -am "Add feature B"
+
+# Merge feature-a
+git switch main
+git merge feature-a
+
+# Now visualize!
+git log --oneline --graph --decorate --all
+```
+
+**Expected Graph:**
+```
+* b3c4d5e (HEAD -> main) Merge branch 'feature-a'
+|\  
+| * a2b3c4 (feature-a) Add feature A part 2
+| * 9a1b2c Add feature A part 1
+* | 8a9b0c (feature-b) Add feature B
+|/  
+* 7a8b9c Second commit
+* 6a7b8c Initial commit
+```
+
+**[IMAGE: Terminal showing the created branch structure]**  
+*Description: Graph matching the expected output above*
+
+#### Exercise 2: Interpret This Graph
+
+Study this graph and answer the questions:
+
+```
+*   h7d8k9f (HEAD -> main) Merge branch 'bug-fix'
+|\  
+| * g6c7d8e (bug-fix) Fix critical bug
+| * f5b6c7d Add error logging
+* | e4a5b6c (feature-new) Add new feature
+* | d3a4b5c Update documentation
+|/  
+* c2a3b4c Add basic functionality
+* b1a2c3d Initial commit
+```
+
+**Questions:**
+1. How many branches are shown?
+2. Which branch is currently checked out?
+3. How many commits are on the `bug-fix` branch?
+4. Which commit is the common ancestor of all branches?
+5. Has `feature-new` been merged into main?
+
+**Answers:**
+1. Three branches: `main`, `bug-fix`, `feature-new`
+2. `main` (indicated by HEAD)
+3. Two commits: `g6c7d8e` and `f5b6c7d`
+4. `c2a3b4c` (Add basic functionality)
+5. No, `feature-new` commits are still separate from main
+
+### Comparing Visualization Tools
+
+| Command | Best For |
+|---------|----------|
+| `git log` | Full detailed history |
+| `git log --oneline` | Quick history scan |
+| `git log --graph` | Understanding current branch structure |
+| `git log --all --graph` | Seeing all branches at once |
+| `git lg` (alias) | Beautiful daily workflow view |
+
+### Tips for Better Visualization
+
+**1. Limit Output When Needed**
+```bash
+git log --oneline --graph -20     # Last 20 commits
+git log --oneline --graph --since="2 days ago"
+```
+
+**2. Filter by Author**
+```bash
+git log --oneline --author="Sara"
+```
+
+**3. Search Commit Messages**
+```bash
+git log --oneline --grep="fix"    # Find commits with "fix"
+```
+
+**4. Show Files Changed**
+```bash
+git log --oneline --graph --stat   # Include file statistics
+```
+
+**[IMAGE: Terminal showing git log with --stat flag]**  
+*Description: Commit history with file modification statistics*
+
+### Why Visualization Matters
+
+**Before you merge:**
+```bash
+git log --oneline --graph --all
+```
+→ See what you're merging and where
+
+**After you merge:**
+```bash
+git log --oneline --graph --all
+```
+→ Verify merge was successful
+
+**When debugging:**
+```bash
+git log --oneline --graph --all
+```
+→ Understand what happened and when
+
+**Before pushing:**
+```bash
+git log --oneline --graph origin/main..main
+```
+→ See what you're about to push
+
+**Sara's Tip:** "I use `git log --oneline --graph --all` constantly! It's like having X-ray vision for my repository. I can see exactly what's happening with all my branches before I make any risky moves."
+
+---
+
 ### Command Reference
 
 ```bash
@@ -1859,6 +2242,16 @@ git reset --soft HEAD~1      # Undo commit, keep staged
 git reset HEAD~1             # Undo commit, keep changes
 git reset --hard HEAD~1      # Undo commit, discard all
 git revert HEAD              # Create reverse commit
+
+# VISUALIZATION
+git log                      # Full commit history
+git log --oneline            # Compact one-line view
+git log --oneline --graph --decorate --all  # Visual branch structure
+git log --graph              # Graph for current branch
+git log --oneline -10        # Last 10 commits
+git log --author="Name"      # Filter by author
+git log --grep="keyword"     # Search commit messages
+git log --stat               # Include file statistics
 
 # REMOTES
 git remote -v                # List remotes

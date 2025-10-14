@@ -264,6 +264,67 @@ git fetch --prune
 
 ---
 
+## Part 9: Visualizing Git History
+
+### Basic Visualization
+
+```bash
+# Full detailed log
+git log
+
+# Compact one-line view
+git log --oneline
+
+# Visual branch structure (MOST USEFUL)
+git log --oneline --graph --decorate --all
+```
+
+### Understanding the Graph
+
+**Output example:**
+```
+* a7f3d2e (HEAD -> main) Merge feature-scientific
+|\  
+| * f6e5d4c Add trigonometric functions
+| * e5d4c3b Add logarithm support
+|/  
+* b8e4f3c Fix division by zero bug
+```
+
+**Symbols:**
+- `*` = Commit
+- `|` = Branch line
+- `/` or `\` = Branch diverging/merging
+- `|\` = Merge commit
+
+### Quick Aliases
+
+```bash
+# Create shortcut for visualization
+git config --global alias.tree "log --oneline --graph --decorate --all"
+
+# Now just use:
+git tree
+```
+
+### Practical Uses
+
+```bash
+# See all branches before merging
+git log --oneline --graph --all
+
+# View last 5 commits
+git log --oneline --graph -5
+
+# Filter by author
+git log --oneline --author="Sara"
+
+# Search commits
+git log --oneline --grep="fix"
+```
+
+---
+
 ## Complete Command Reference
 
 ```bash
@@ -293,6 +354,14 @@ git reset --soft HEAD~1           # Undo commit, keep staged
 git reset HEAD~1                  # Undo commit, keep changes
 git reset --hard HEAD~1           # Undo commit, discard all
 git revert HEAD                   # Safe undo for pushed commits
+
+# VISUALIZATION
+git log                           # Full commit history
+git log --oneline                 # Compact view
+git log --oneline --graph --decorate --all  # Visual branch structure
+git log --oneline --graph -10     # Last 10 commits
+git log --author="Name"           # Filter by author
+git log --grep="keyword"          # Search commits
 
 # REMOTES
 git fetch origin                  # Download updates
