@@ -8,11 +8,11 @@
 
 ## 📖 Story Introduction
 
-Meet **Khaled**, a freshman computer science student at FCAI. She just received her first programming assignment: create a calculator program in Python. Excited but nervous, he starts coding on his laptop. After a few hours, he accidentally deletes a crucial function. Panic sets in — he has no backup! 
+Meet **Sara**, a freshman computer science student at FCAI. She just received her first programming assignment: create a calculator program in Python. Excited but nervous, she starts coding on her laptop. After a few hours, she accidentally deletes a crucial function. Panic sets in — she has no backup!
 
-His friend Ahmed notices him distress and introduces him to **Git** and **GitHub**. "This is how real developers work," he says. "You'll never lose your code again, and you'll look professional too!"
+Her friend Ahmed notices her distress and introduces her to **Git** and **GitHub**. "This is how real developers work," he says. "You'll never lose your code again, and you'll look professional too!"
 
-Today, you'll follow Khaled's journey as he learns to manage his code like a pro.
+Today, you'll follow Sara's journey as she learns to manage her code like a pro.
 
 ---
 
