@@ -21,11 +21,11 @@ All four sessions now have **reduced versions** alongside the full detailed vers
 
 | Session | Full Version | Reduced Version | Reduction |
 |---------|--------------|-----------------|-----------|
-| **Session 1** | 3,639 words | 1,039 words | **71%** |
-| **Session 2** | 5,981 words | 1,612 words | **73%** |
-| **Session 3** | 5,669 words | 1,612 words | **72%** |
-| **Session 4** | 4,688 words | 1,915 words | **59%** |
-| **TOTAL** | 19,977 words | 6,178 words | **69%** |
+| **Session 1** | 1,006 lines | 272 lines | **71%** |
+| **Session 2** | 2,287 lines | 594 lines | **73%** |
+| **Session 3** | 1,790 lines | 524 lines | **72%** |
+| **Session 4** | 1,743 lines | 640 lines | **59%** |
+| **TOTAL** | 6,826 lines | 2,030 lines | **69%** |
 
 ---
 
@@ -267,33 +267,31 @@ git log --oneline  # View history
 
 - **Total Files Created:** 4 reduced versions
 - **Average Reduction:** 69%
-- **Total Reduced Word Count:** 6,178 words
-- **Average Words per Session:** 1,545 words
 - **Average Completion Time:** 30-35 minutes
 
 ### Detailed Breakdown
 
 **Session 1:**
-- Original: 1,006 lines, 3,639 words
-- Reduced: 272 lines, 1,039 words
+- Original: 1,006 lines
+- Reduced: 272 lines
 - Reduction: 71%
 - Challenge: 30 minutes
 
 **Session 2:**
-- Original: 2,287 lines, 5,981 words
-- Reduced: 594 lines, 1,612 words
+- Original: 2,287 lines
+- Reduced: 594 lines
 - Reduction: 73%
 - Challenge: 30 minutes
 
 **Session 3:**
-- Original: 1,790 lines, 5,669 words
-- Reduced: 524 lines, 1,612 words
+- Original: 1,790 lines
+- Reduced: 524 lines
 - Reduction: 72%
 - Challenge: 40 minutes
 
 **Session 4:**
-- Original: 1,743 lines, 4,688 words
-- Reduced: 640 lines, 1,915 words
+- Original: 1,743 lines
+- Reduced: 640 lines
 - Reduction: 59%
 - Challenge: 40 minutes
 
@@ -453,8 +451,8 @@ The reduced versions successfully compress the workshop content by **69% on aver
 ---
 
 **Total Workshop Materials:**
-- 4 Full Sessions: ~20,000 words, ~10.5 hours
-- 4 Reduced Sessions: ~6,200 words, ~2.5 hours
+- 4 Full Sessions: ~10.5 hours
+- 4 Reduced Sessions: ~2.5 hours
 - Complete command coverage across both formats
 - Professional-quality materials ready for delivery
 

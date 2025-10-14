@@ -11,7 +11,6 @@ This document provides a quick overview of all workshop sessions and their conte
 - **Total Practices:** 40+ hands-on exercises
 - **Total Mega Challenges:** 3 comprehensive projects
 - **Image Placeholders:** 200+ for visual explanations
-- **Words:** ~80,000+ across all sessions
 - **Format:** Practice-heavy (70% hands-on, 30% theory)
 
 ---
@@ -37,7 +36,6 @@ This document provides a quick overview of all workshop sessions and their conte
 - Step-by-step installation for all operating systems
 - Real terminal output examples
 - Common mistakes and solutions
-- ~24,000 words
 - 50+ image placeholders
 
 ---
@@ -92,7 +90,6 @@ This document provides a quick overview of all workshop sessions and their conte
 - Visual diagrams for complex concepts
 - Conflict resolution practice scenarios
 - Rebase vs merge decision trees
-- ~39,000 words
 - 65+ image placeholders
 
 ---
@@ -170,7 +167,6 @@ This document provides a quick overview of all workshop sessions and their conte
 - Professional PR templates
 - Code review checklist
 - Conventional Commits format
-- ~38,000 words
 - 60+ image placeholders
 
 ---
@@ -247,7 +243,6 @@ This document provides a quick overview of all workshop sessions and their conte
 - MkDocs tutorial with Material theme
 - Security best practices checklist
 - Professional README templates
-- ~35,000 words
 - 55+ image placeholders
 
 ---

@@ -10,32 +10,27 @@ Welcome to the comprehensive 4-session Git and GitHub workshop for DSC Cairo Uni
 **Duration:** 2.5 hours  
 **Topics:** Installation, configuration, first repo, commits, GitHub push, .gitignore  
 **Practices:** 7 exercises + Calculator mega challenge  
-**Words:** ~3,650  
 
 ### [Session 2: Branching & Advanced Git](session-2.md)
 **Duration:** 2.5 hours  
 **Topics:** Branches, merging, conflicts, rebasing, stashing, undoing, remotes, fetch vs pull  
 **Practices:** 14 exercises + Blog Application mega challenge + 5 bonus challenges  
-**Words:** ~6,000  
 
 ### [Session 3: GitHub Collaboration & Professional Workflows](session-3.md)
 **Duration:** 3 hours  
 **Topics:** Collaboration models, SSH vs PAT, Pull Requests, Git Flow, GitHub Flow, tags, cherry-pick  
 **Practices:** 9 exercises + Library Management System mega challenge (team of 4)  
-**Words:** ~5,700  
 
 ### [Session 4: Open Source & Advanced GitHub Features](session-4.md)
 **Duration:** 2.5 hours  
 **Topics:** Forking, open source contribution, GitHub Actions, GitHub Pages, submodules, security  
 **Practices:** 8 exercises + Open Source Contribution mega challenge  
-**Words:** ~4,700  
 
 ---
 
 ## Workshop Statistics
 
 - **Total Duration:** ~10.5 hours
-- **Total Words:** ~20,000+
 - **Total Practices:** 40+ hands-on exercises
 - **Mega Challenges:** 3 comprehensive projects
 - **Image Placeholders:** 200+ visual explanations
