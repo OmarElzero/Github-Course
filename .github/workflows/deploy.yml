@@ -3,7 +3,7 @@ name: Deploy static site to GitHub Pages
 # This is the "event" — run this robot when we push to the 'main' branch
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
 
 # Give the robot permission to write to your Pages
 permissions:
