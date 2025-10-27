@@ -1,0 +1,35 @@
+name: Deploy static site to GitHub Pages
+
+# This is the "event" — run this robot when we push to the 'main' branch
+on:
+  push:
+    branches: [ main ]
+
+# Give the robot permission to write to your Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # We have one job, called "deploy"
+  deploy:
+    runs-on: ubuntu-latest # Use a fresh Linux computer
+
+    # These are the steps the robot will follow
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload site files
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload the root folder (where our index.html is)
+          path: '.' 
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
