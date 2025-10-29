@@ -1,4 +1,4 @@
-# 🎓 Git & GitHub Workshop: Graduation Project
+# 🎓 Git & GitHub Course: Graduation Project
 
 **Project:** Build, Deploy, and Contribute to a Personal Portfolio Website
 

@@ -1705,7 +1705,7 @@ git push
 
 ## Congratulations! You're a Git/GitHub Expert!
 
-You've completed the workshop and can now:
+You've completed the course and can now:
 - ✅ Use Git like a professional
 - ✅ Collaborate effectively with teams
 - ✅ Contribute to open source projects
@@ -1733,10 +1733,10 @@ You've completed the workshop and can now:
 
 ---
 
-**End of Session 4 — End of Workshop**
+**End of Session 4 — End of Course**
 
-Thank you for participating! We hope you enjoyed the workshop and learned valuable skills. Now go out there and make amazing contributions to the world of software development!
+Thank you for participating! We hope you enjoyed the course and learned valuable skills. Now go out there and make amazing contributions to the world of software development!
 
 ---
 
-**Workshop Complete! 🎊**
+**Course Complete! 🎊**

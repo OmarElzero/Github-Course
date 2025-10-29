@@ -1,36 +1,41 @@
-# Git & GitHub Workshop Sessions
+# Git & GitHub Course Sessions
 
-Welcome to the comprehensive 4-session Git and GitHub workshop for DSC Cairo University!
+Welcome to the comprehensive 5-session Git and GitHub course for DSC Cairo University!
 
 ---
 
 ## Session Files
 
-### [Session 1: Git Basics & First Repository](session-1.md)
-**Duration:** 2.5 hours  
+### [Session 1: Git & GitHub Fundamentals](session-1.md)
+**Duration:** 5 hours  
 **Topics:** Installation, configuration, first repo, commits, GitHub push, .gitignore  
 **Practices:** 7 exercises + Calculator mega challenge  
 
-### [Session 2: Branching & Advanced Git](session-2.md)
-**Duration:** 2.5 hours  
+### [Session 2: Advanced Branching & Workflow Mastery](session-2.md)
+**Duration:** 5 hours  
 **Topics:** Branches, merging, conflicts, rebasing, stashing, undoing, remotes, fetch vs pull  
 **Practices:** 14 exercises + Blog Application mega challenge + 5 bonus challenges  
 
-### [Session 3: GitHub Collaboration & Professional Workflows](session-3.md)
-**Duration:** 3 hours  
+### Session 3: Hands-on Practice & Review
+**Duration:** 3 hours
+**Topics:** Reinforcing concepts from Sessions 1 & 2 through practical exercises and challenges.
+**Practices:** Series of small, focused challenges and a larger, multi-step practice project.
+
+### [Session 4: Professional Collaboration Workflows](session-3.md)
+**Duration:** 5 hours  
 **Topics:** Collaboration models, SSH vs PAT, Pull Requests, Git Flow, GitHub Flow, tags, cherry-pick  
 **Practices:** 9 exercises + Library Management System mega challenge (team of 4)  
 
-### [Session 4: Open Source & Advanced GitHub Features](session-4.md)
-**Duration:** 2.5 hours  
+### [Session 5: Open Source & Advanced GitHub Features](session-4.md)
+**Duration:** 3 hours  
 **Topics:** Forking, open source contribution, GitHub Actions, GitHub Pages, submodules, security  
 **Practices:** 8 exercises + Open Source Contribution mega challenge  
 
 ---
 
-## Workshop Statistics
+## Course Statistics
 
-- **Total Duration:** ~10.5 hours
+- **Total Duration:** ~21 hours
 - **Total Practices:** 40+ hands-on exercises
 - **Mega Challenges:** 3 comprehensive projects
 - **Image Placeholders:** 200+ visual explanations
@@ -51,14 +56,14 @@ Welcome to the comprehensive 4-session Git and GitHub workshop for DSC Cairo Uni
 ## How to Use These Materials
 
 ### For Instructors:
-1. Review each session file before workshop
+1. Review each session file before the course
 2. Prepare images based on placeholders (200+ locations)
 3. Test all commands on your system
 4. Set up demo repositories in advance
 5. Familiarize yourself with mega challenges
 
 ### For Self-Study:
-1. Follow sessions in order (1 → 2 → 3 → 4)
+1. Follow sessions in order
 2. Complete ALL practice exercises
 3. Don't skip the challenges
 4. Take breaks between sessions
@@ -103,7 +108,7 @@ After completing all sessions, you will be able to:
 
 ## Additional Resources
 
-See [WORKSHOP_OVERVIEW.md](../WORKSHOP_OVERVIEW.md) for detailed session breakdowns.
+See [COURSE_OVERVIEW.md](../COURSE_OVERVIEW.md) for detailed session breakdowns.
 
 ---
 
