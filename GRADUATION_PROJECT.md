@@ -2,7 +2,7 @@
 
 **Project:** Build, Deploy, and Contribute to a Personal Portfolio Website
 
-**Objective:** Apply all the skills you've learned across our four sessions to create a professional developer portfolio, managed with Git and hosted on GitHub Pages.ls
+**Objective:** Apply all the skills you've learned across our Seven sessions to create a professional developer portfolio, managed with Git and hosted on GitHub Pages.ls
 
 **Deadline:** November 4, 2025, 11:59 PM
 
